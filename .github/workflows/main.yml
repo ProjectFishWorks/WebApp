@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 # Run workflow on every push to the master branch
 on:
   push:
-    branches: [ master ]
+    branches: [ Production ]
 
 jobs:
   deploy-to-github-pages:
@@ -11,7 +11,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     # uses GitHub's checkout action to checkout code form the master branch
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+      with:
+        ref: Production
     
     # sets up .NET Core SDK 8.x
     - name: Setup .NET Core SDK
@@ -21,11 +23,11 @@ jobs:
 
     # publishes Blazor project to the release-folder
     - name: Publish .NET Core Project
-      run: dotnet publish BlazorMQTTTestingWASM/BlazorMQTTTestingWASM.csproj -c Release -o release --nologo
+      run: dotnet publish ProjectFishWorksWebApp/ProjectFishWorksWebApp.csproj -c Release -o release --nologo
     
     # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
-    - name: Change base-tag in index.html from / to app
-      run: sed -i 's/<base href="\/" \/>/<base href="\/app\/" \/>/g' release/wwwroot/index.html
+    - name: Change base-tag in index.html from / to WebApp
+      run: sed -i 's/<base href="\/" \/>/<base href="\/WebApp\/" \/>/g' release/wwwroot/index.html
 
     # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
     - name: Add .nojekyll file
