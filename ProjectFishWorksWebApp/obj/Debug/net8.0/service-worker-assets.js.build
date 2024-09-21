@@ -25,7 +25,7 @@
       "url": "icon-512.png"
     },
     {
-      "hash": "sha256-QGcUKEyDQEzhXQjuQQef1H8TloUjBHMmgo4hbnKu45Q=",
+      "hash": "sha256-7pBX+OvzByF4euSmHZyf9P\/2jS68o4XyADmRDaawPK4=",
       "url": "index.html"
     },
     {
@@ -37,12 +37,12 @@
       "url": "sample-data\/weather.json"
     },
     {
-      "hash": "sha256-tMx0ukz2ZFXikjZQcs0ryObuxyrZ6aMNgoVFAnG4zEs=",
-      "url": "ProjectFishWorksWebApp.styles.css"
-    },
-    {
       "hash": "sha256-gvHfnndfEu1tRf0rFb5988rWq7ITIotOaE8+AMbKYbc=",
       "url": "_framework\/blazor.webassembly.js"
+    },
+    {
+      "hash": "sha256-tMx0ukz2ZFXikjZQcs0ryObuxyrZ6aMNgoVFAnG4zEs=",
+      "url": "ProjectFishWorksWebApp.styles.css"
     },
     {
       "hash": "sha256-tZ3Z0q6xQTgUxlWgiWvzS4SBQeBqETtRGtUWvVaU31w=",
@@ -109,6 +109,14 @@
       "url": "_framework\/Microsoft.Extensions.FileSystemGlobbing.wasm"
     },
     {
+      "hash": "sha256-hcJFVGS1x8m5ZeBhvyIEBqYSQKIzBLnbw77jq3TNVmA=",
+      "url": "_framework\/Microsoft.Extensions.Localization.wasm"
+    },
+    {
+      "hash": "sha256-\/cbKro\/iHTt02hewrByb6oqdeUsxxfFAyRKKr7GpBNI=",
+      "url": "_framework\/Microsoft.Extensions.Localization.Abstractions.wasm"
+    },
+    {
       "hash": "sha256-Rx+UwnmyfTtMmlYd3HWJOvYVnSSwShUKrbPvqkfxmZk=",
       "url": "_framework\/Microsoft.Extensions.Logging.wasm"
     },
@@ -131,6 +139,10 @@
     {
       "hash": "sha256-gxsImbLQUP0+xBtL1HjJHY4TK2kv0b55tv61C2OHsUU=",
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
+    },
+    {
+      "hash": "sha256-+6sc9t3KRXuYF8Q0j0JL08wP6j51Vkp58oNHjoHFvr0=",
+      "url": "_framework\/MudBlazor.wasm"
     },
     {
       "hash": "sha256-JqVBy6SV+3qk+IK3VJiyIDt9CsVk6b1\/ytTXmrI4mTM=",
@@ -845,17 +857,25 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-yMT0Evhhjmt6KuYZ29Rm\/FxlfX+XHYKdFAtWCPqK8co=",
+      "hash": "sha256-wjE2kc\/D0fbeXqt9EKaVvMr9sHL215D4H32RNovBuBM=",
       "url": "_framework\/ProjectFishWorksWebApp.wasm"
     },
     {
-      "hash": "sha256-u\/gXzGgyer\/H21Sm+Dzz4h2C+JJJM9OggWwHS0qb10M=",
+      "hash": "sha256-nDAodCLJt1o\/zUz\/5vIeHpWdLbYVpdSFAVi3arzTm1A=",
       "url": "_framework\/ProjectFishWorksWebApp.pdb"
     },
     {
-      "hash": "sha256-8DVaDYe8+jVsh35ED1tabcheVzDa7E4w7e5V8lSy0pI=",
+      "hash": "sha256-\/4gz9AMythlH6DAliQCCLN+uvqfb3YLrRCg9wPO9jCA=",
       "url": "_framework\/blazor.boot.json"
+    },
+    {
+      "hash": "sha256-H2QuhIhWAAApVk0IT\/dmvJ5l167yYqO1jogUIMXAko8=",
+      "url": "_content\/MudBlazor\/MudBlazor.min.css"
+    },
+    {
+      "hash": "sha256-HIgITptQO9vrBUjgNCpkzjy7f1PyNdPlVgp5bAUKUNg=",
+      "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "gPO7HZTP"
+  "version": "PSl8v84C"
 };
