@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProjectFishWorksWebApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b7532eeb3e6cca6d13bd56f9a6a364334a393b5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0e14ef30e814e964ff26c5d88f40437e6d6f4243")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProjectFishWorksWebApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProjectFishWorksWebApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
