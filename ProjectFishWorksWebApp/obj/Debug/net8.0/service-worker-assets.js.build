@@ -141,6 +141,10 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
+      "hash": "sha256-PGK00q7Oe1M83gdVhtkC88AWaKBqQuOAq+p5uUm\/CuM=",
+      "url": "_framework\/MQTTnet.wasm"
+    },
+    {
       "hash": "sha256-+6sc9t3KRXuYF8Q0j0JL08wP6j51Vkp58oNHjoHFvr0=",
       "url": "_framework\/MudBlazor.wasm"
     },
@@ -857,28 +861,24 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-GaObnelH\/8uEfw5bxdti1hm\/wDhT7HopN8iMLTTX0f4=",
-      "url": "_framework\/ProjectFishWorksWebApp.wasm"
-    },
-    {
-      "hash": "sha256-usKhkDg7wrdYR5T2HFDU8mvH5doh96u+JipN2xCSRfY=",
-      "url": "_framework\/ProjectFishWorksWebApp.pdb"
-    },
-    {
-      "hash": "sha256-kBLQLAZuxuxrKrf5wl9UABw+HvexGRiggRqdlEnzVBU=",
-      "url": "_framework\/blazor.boot.json"
-    },
-    {
-      "hash": "sha256-PGK00q7Oe1M83gdVhtkC88AWaKBqQuOAq+p5uUm\/CuM=",
-      "url": "_framework\/MQTTnet.wasm"
-    },
-    {
       "hash": "sha256-+t9KMhJ4Bh0curRXOKg4QQMbKleOk4hgIk1X8QU4ff8=",
       "url": "_framework\/MQTTnet.ClientLib.wasm"
     },
     {
       "hash": "sha256-Cov2ps7XHq3hl+a2naKISNsQMt89Li3kbKcVxjyO44o=",
       "url": "_framework\/MQTTnet.ClientLib.pdb"
+    },
+    {
+      "hash": "sha256-Q58RvyqoLhZdjwd\/eJeAS5ioYEmSVzrPNd70PBLYvCo=",
+      "url": "_framework\/ProjectFishWorksWebApp.wasm"
+    },
+    {
+      "hash": "sha256-xDF8OZDynHKS8WxTwRmhXLBEspV1T6v7GOCB78QvHIw=",
+      "url": "_framework\/ProjectFishWorksWebApp.pdb"
+    },
+    {
+      "hash": "sha256-UguK06BQBAgcpn+6PQT3x17PmCqyUpGdPtOxSPZLey0=",
+      "url": "_framework\/blazor.boot.json"
     },
     {
       "hash": "sha256-H2QuhIhWAAApVk0IT\/dmvJ5l167yYqO1jogUIMXAko8=",
@@ -889,5 +889,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "8BjtkGzk"
+  "version": "05NTD2xk"
 };

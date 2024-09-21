@@ -3,14 +3,6 @@
   "WorkspaceRootPath": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\pages\\settings.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:pages\\settings.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -21,6 +13,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\pages\\settings.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:pages\\settings.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -42,11 +42,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Settings.razor",
               "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Settings.razor",
               "RelativeDocumentMoniker": "Pages\\Settings.razor",
@@ -59,7 +59,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 2,
               "Title": "NavMenu.razor",
               "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Layout\\NavMenu.razor",
               "RelativeDocumentMoniker": "Layout\\NavMenu.razor",
@@ -67,30 +67,31 @@
               "RelativeToolTip": "Layout\\NavMenu.razor",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-21T03:19:24.723Z"
+              "WhenOpened": "2024-09-21T03:19:24.723Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "MainLayout.razor",
               "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Layout\\MainLayout.razor",
               "RelativeDocumentMoniker": "Layout\\MainLayout.razor",
               "ToolTip": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Layout\\MainLayout.razor",
               "RelativeToolTip": "Layout\\MainLayout.razor",
-              "ViewState": "AQIAAAIAAAAAAAAAAAAawBsAAAANAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAABSAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-09-21T03:11:32.053Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-21T03:11:11.408Z",
               "EditorCaption": ""
@@ -121,15 +122,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "Dashboard.razor",
               "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Dashboard.razor",
               "RelativeDocumentMoniker": "Pages\\Dashboard.razor",
               "ToolTip": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Dashboard.razor",
               "RelativeToolTip": "Pages\\Dashboard.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-19T16:56:06.069Z"
+              "WhenOpened": "2024-09-19T16:56:06.069Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
