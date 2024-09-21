@@ -1,16 +1,31 @@
 ﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+@inject NavigationManager NavigationManager
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+@* Required *@
+<MudThemeProvider />
+<MudPopoverProvider />
+
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="0" Color="Color.Primary">
+        <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Inherit" Edge="Edge.Start" Href="/" />
+        <MudText Typo="Typo.h5" Class="ml-3">Project FishWorks Web App</MudText>
+
+        <MudSpacer />
+        <MudMenu Label="Open Menu" Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+            <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="Settings">Settings</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.Logout">Logout</MudMenuItem>
+        </MudMenu>
+        
+    </MudAppBar>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
+

@@ -1,0 +1,5 @@
+is_global = true
+build_property.RootNamespace = MQTTnet.ClientLib
+build_property.ProjectDir = C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\MQTTnet.ClientLib\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
