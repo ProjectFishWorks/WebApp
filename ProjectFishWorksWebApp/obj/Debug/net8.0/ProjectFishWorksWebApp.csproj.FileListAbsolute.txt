@@ -1049,3 +1049,17 @@ C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\obj\D
 C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\obj\Debug\net8.0\compressed\hzs3sdmyhr.gz
 C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\obj\Debug\net8.0\compressed\t1cg0rsn7v.gz
 C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\obj\Debug\net8.0\compressed\l1uwsdcv67.gz
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\bin\Debug\net8.0\wwwroot\_framework\MQTTnet.ClientLib.pdb
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\bin\Debug\net8.0\wwwroot\_framework\MQTTnet.ClientLib.wasm
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\bin\Debug\net8.0\wwwroot\_framework\MQTTnet.wasm
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\bin\Debug\net8.0\wwwroot\_framework\MQTTnet.wasm.gz
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\bin\Debug\net8.0\wwwroot\_framework\MQTTnet.ClientLib.wasm.gz
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\bin\Debug\net8.0\wwwroot\_framework\MQTTnet.ClientLib.pdb.gz
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\bin\Debug\net8.0\MQTTnet.dll
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\bin\Debug\net8.0\MQTTnet.ClientLib.dll
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\bin\Debug\net8.0\MQTTnet.ClientLib.pdb
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\obj\Debug\net8.0\webcil\MQTTnet.wasm
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\obj\Debug\net8.0\webcil\MQTTnet.ClientLib.wasm
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\obj\Debug\net8.0\compressed\iplgot2q4l.gz
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\obj\Debug\net8.0\compressed\rekxou15yy.gz
+C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\ProjectFishWorksWebApp\obj\Debug\net8.0\compressed\wejqmiu0o4.gz

@@ -1,57 +1,144 @@
 ﻿@page "/settings"
+@using System.Net.Http
+
+@using System.Text;
+@using MQTTnet.Client.Connecting;
+@using MQTTnet.Client.Disconnecting;
+@using MQTTnet;
 @inject HttpClient Http
+@inject MQTTnet.ClientLib.MqttService MqttService
 
-<PageTitle>Project Fish Work - Settings</PageTitle>
+<PageTitle>Settings</PageTitle>
 
-<h1>Weather</h1>
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h5">Connection Stats</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        @if (MqttService.IsConnected())
+        {
+            <MudChip T="string" Color="MudBlazor.Color.Success">Connected</MudChip>
+        }
+        else
+        {
+            <MudChip T="string" Color="MudBlazor.Color.Error">Not Connected</MudChip>
+        }
+        <MudText Typo="Typo.h6">Messages Received : @MqttService.MeassagesReceived</MudText>
+    </MudCardContent>
+</MudCard>
 
-<p>This component demonstrates fetching data from the server.</p>
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h5">MQTT Connection</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudTextField Label="Web Socket URL" @bind-Value="mqttWebSocket" />
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+        <!--  Kayleb's form trial from https://www.telerik.com/blogs/blazor-basics-html-forms-capturing-user-data#:~:text=For%20our%20example%2C%20we%20add%20two%20InputText%20components,password.%20%3CInputText%20%40bind-Value%3D%22UserData.Username%22%20%2F%3E%20%3CInputText%20type%3D%22password%22%20%40bind-Value%3D%22UserData.Password%22%20%2F%3E
+        <EditForm Model="@this">
+            <MudTextField Label="Username" @bind-Value="mqttUsername" />
+            <MudTextField Label="Password" @bind-Value="mqttPassword" />
+            <MudButton Color="MudBlazor.Color.Primary" Variant="Variant.Filled" type="submit">Connect</MudButton>
+            </EditForm>
+            -->
 
+
+        <MudTextField Label="Username" @bind-Value="mqttUsername" />
+        <MudTextField Label="Password" @bind-Value="mqttPassword" />
+        <MudButton Color="MudBlazor.Color.Primary" Variant="Variant.Filled" OnClick="ConnectBtn_Clicked">Connect</MudButton>
+
+    </MudCardContent>
+</MudCard>
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h5">Topic</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudTextField Label="Topic" @bind-Value="topic" />
+        <MudButton Color="MudBlazor.Color.Primary" Variant="Variant.Filled" OnClick="SubscribeBtn_Clicked">Subscribe</MudButton>
+        <MudButton Color="MudBlazor.Color.Secondary" Variant="Variant.Filled" OnClick="UnsubscribeBtn_Clicked">Unsubscribe</MudButton>
+    </MudCardContent>
+</MudCard>
+
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h5">Raw Messages</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudDataGrid Items="@MqttService.AllMessages" Filterable="false" SortMode="@SortMode.Multiple" Groupable="false">
+            <Columns>
+                <PropertyColumn Property="x => x.Key" Title="Topic" />
+                <PropertyColumn Property="x => x.Value" Title="Data" />
+            </Columns>
+        </MudDataGrid>
+    </MudCardContent>
+
+</MudCard>
 @code {
-    private WeatherForecast[]? forecasts;
+    private string mqttWebSocket { get; set; } = "ce739858516845f790a6ae61e13368f9.s1.eu.hivemq.cloud:8884/mqtt";
+    private string mqttUsername { get; set; } = "fishworks-dev";
+    private string mqttPassword { get; set; } = "F1shworks!";
+
+    private string MqttClientConnection { get; set; }
+
+    private string topic { get; set; } = "#";
+
+    [SupplyParameterFromQuery]
+    public string username { get; set; }
+
+    [SupplyParameterFromQuery]
+    public string password { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        MqttClientConnection = "Disconnected";
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+
+        if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+        {
+            mqttUsername = username;
+            mqttPassword = password;
+            ConnectBtn_Clicked();
+        }
     }
 
-    public class WeatherForecast
+    private async void SubscribeBtn_Clicked()
     {
-        public DateOnly Date { get; set; }
+        await MqttService.Subscribe(topic);
+    }
 
-        public int TemperatureC { get; set; }
+    private async void UnsubscribeBtn_Clicked()
+    {
+        await MqttService.Unsubscribe(topic);
+    }
 
-        public string? Summary { get; set; }
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        base.StateHasChanged();
+    }
 
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    private async void ConnectBtn_Clicked()
+    {
+        var mqttClientOptions = new MQTTnet.Client.Options.MqttClientOptionsBuilder()
+            .WithClientId(Guid.NewGuid().ToString())
+            .WithCredentials(mqttUsername, mqttPassword)
+            .WithWebSocketServer(mqttWebSocket)
+            .WithTls()
+            .WithCleanSession()
+            .Build();
+
+        MqttService.Init(Guid.NewGuid().ToString(), mqttClientOptions);
+
+        MqttService.MessageReceived += MqttClient_MessageReceived;
+
+        var result = await MqttService.Connect();
+        MqttClientConnection = result ? "Connected" : "Disconnected";
+
+        await MqttService.Subscribe(topic);
+
+        base.StateHasChanged();
     }
 }

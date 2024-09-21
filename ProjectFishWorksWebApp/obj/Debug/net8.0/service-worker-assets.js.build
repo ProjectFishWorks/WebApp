@@ -857,16 +857,28 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-m5mYn18UByGE13QApj8q1rNThIoFyQJAVdEtiG9jN6Y=",
+      "hash": "sha256-GaObnelH\/8uEfw5bxdti1hm\/wDhT7HopN8iMLTTX0f4=",
       "url": "_framework\/ProjectFishWorksWebApp.wasm"
     },
     {
-      "hash": "sha256-myUmcFixTdjd6Sfo73cnHAyuKbOGGKGVIiK5bw1Fx58=",
+      "hash": "sha256-usKhkDg7wrdYR5T2HFDU8mvH5doh96u+JipN2xCSRfY=",
       "url": "_framework\/ProjectFishWorksWebApp.pdb"
     },
     {
-      "hash": "sha256-D3Kfpo930Ej9cA3Kcbvb2skS+wQc1p8xnDGIp897dD0=",
+      "hash": "sha256-kBLQLAZuxuxrKrf5wl9UABw+HvexGRiggRqdlEnzVBU=",
       "url": "_framework\/blazor.boot.json"
+    },
+    {
+      "hash": "sha256-PGK00q7Oe1M83gdVhtkC88AWaKBqQuOAq+p5uUm\/CuM=",
+      "url": "_framework\/MQTTnet.wasm"
+    },
+    {
+      "hash": "sha256-+t9KMhJ4Bh0curRXOKg4QQMbKleOk4hgIk1X8QU4ff8=",
+      "url": "_framework\/MQTTnet.ClientLib.wasm"
+    },
+    {
+      "hash": "sha256-Cov2ps7XHq3hl+a2naKISNsQMt89Li3kbKcVxjyO44o=",
+      "url": "_framework\/MQTTnet.ClientLib.pdb"
     },
     {
       "hash": "sha256-H2QuhIhWAAApVk0IT\/dmvJ5l167yYqO1jogUIMXAko8=",
@@ -877,5 +889,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "JAlezi++"
+  "version": "8BjtkGzk"
 };

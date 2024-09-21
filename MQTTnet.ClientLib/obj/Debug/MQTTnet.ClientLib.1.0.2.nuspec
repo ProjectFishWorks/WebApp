@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>MQTTnet.ClientLib</id>
+    <version>1.0.2</version>
+    <authors>Jimmy Pun</authors>
+    <projectUrl>https://github.com/JimmyPun610/MQTTnet.Playground</projectUrl>
+    <description>A wrapper for MQTTnet.Client which use event base on Connected, Disconnected and MessageReceived</description>
+    <releaseNotes>Updated Library version</releaseNotes>
+    <repository type="git" commit="569b273933ec35febc42d664eba19611b90a9694" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0">
+        <dependency id="MQTTnet" version="3.0.13" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\sebas\source\repos\ProjectFishWorks\WebApp\MQTTnet.ClientLib\bin\Debug\netstandard2.0\MQTTnet.ClientLib.dll" target="lib\netstandard2.0\MQTTnet.ClientLib.dll" />
+  </files>
+</package>
