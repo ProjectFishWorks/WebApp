@@ -7,16 +7,16 @@
       "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:pages\\home.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\pages\\settings.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:pages\\settings.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\pages\\dashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:pages\\dashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:layout\\navmenu.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\pages\\weather.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:pages\\weather.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -46,20 +46,20 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "Weather.razor",
-              "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Weather.razor",
-              "RelativeDocumentMoniker": "Pages\\Weather.razor",
-              "ToolTip": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Weather.razor",
-              "RelativeToolTip": "Pages\\Weather.razor",
-              "ViewState": "AQIAAC0AAAAAAAAAAAAAAAAAAAAPAAAA",
+              "DocumentIndex": 1,
+              "Title": "Settings.razor",
+              "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Settings.razor",
+              "RelativeDocumentMoniker": "Pages\\Settings.razor",
+              "ToolTip": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Settings.razor",
+              "RelativeToolTip": "Pages\\Settings.razor",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-09-21T03:41:55.788Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "NavMenu.razor",
               "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Layout\\NavMenu.razor",
               "RelativeDocumentMoniker": "Layout\\NavMenu.razor",
@@ -78,7 +78,7 @@
               "RelativeDocumentMoniker": "Layout\\MainLayout.razor",
               "ToolTip": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Layout\\MainLayout.razor",
               "RelativeToolTip": "Layout\\MainLayout.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABsAAAAAAAAA",
+              "ViewState": "AQIAAAIAAAAAAAAAAAAawA4AAAALAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-09-21T03:11:32.053Z",
               "EditorCaption": ""
@@ -121,13 +121,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Home.razor",
-              "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Home.razor",
-              "RelativeDocumentMoniker": "Pages\\Home.razor",
-              "ToolTip": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Home.razor",
-              "RelativeToolTip": "Pages\\Home.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "DocumentIndex": 2,
+              "Title": "Dashboard.razor",
+              "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Dashboard.razor",
+              "RelativeDocumentMoniker": "Pages\\Dashboard.razor",
+              "ToolTip": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Dashboard.razor",
+              "RelativeToolTip": "Pages\\Dashboard.razor",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-09-19T16:56:06.069Z",
               "EditorCaption": ""

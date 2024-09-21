@@ -1,5 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
+@inject NavigationManager NavigationManager
+
 @* Required *@
 <MudThemeProvider />
 <MudPopoverProvider />
@@ -11,14 +13,16 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="1" Color="Color.Primary">
-        <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Inherit" Edge="Edge.Start" Href="/"/>
+    <MudAppBar Elevation="0" Color="Color.Primary">
+        <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Inherit" Edge="Edge.Start" Href="/" />
         <MudText Typo="Typo.h5" Class="ml-3">Project FishWorks Web App</MudText>
+
         <MudSpacer />
         <MudMenu Label="Open Menu" Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
-            <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="Weather">Settings</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="Settings">Settings</MudMenuItem>
             <MudMenuItem Icon="@Icons.Material.Filled.Logout">Logout</MudMenuItem>
         </MudMenu>
+        
     </MudAppBar>
     <MudMainContent>
         @Body
