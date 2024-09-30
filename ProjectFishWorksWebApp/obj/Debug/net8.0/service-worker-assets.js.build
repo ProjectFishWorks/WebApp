@@ -869,15 +869,15 @@
       "url": "_framework\/MQTTnet.ClientLib.pdb"
     },
     {
-      "hash": "sha256-Q58RvyqoLhZdjwd\/eJeAS5ioYEmSVzrPNd70PBLYvCo=",
+      "hash": "sha256-A2zdGPLQr8x6lUIJKS4GF9Aohy\/xCNb4lnWcG90+f7c=",
       "url": "_framework\/ProjectFishWorksWebApp.wasm"
     },
     {
-      "hash": "sha256-xDF8OZDynHKS8WxTwRmhXLBEspV1T6v7GOCB78QvHIw=",
+      "hash": "sha256-kRWqYSjyQl86q3WUgMyXWkQQ1IWKPOoDK86gPIFanTI=",
       "url": "_framework\/ProjectFishWorksWebApp.pdb"
     },
     {
-      "hash": "sha256-UguK06BQBAgcpn+6PQT3x17PmCqyUpGdPtOxSPZLey0=",
+      "hash": "sha256-TMgPld3kxf1TPlsceNnFPv7OB+WkGXficCC5q0xXP38=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -889,5 +889,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "05NTD2xk"
+  "version": "iQTggrWB"
 };

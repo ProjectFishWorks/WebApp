@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:layout\\mainlayout.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\pages\\dashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:pages\\dashboard.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -21,10 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\pages\\settings.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:pages\\settings.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|solutionrelative:app.razor||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0CD6AA28-D7ED-4D32-956D-A8071252C447}|ProjectFishWorksWebApp.csproj|c:\\users\\sebas\\source\\repos\\projectfishworks\\webapp\\projectfishworkswebapp\\wwwroot\\index.html||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -46,7 +46,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Settings.razor",
               "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Settings.razor",
               "RelativeDocumentMoniker": "Pages\\Settings.razor",
@@ -54,12 +54,11 @@
               "RelativeToolTip": "Pages\\Settings.razor",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAATAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-21T03:41:55.788Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-21T03:41:55.788Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "NavMenu.razor",
               "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Layout\\NavMenu.razor",
               "RelativeDocumentMoniker": "Layout\\NavMenu.razor",
@@ -67,8 +66,7 @@
               "RelativeToolTip": "Layout\\NavMenu.razor",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-21T03:19:24.723Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-21T03:19:24.723Z"
             },
             {
               "$type": "Document",
@@ -78,14 +76,14 @@
               "RelativeDocumentMoniker": "Layout\\MainLayout.razor",
               "ToolTip": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Layout\\MainLayout.razor",
               "RelativeToolTip": "Layout\\MainLayout.razor",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABYAAABSAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-09-21T03:11:32.053Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -93,8 +91,7 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-21T03:11:11.408Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-21T03:11:11.408Z"
             },
             {
               "$type": "Document",
@@ -122,7 +119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Dashboard.razor",
               "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\Pages\\Dashboard.razor",
               "RelativeDocumentMoniker": "Pages\\Dashboard.razor",
@@ -130,12 +127,11 @@
               "RelativeToolTip": "Pages\\Dashboard.razor",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2024-09-19T16:56:06.069Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-19T16:56:06.069Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "App.razor",
               "DocumentMoniker": "C:\\Users\\sebas\\source\\repos\\ProjectFishWorks\\WebApp\\ProjectFishWorksWebApp\\App.razor",
               "RelativeDocumentMoniker": "App.razor",
