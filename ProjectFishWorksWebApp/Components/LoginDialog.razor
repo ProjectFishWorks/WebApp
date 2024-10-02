@@ -1,0 +1,58 @@
+﻿@inject MQTTnet.ClientLib.MqttService MqttService
+
+<MudDialog>
+    <DialogContent>
+        <MudCard>
+            <MudCardHeader>
+                <MudText Typo="Typo.h5">MQTT Connection</MudText>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudTextField Label="Web Socket URL" @bind-Value="mqttWebSocket" />
+                <MudTextField Label="Username" @bind-Value="mqttUsername" />
+                <MudTextField Label="Password" @bind-Value="mqttPassword" />
+            </MudCardContent>
+        </MudCard>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="MudBlazor.Color.Primary" Variant="Variant.Filled" OnClick="ConnectBtn_Clicked">Connect</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private MudDialogInstance MudDialog { get; set; }
+
+    private string MqttClientConnection { get; set; }
+
+    private string mqttWebSocket { get; set; } = "ce739858516845f790a6ae61e13368f9.s1.eu.hivemq.cloud:8884/mqtt";
+    private string mqttUsername { get; set; } = "fishworks-dev";
+    private string mqttPassword { get; set; } = "F1shworks!";
+
+    private string topic { get; set; } = "#";
+
+    private async void ConnectBtn_Clicked()
+    {
+        var mqttClientOptions = new MQTTnet.Client.Options.MqttClientOptionsBuilder()
+            .WithClientId(Guid.NewGuid().ToString())
+            .WithCredentials(mqttUsername, mqttPassword)
+            .WithWebSocketServer(mqttWebSocket)
+            .WithTls()
+            .WithCleanSession()
+            .Build();
+
+        MqttService.Init(Guid.NewGuid().ToString(), mqttClientOptions);
+
+        var result = await MqttService.Connect();
+        MqttClientConnection = result ? "Connected" : "Disconnected";
+
+        await MqttService.Subscribe(topic);
+
+        if(result)
+        {
+            MudDialog.Close(DialogResult.Ok(true));
+        }
+
+        base.StateHasChanged();
+    }
+
+}

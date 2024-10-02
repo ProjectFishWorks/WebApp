@@ -2,6 +2,10 @@
 
 @inject NavigationManager NavigationManager
 
+@inject MQTTnet.ClientLib.MqttService MqttService
+
+@inject IDialogService DialogService
+
 @* Required *@
 <MudThemeProvider />
 <MudPopoverProvider />
@@ -22,10 +26,41 @@
             <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="Settings">Settings</MudMenuItem>
             <MudMenuItem Icon="@Icons.Material.Filled.Logout">Logout</MudMenuItem>
         </MudMenu>
-        
     </MudAppBar>
     <MudMainContent>
         @Body
     </MudMainContent>
 </MudLayout>
+
+<style>
+    .my-custom-class {
+        backdrop-filter: blur(10px);
+    }
+</style>
+
+@code {
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (!MqttService.IsConnected())
+        {
+            OpenDialogAsync();
+        }
+        base.OnAfterRender(firstRender);
+    }
+
+    private Task OpenDialogAsync()
+    {
+        Console.WriteLine("Opening dialog");
+        var options = new DialogOptions 
+        { 
+            BackgroundClass = "my-custom-class",
+            FullWidth = true,
+            BackdropClick = false,
+            CloseOnEscapeKey = false,
+            NoHeader = true
+        };
+
+        return DialogService.ShowAsync<Components.LoginDialog>("MQTT Connection", options);
+    }
+}
 

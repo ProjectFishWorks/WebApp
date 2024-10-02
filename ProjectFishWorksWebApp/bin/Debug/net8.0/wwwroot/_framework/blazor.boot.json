@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "ProjectFishWorksWebApp",
   "resources": {
-    "hash": "sha256-da7W1zBI9s2fjbkWznbBCc/OiuRx7VxMMnbb2hXU/9k=",
+    "hash": "sha256-IQoSekLmTJjdNqeGCM4AVGdNqcB+0nGxnEuRLuV6BPA=",
     "jsModuleNative": {
       "dotnet.native.8.0.7.xzlk9xx91q.js": "sha256-tFsxPBbhkdn6GKNBKvCRLzrfAHdyM86odYTe0MtrwMk="
     },
@@ -213,11 +213,11 @@
       "netstandard.wasm": "sha256-d4xbAE8qrKq5euUoZHPO+jkYPjlCYBzUew45MKsYKic=",
       "System.Private.CoreLib.wasm": "sha256-8yi6NcX1lkNQgV4WKjnMBYIZyKh4P+OXnXVQmgxGZD4=",
       "MQTTnet.ClientLib.wasm": "sha256-+t9KMhJ4Bh0curRXOKg4QQMbKleOk4hgIk1X8QU4ff8=",
-      "ProjectFishWorksWebApp.wasm": "sha256-fV3Q6T7rPkixjsVUY2vWI27ATfQvBKS9DvFd6+XtNNQ="
+      "ProjectFishWorksWebApp.wasm": "sha256-fCJr6qm37rJUeK5AKxtgZUQ5TU7au7NlDXLp2n06OGo="
     },
     "pdb": {
       "MQTTnet.ClientLib.pdb": "sha256-Cov2ps7XHq3hl+a2naKISNsQMt89Li3kbKcVxjyO44o=",
-      "ProjectFishWorksWebApp.pdb": "sha256-klD8B4/pG6cD4jlzvlVl6J9gxeRjML4czTi3Lh0A1Sc="
+      "ProjectFishWorksWebApp.pdb": "sha256-EdqyoNSAZMvzO7+FQ6K9LVY7H3z+NTarvYCgK+c7xAk="
     }
   },
   "cacheBootResources": true,
