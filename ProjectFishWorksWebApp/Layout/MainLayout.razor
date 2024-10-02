@@ -24,7 +24,7 @@
         <MudSpacer />
         <MudMenu Label="Open Menu" Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="Settings">Settings</MudMenuItem>
-            <MudMenuItem Icon="@Icons.Material.Filled.Logout">Logout</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="LogoutOnClick">Logout</MudMenuItem>
         </MudMenu>
     </MudAppBar>
     <MudMainContent>
@@ -39,6 +39,13 @@
 </style>
 
 @code {
+
+    private void LogoutOnClick()
+    {
+        MqttService.Disconnect();
+        base.StateHasChanged();
+    }
+
     protected override void OnAfterRender(bool firstRender)
     {
         if (!MqttService.IsConnected())

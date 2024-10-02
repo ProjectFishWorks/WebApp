@@ -1,11 +1,6 @@
 ﻿@page "/settings"
-@using System.Net.Http
 
-@using System.Text;
-@using MQTTnet.Client.Connecting;
-@using MQTTnet.Client.Disconnecting;
-@using MQTTnet;
-@inject HttpClient Http
+@using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
 
 <PageTitle>Settings</PageTitle>
@@ -29,29 +24,6 @@
 
 <MudCard>
     <MudCardHeader>
-        <MudText Typo="Typo.h5">MQTT Connection</MudText>
-    </MudCardHeader>
-    <MudCardContent>
-        <MudTextField Label="Web Socket URL" @bind-Value="mqttWebSocket"/>
-        <MudTextField Label="Username" @bind-Value="mqttUsername" />
-        <MudTextField Label="Password" @bind-Value="mqttPassword" />
-        <MudButton Color="MudBlazor.Color.Primary" Variant="Variant.Filled" OnClick="ConnectBtn_Clicked">Connect</MudButton>
-
-    </MudCardContent>
-</MudCard>
-<MudCard>
-    <MudCardHeader>
-        <MudText Typo="Typo.h5">Topic</MudText>
-    </MudCardHeader>
-    <MudCardContent>
-        <MudTextField Label="Topic" @bind-Value="topic" />
-        <MudButton Color="MudBlazor.Color.Primary" Variant="Variant.Filled" OnClick="SubscribeBtn_Clicked">Subscribe</MudButton>
-        <MudButton Color="MudBlazor.Color.Secondary" Variant="Variant.Filled" OnClick="UnsubscribeBtn_Clicked">Unsubscribe</MudButton>
-    </MudCardContent>
-</MudCard>
-
-<MudCard>
-    <MudCardHeader>
         <MudText Typo="Typo.h5">Raw Messages</MudText>
     </MudCardHeader>
     <MudCardContent>
@@ -65,70 +37,14 @@
 
 </MudCard>
 @code {
-    private string mqttWebSocket { get; set; } = "ce739858516845f790a6ae61e13368f9.s1.eu.hivemq.cloud:8884/mqtt";
-    private string mqttUsername { get; set; } = "fishworks-dev";
-    private string mqttPassword { get; set; } = "F1shworks!";
 
-    private string MqttClientConnection { get; set; }
-
-    private string topic { get; set; } = "#";
-
-    [SupplyParameterFromQuery]
-    public string username { get; set; }
-
-    [SupplyParameterFromQuery]
-    public string password { get; set; }
-
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        MqttClientConnection = "Disconnected";
-        if (MqttService.IsConnected())
-        {
-            MqttService.MessageReceived += MqttClient_MessageReceived;
-        }
-
-        if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
-        {
-            mqttUsername = username;
-            mqttPassword = password;
-            ConnectBtn_Clicked();
-        }
-    }
-
-    private async void SubscribeBtn_Clicked()
-    {
-        await MqttService.Subscribe(topic);
-    }
-
-    private async void UnsubscribeBtn_Clicked()
-    {
-        await MqttService.Unsubscribe(topic);
+        MqttService.MessageReceived += MqttClient_MessageReceived;
     }
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
     {
         base.StateHasChanged();
     }
-
-    private async void ConnectBtn_Clicked()
-    {
-        var mqttClientOptions = new MQTTnet.Client.Options.MqttClientOptionsBuilder()
-            .WithClientId(Guid.NewGuid().ToString())
-            .WithCredentials(mqttUsername, mqttPassword)
-            .WithWebSocketServer(mqttWebSocket)
-            .WithTls()
-            .WithCleanSession()
-            .Build();
-
-        MqttService.Init(Guid.NewGuid().ToString(), mqttClientOptions);
-
-        MqttService.MessageReceived += MqttClient_MessageReceived;
-
-        var result = await MqttService.Connect();
-        MqttClientConnection = result ? "Connected" : "Disconnected";
-
-        await MqttService.Subscribe(topic);
-
-        base.StateHasChanged();
-    }
-}
+}L
