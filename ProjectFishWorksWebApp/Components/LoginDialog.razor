@@ -4,16 +4,26 @@
     <DialogContent>
         <MudCard>
             <MudCardHeader>
-                <MudText Typo="Typo.h5">MQTT Connection</MudText>
+                <MudText Typo="Typo.h5">Fish Sense Web App - Login</MudText>
             </MudCardHeader>
             <MudCardContent>
-                <MudTextField Label="Web Socket URL" @bind-Value="mqttWebSocket" />
-                <MudTextField Label="Username" @bind-Value="mqttUsername" />
-                <MudTextField Label="Password" @bind-Value="mqttPassword" />
+                <MudStack>
+                    <MudTextField Label="Username" @bind-Value="mqttUsername" Variant="Variant.Outlined" />
+                    <MudTextField Label=" Password" @bind-Value="mqttPassword" InputType="InputType.Password" Variant="Variant.Outlined" />
+                </MudStack>
+                <MudExpansionPanels Outlined="true" Elevation="0">
+                    <MudExpansionPanel Text="Advanced Settings">
+                        <MudStack>
+                            <MudTextField Label="Web Socket URL" @bind-Value="mqttWebSocket" Variant="Variant.Outlined" />
+                            <MudTextField Label="Global Subscribe Topic" @bind-Value="topic" Variant="Variant.Outlined" />
+                        </MudStack>
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
             </MudCardContent>
         </MudCard>
     </DialogContent>
     <DialogActions>
+        <MudText Typo="Typo.body1" Color="@(MqttService.IsConnected()? Color.Success : Color.Error)">@MqttClientConnection</MudText>
         <MudButton Color="MudBlazor.Color.Primary" Variant="Variant.Filled" OnClick="ConnectBtn_Clicked">Connect</MudButton>
     </DialogActions>
 </MudDialog>
@@ -43,7 +53,9 @@
         MqttService.Init(Guid.NewGuid().ToString(), mqttClientOptions);
 
         var result = await MqttService.Connect();
-        MqttClientConnection = result ? "Connected" : "Disconnected";
+        MqttClientConnection = result ? "Connected" : "Error logging in";
+
+        base.StateHasChanged();
 
         await MqttService.Subscribe(topic);
 

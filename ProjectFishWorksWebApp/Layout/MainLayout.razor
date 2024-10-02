@@ -19,7 +19,7 @@
 <MudLayout>
     <MudAppBar Elevation="0" Color="Color.Primary">
         <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Inherit" Edge="Edge.Start" Href="Dashboard" />
-        <MudText Typo="Typo.h5" Class="ml-3">Project FishWorks Web App</MudText>
+        <MudText Typo="Typo.h5" Class="ml-3">Fish Sense Web App</MudText>
 
         <MudSpacer />
         <MudMenu Label="Open Menu" Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
@@ -33,7 +33,7 @@
 </MudLayout>
 
 <style>
-    .my-custom-class {
+    .dialog-background {
         backdrop-filter: blur(10px);
     }
 </style>
@@ -53,7 +53,7 @@
         Console.WriteLine("Opening dialog");
         var options = new DialogOptions 
         { 
-            BackgroundClass = "my-custom-class",
+            BackgroundClass = "dialog-background",
             FullWidth = true,
             BackdropClick = false,
             CloseOnEscapeKey = false,
