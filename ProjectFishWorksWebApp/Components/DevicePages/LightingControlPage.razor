@@ -1,0 +1,23 @@
+﻿<MudStack Row="true">
+    <MudText Typo="Typo.h6">
+        Blue Brightness
+    </MudText>
+    <MudProgressLinear Value="25" Color="MudBlazor.Color.Info" />
+
+
+    <MudText Typo="Typo.h6">
+        White Brightness
+    </MudText>
+    <MudProgressLinear Value="75" Color="MudBlazor.Color.Warning" />
+</MudStack>
+
+@code {
+    [Parameter]
+    public int SystemID { get; set; }
+
+    [Parameter]
+    public int BaseStationID { get; set; }
+
+    [Parameter]
+    public int NodeID { get; set; }
+}

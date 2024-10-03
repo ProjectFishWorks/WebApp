@@ -59,8 +59,7 @@
 
     void MoreInfoOnClick()
     {
-        Console.WriteLine($"More Info Clicked on {Title}");
-        NavigationManager.NavigateTo("device/" + Title);
+        NavigationManager.NavigateTo($"Device?SystemID={SystemID}&BaseStationID={BaseStationID}&NodeID={NodeID}");
     }
 
     async void EditTitleOnClick()
