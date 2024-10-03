@@ -11,7 +11,7 @@
 <PageTitle>Project Fish Work - Dashboard</PageTitle>
 
 
-@foreach (BaseStationManifestData manifest in Manifests)
+@foreach (BaseStationManifestData manifest in _manifests.Manifests)
 {
     <MudCard>
         <MudCardHeader>
@@ -25,9 +25,10 @@
                 perameters.Add("BaseStationID", manifest.BaseStationID);
                 perameters.Add("NodeID", DeviceData.NodeID);
 
-                <Widget SystemID="@SystemID" BaseStationID="manifest.BaseStationID" NodeID="DeviceData.NodeID" @bind-Title="DeviceData.DeviceName" @bind-Title:after="@(() => {sendManifest(manifest);})">
-                    @if (stringToType(DeviceData.DeviceType) != null){
-                        <DynamicComponent Type="@stringToType(DeviceData.DeviceType)" Parameters="@perameters"/>
+                <Widget SystemID="@SystemID" BaseStationID="manifest.BaseStationID" NodeID="DeviceData.NodeID" @bind-Title="DeviceData.DeviceName" @bind-Title:after="@(() => {_manifests.sendManifest(manifest);})">
+                    @if (_manifests.stringToType(DeviceData.DeviceType) != null)
+                    {
+                        <DynamicComponent Type="@_manifests.stringToType(DeviceData.DeviceType)" Parameters="@perameters" />
                     }
                 </Widget>
 
@@ -40,47 +41,12 @@
 @code{
     public int SystemID { get; set; } = 0;
 
-    List<BaseStationManifestData> _manifests;
-
-    public List<BaseStationManifestData> Manifests
-    {
-        get
-        {
-            var messsages = MqttService.AllMessages.Where(x => (x.Key.StartsWith($"manifestOut/{SystemID}")));
-
-            _manifests = new List<BaseStationManifestData>();
-
-            foreach (var message in messsages)
-            {
-                var manifest = JsonSerializer.Deserialize<BaseStationManifestData>(message.Value);
-                if (manifest != null)
-                {
-                    _manifests.Add(manifest);
-                }
-                else
-                {
-                    Console.WriteLine($"Failed to parse manifest {message.Value}");
-                }
-            }
-            return _manifests;
-        }
-
-    }
-
-    private void sendManifest(BaseStationManifestData manifest)
-    {
-        string payload = JsonSerializer.Serialize(manifest);
-        MqttApplicationMessage message = new MqttApplicationMessageBuilder()
-            .WithTopic($"manifestOut/{SystemID}/{manifest.BaseStationID}")
-            .WithPayload(payload)
-            .WithRetainFlag()
-            .Build();
-        MqttService.Publish(message);
-    }
+    private BaseStationManifests _manifests;
 
     protected override async Task OnInitializedAsync()
     {
         MqttService.MessageReceived += MqttClient_MessageReceived;
+        _manifests = new BaseStationManifests(SystemID, MqttService);
     }
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
@@ -88,8 +54,4 @@
         base.StateHasChanged();
     }
 
-    public Type? stringToType(string typeName)
-    {
-        return Type.GetType($"ProjectFishWorksWebApp.Components.DeviceWidgets.{typeName}Widget");
-    }
  }
