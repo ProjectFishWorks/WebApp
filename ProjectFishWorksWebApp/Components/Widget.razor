@@ -29,18 +29,33 @@
     public RenderFragment ChildContent { get; set; }
 
     [Parameter]
-    public string SystemID { get; set; }
+    public int SystemID { get; set; }
 
     [Parameter]
-    public string BaseStationID { get; set; }
+    public int BaseStationID { get; set; }
 
     [Parameter]
-    public string NodeID { get; set; }
+    public int NodeID { get; set; }
 
     [Parameter]
     public string Title { get; set; }
 
+    private string _Title;
+
     private bool _TitleEdit = false;
+
+    [Parameter]
+    public EventCallback<string> TitleChanged { get; set; }
+
+    protected override void OnInitialized()
+    {
+    }
+
+    private async Task UpdateTitle(string value)
+    {
+        Title = value;
+        await TitleChanged.InvokeAsync(value);
+    }
 
     void MoreInfoOnClick()
     {
@@ -48,9 +63,13 @@
         NavigationManager.NavigateTo("device/" + Title);
     }
 
-    void EditTitleOnClick()
+    async void EditTitleOnClick()
     {
         _TitleEdit = !_TitleEdit;
+        if(!_TitleEdit)
+        {
+            await UpdateTitle(Title);
+        }
     }
 
 }
