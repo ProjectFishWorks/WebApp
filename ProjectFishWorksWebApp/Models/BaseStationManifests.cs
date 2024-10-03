@@ -47,15 +47,20 @@ namespace ProjectFishWorksWebApp.Models
         {
             string payload = JsonSerializer.Serialize(manifest);
             MqttApplicationMessage message = new MqttApplicationMessageBuilder()
-                .WithTopic($"manifestOut/{_systemID}/{manifest.BaseStationID}")
+                .WithTopic($"manifestOut/{manifest.SystemID}/{manifest.BaseStationID}")
                 .WithPayload(payload)
                 .WithRetainFlag()
                 .Build();
             _mqttService.Publish(message);
         }
-        public Type? stringToType(string typeName)
+        public Type? stringToWidgetType(string typeName)
         {
             return Type.GetType($"ProjectFishWorksWebApp.Components.DeviceWidgets.{typeName}Widget");
+        }
+        public Type? stringToPageType(string typeName)
+        {
+            Console.WriteLine($"ProjectFishWorksWebApp.Components.DevicePages.{typeName}Page");
+            return Type.GetType($"ProjectFishWorksWebApp.Components.DevicePages.{typeName}Page");
         }
     }
 }

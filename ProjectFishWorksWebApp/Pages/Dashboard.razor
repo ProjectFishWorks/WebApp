@@ -26,9 +26,9 @@
                 perameters.Add("NodeID", DeviceData.NodeID);
 
                 <Widget SystemID="@SystemID" BaseStationID="manifest.BaseStationID" NodeID="DeviceData.NodeID" @bind-Title="DeviceData.DeviceName" @bind-Title:after="@(() => {_manifests.sendManifest(manifest);})">
-                    @if (_manifests.stringToType(DeviceData.DeviceType) != null)
+                    @if (_manifests.stringToWidgetType(DeviceData.DeviceType) != null)
                     {
-                        <DynamicComponent Type="@_manifests.stringToType(DeviceData.DeviceType)" Parameters="@perameters" />
+                        <DynamicComponent Type="@_manifests.stringToWidgetType(DeviceData.DeviceType)" Parameters="@perameters" />
                     }
                 </Widget>
 

@@ -2,12 +2,13 @@
 {
     public class BaseStationManifestData
     {
+        public int SystemID { get; set; }
         public int BaseStationID { get; set; }
         public string BaseStationName { get; set; }
 
-        public List<BaseStationManifestDeviceData> Devices { get; set; }
+        public List<DeviceData> Devices { get; set; }
 
-        public class BaseStationManifestDeviceData
+        public class DeviceData
         {
             public int NodeID { get; set; }
             public string DeviceType { get; set; }
