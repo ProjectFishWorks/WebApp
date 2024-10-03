@@ -69,7 +69,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-iS+coOuSopBvmJd55YxsNwtooH7ABFN06W9RN7Rhc44=",
+      "hash": "sha256-BbHjbosdj3y7vxLJcKQ4f2\/Omr7hxEFiOWM\/\/s6urns=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -77,7 +77,7 @@
       "url": "_framework\/Microsoft.AspNetCore.Components.Forms.wasm"
     },
     {
-      "hash": "sha256-gdu9xd1qVrRdGW6w+ebC\/jaw3PyhhDnTbJ6SdQxGAnQ=",
+      "hash": "sha256-Qa6pCbjBHLGctv2hG60HfbDzQYCmrgqf+eRSQwec6JA=",
       "url": "_framework\/Microsoft.AspNetCore.Components.wasm"
     },
     {
@@ -141,7 +141,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-x+sUewKnkwo545L4NMd10SOITNayhBDN0acTgkfKFOU=",
+      "hash": "sha256-e4\/s9dl1H6zECV2rTuSJSMeM3TzDDxbgV7mGYdGnYCo=",
       "url": "_framework\/MQTTnet.ClientLib.wasm"
     },
     {
@@ -149,7 +149,7 @@
       "url": "_framework\/MQTTnet.wasm"
     },
     {
-      "hash": "sha256-Dtp\/LvgyzCGcR5I6tgIZGD4aaPeHMsu4u3uVEpbK5UY=",
+      "hash": "sha256-0L0DuOuxWRgC65cINMAqCDYI9Ys71HzbqEdvpITrdxM=",
       "url": "_framework\/MudBlazor.wasm"
     },
     {
@@ -157,7 +157,7 @@
       "url": "_framework\/netstandard.wasm"
     },
     {
-      "hash": "sha256-LuRzL2zxXkp5FuvQT14qzZt0Ym1stb17hJphYg1aXtQ=",
+      "hash": "sha256-Rifky5e10ORqylhgdJn7Ng+b3SGzwreRk10AoOA1Cko=",
       "url": "_framework\/ProjectFishWorksWebApp.wasm"
     },
     {
@@ -321,5 +321,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "zND9giK3"
+  "version": "INHR6eZ0"
 };
