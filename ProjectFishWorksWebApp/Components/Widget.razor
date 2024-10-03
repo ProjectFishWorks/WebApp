@@ -1,0 +1,56 @@
+﻿@inject NavigationManager NavigationManager
+
+<MudCard Outlined="true">
+    <MudCardHeader >
+            @if (_TitleEdit)
+            {
+                <MudTextField @bind-Value="@Title" Label="Outlined" Variant="Variant.Outlined" Typo="Typo.h5"></MudTextField>
+                <MudIconButton Icon="@Icons.Material.Filled.Done" Color="Color.Primary" OnClick="EditTitleOnClick" />
+            }
+            @if (!_TitleEdit)
+            {
+                <MudText Typo="Typo.h5">
+                    @Title
+                </MudText>
+            }
+    </MudCardHeader>
+    <MudCardContent>
+        @ChildContent
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="MoreInfoOnClick">More Info</MudButton>
+        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="EditTitleOnClick">Edit Name</MudButton>
+    </MudCardActions>
+</MudCard>
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public string SystemID { get; set; }
+
+    [Parameter]
+    public string BaseStationID { get; set; }
+
+    [Parameter]
+    public string NodeID { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    private bool _TitleEdit = false;
+
+    void MoreInfoOnClick()
+    {
+        Console.WriteLine($"More Info Clicked on {Title}");
+        NavigationManager.NavigateTo("device/" + Title);
+    }
+
+    void EditTitleOnClick()
+    {
+        _TitleEdit = !_TitleEdit;
+    }
+
+}

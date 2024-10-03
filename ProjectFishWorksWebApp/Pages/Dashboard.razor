@@ -1,5 +1,24 @@
 ﻿@page "/"
 @page "/dashboard"
 
+@using ProjectFishWorksWebApp.Components
+
 <PageTitle>Project Fish Work - Dashboard</PageTitle>
 
+
+<MudText Typo="Typo.h4">Capstone Demo Tank</MudText>
+
+<Widget Title="Test">
+    <MudStack Row="true">
+        <MudText Typo="Typo.h6">
+            Tank Temperature: 22.1 °C
+        </MudText>
+        <MudText Typo="Typo.h6">
+            Sump Temperature: 23.5 °C
+        </MudText>
+    </MudStack>
+    <MudStack Row="true">
+        <MudChip T="string" Color="MudBlazor.Color.Success">Temp. Good</MudChip>
+        <MudChip T="string" Color="MudBlazor.Color.Warning">Humdity. Warn</MudChip>
+    </MudStack>
+</Widget>
