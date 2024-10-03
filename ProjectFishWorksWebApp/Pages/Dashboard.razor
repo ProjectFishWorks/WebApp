@@ -10,12 +10,23 @@
 
 <PageTitle>Project Fish Work - Dashboard</PageTitle>
 
-
 @foreach (BaseStationManifestData manifest in _manifests.Manifests)
 {
+    _BaseStationTitleEdits.TryAdd(manifest.BaseStationID, false);
     <MudCard>
         <MudCardHeader>
-            <MudText Typo="Typo.h5">@manifest.BaseStationName</MudText>
+            @if (_BaseStationTitleEdits[manifest.BaseStationID])
+            {
+                <MudTextField @bind-Value="@manifest.BaseStationName" @bind-Value:after="@(() => {Console.WriteLine($"Bind Value: {manifest.BaseStationName}");_manifests.sendManifest(manifest); })" Label="Outlined" Variant="Variant.Outlined" Typo="Typo.h5"></MudTextField>
+                <MudIconButton Icon="@Icons.Material.Filled.Done" Color="Color.Primary" OnClick="@(() => updateBaseStationTitle(manifest))" />
+            } 
+            @if (!_BaseStationTitleEdits[manifest.BaseStationID])
+            {
+                <MudText Typo="Typo.h5">
+                    @manifest.BaseStationName
+                </MudText>
+            }
+            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => {updateBaseStationTitle(manifest); Console.WriteLine(manifest.BaseStationName);})">Edit Name</MudButton>
         </MudCardHeader>
         <MudCardContent>
             @foreach(var DeviceData in manifest.Devices)
@@ -42,6 +53,18 @@
     public int SystemID { get; set; } = 0;
 
     private BaseStationManifests _manifests;
+
+    private Dictionary<int,bool> _BaseStationTitleEdits = new Dictionary<int, bool>();
+
+    void updateBaseStationTitle(BaseStationManifestData manifest)
+    {
+        _BaseStationTitleEdits[manifest.BaseStationID] = !_BaseStationTitleEdits[manifest.BaseStationID];
+        Console.WriteLine($"Updating Base Station Title: {manifest.BaseStationName}");
+        if (!_BaseStationTitleEdits[manifest.BaseStationID])
+        {
+            //_manifests.sendManifest(manifest);
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
