@@ -1,0 +1,24 @@
+﻿<MudStack Row="true">
+        <MudText Typo="Typo.h6">
+            Tank Temperature: 22.1 °C
+        </MudText>
+        <MudText Typo="Typo.h6">
+            Sump Temperature: 23.5 °C
+        </MudText>
+    </MudStack>
+    <MudStack Row="true">
+        <MudChip T="string" Color="MudBlazor.Color.Success">Temp. Good</MudChip>
+        <MudChip T="string" Color="MudBlazor.Color.Warning">Humdity. Warn</MudChip>
+    </MudStack>
+
+@code {
+
+    [Parameter]
+    public int SystemID { get; set; }
+
+    [Parameter]
+    public int BaseStationID { get; set; }
+
+    [Parameter]
+    public int NodeID { get; set; }
+}
