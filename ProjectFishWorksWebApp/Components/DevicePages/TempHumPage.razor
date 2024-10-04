@@ -9,7 +9,8 @@
         <MudGrid Spacing="10">
             <MudItem xs="6">
                 <MudText Typo="Typo.h6"
-                         Align="MudBlazor.Align.Left">
+                         Align="MudBlazor.Align.Left"
+                         Color="@((tempHum.CanopyHum > tempHum.CanopyHumAlarmHigh || tempHum.CanopyHum < tempHum.CanopyHumAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
                     Canopy Humidity: @tempHum.CanopyHum %
                 </MudText>
                 <MudToggleIconButton @bind-toggle="tempHum.CanopyHumAlarmOnOff"
@@ -38,7 +39,8 @@
 
             <MudItem xs="6">
                 <MudText Typo="Typo.h6"
-                         Align="MudBlazor.Align.Left">
+                         Align="MudBlazor.Align.Left"
+                         Color="@((tempHum.CanopyTemp > tempHum.CanopyTempAlarmHigh || tempHum.CanopyTemp < tempHum.CanopyTempAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
                     Canopy Temperature: @tempHum.CanopyTemp °C
                 </MudText>
                 <MudToggleIconButton @bind-Toggled="tempHum.CanopyTempAlarmOnOff"
@@ -71,7 +73,8 @@
         <MudGrid Spacing="10">
             <MudItem xs="6">
                 <MudText Typo="Typo.h6"
-                         Align="MudBlazor.Align.Left">
+                         Align="MudBlazor.Align.Left"
+                         Color="@((tempHum.CanopyTemp > tempHum.TankTempAlarmHigh || tempHum.TankTemp < tempHum.TankTempAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
                     Tank Temperature: @tempHum.TankTemp °C
                 </MudText>
                 <MudToggleIconButton @bind-Toggled="tempHum.TankTempAlarmOnOff"
@@ -100,7 +103,8 @@
 
             <MudItem xs="6">
                 <MudText Typo="Typo.h6"
-                         Align="MudBlazor.Align.Left">
+                         Align="MudBlazor.Align.Left"
+                         Color="@((tempHum.SumpTemp > tempHum.SumpTempAlarmHigh || tempHum.SumpTemp < tempHum.SumpTempAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
                     Sump Temperature: @tempHum.SumpTemp °C
                 </MudText>
                 <MudToggleIconButton @bind-Toggled="tempHum.SumpTempAlarmOnOff"
