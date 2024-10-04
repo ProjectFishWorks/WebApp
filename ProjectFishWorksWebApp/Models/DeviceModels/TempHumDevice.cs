@@ -19,6 +19,7 @@
         private bool _SumpTempAlarmOnOff = false;
         private float? _SumpTempAlarmLow = 0;
         private float? _SumpTempAlarmHigh = 0;
+        private int decimalCount = 1;
 
 
         public TempHumDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID,int basestationID,int nodeID) : base(mqttService, systemID, basestationID)
@@ -32,7 +33,7 @@
         {
             get
             {
-                _CanopyTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2560).dataFloat,2);
+                _CanopyTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2560).dataFloat,decimalCount);
                 return _CanopyTemp;
             }
             set
@@ -86,7 +87,7 @@
         {
             get
             {
-                _CanopyHum = getMessagePayload(nodeID, 2564).dataFloat;
+                _CanopyHum = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2564).dataFloat, decimalCount);
                 return _CanopyHum;
             }
             set
@@ -139,7 +140,7 @@
         {
             get
             {
-                _TankTemp = getMessagePayload(nodeID, 2568).dataFloat;
+                _TankTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2568).dataFloat, decimalCount);
                 return _TankTemp;
             }
             set
@@ -193,7 +194,7 @@
         {
             get
             {
-                _SumpTemp = getMessagePayload(nodeID, 2572).dataFloat;
+                _SumpTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2572).dataFloat, decimalCount);
                 return _SumpTemp;
             }
             set

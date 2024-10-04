@@ -13,7 +13,7 @@
                          Color="@((tempHum.CanopyHum > tempHum.CanopyHumAlarmHigh || tempHum.CanopyHum < tempHum.CanopyHumAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
                     Canopy Humidity: @tempHum.CanopyHum %
                 </MudText>
-                <MudToggleIconButton @bind-toggle="tempHum.CanopyHumAlarmOnOff"
+                <MudToggleIconButton @bind-Toggled="tempHum.CanopyHumAlarmOnOff"
                                      Icon="@Icons.Material.Filled.AlarmOff"
                                      Color="MudBlazor.Color.Warning"
                                      ToggledIcon="@Icons.Material.Filled.AlarmOn"
@@ -21,7 +21,6 @@
                                      title="@(tempHum.CanopyHumAlarmOnOff ? "On" : "Off")" />
                 Canopy Humidity Alarms are @(tempHum.CanopyHumAlarmOnOff ? "On" : "Off")
 
-                <span>
                     @if (tempHum.CanopyHumAlarmOnOff)
                     {
                         <MudNumericField @bind-Value="tempHum.CanopyHumAlarmLow"
@@ -34,7 +33,6 @@
                                          Variant="Variant.Outlined"
                                          Min="0" Max="100" />
                     }
-                </span>
             </MudItem>
 
             <MudItem xs="6">
@@ -132,6 +130,15 @@
     </MudCardContent>
 </MudCard>
 
+<HistoryChart HistoryData="@tempHum.CanopyTemp"
+              ChartTitle="Potentiometer History"
+              YAxisTitle="Potentiometer Value"
+              XAxisTitle="Time"
+              NodeID="@nodeID"
+              MessageID="2560"
+              RequestData="historyChartRequestData"
+              UpdateData="historyChartUpdateData" />
+
 @code {
 
     [Parameter]
@@ -153,6 +160,19 @@
         {
             MqttService.MessageReceived += MqttClient_MessageReceived;
         }
+    }
+
+    //Request historical data
+    private void historyChartRequestData(object sender, HistoryChartDataEventArgs e)
+    {
+        tenpHum.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+    }
+
+    //Update the historical data and chart
+    private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
+    {
+        tempHum.PotentiometerHistory = testerHat.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
     }
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
