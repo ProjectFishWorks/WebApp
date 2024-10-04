@@ -1,14 +1,18 @@
-﻿<MudStack Row="true">
+﻿@using ProjectFishWorksWebApp.Models.DeviceModels
+@using MQTTnet
+@inject MQTTnet.ClientLib.MqttService MqttService
+
+<MudStack Row="true">
     <MudText Typo="Typo.h6">
         Blue Brightness
     </MudText>
-    <MudProgressLinear Value="25" Color="MudBlazor.Color.Info" />
+    <MudProgressLinear Value="@lightingControlDevice.CurrentBlueIntensity" Color="MudBlazor.Color.Info" />
 
 
     <MudText Typo="Typo.h6">
         White Brightness
     </MudText>
-    <MudProgressLinear Value="75" Color="MudBlazor.Color.Warning" />
+    <MudProgressLinear Value="@lightingControlDevice.CurrentWhiteIntensity" Color="MudBlazor.Color.Warning" />
 </MudStack>
 
 @code {
@@ -20,4 +24,22 @@
 
     [Parameter]
     public int NodeID { get; set; }
+
+
+    LightingControlDevice lightingControlDevice;
+
+    protected override async Task OnInitializedAsync()
+    {
+        lightingControlDevice = new LightingControlDevice(MqttService, this.SystemID, BaseStationID, this.NodeID);
+        this.lightingControlDevice = new LightingControlDevice(MqttService, this.SystemID, BaseStationID, this.NodeID);
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+    }
+
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        base.StateHasChanged();
+    }
 }

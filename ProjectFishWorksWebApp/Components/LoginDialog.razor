@@ -23,7 +23,7 @@
         </MudCard>
     </DialogContent>
     <DialogActions>
-        <MudText Typo="Typo.body1" Color="@(MqttService.IsConnected()? Color.Success : Color.Error)">@MqttClientConnection</MudText>
+        <MudText Typo="Typo.body1" Color="@(MqttService.IsConnected()? MudBlazor.Color.Success : MudBlazor.Color.Error)">@MqttClientConnection</MudText>
         <MudButton Color="MudBlazor.Color.Primary" Variant="Variant.Filled" OnClick="ConnectBtn_Clicked">Connect</MudButton>
     </DialogActions>
 </MudDialog>
