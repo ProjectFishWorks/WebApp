@@ -84,6 +84,7 @@
         {
             get
             {
+                _CanopyTempAlarmHigh = (float)getMessagePayload(nodeID, 2563).data;
                 return _CanopyTempAlarmHigh;
             }
             set
@@ -132,6 +133,7 @@
         {
             get
             {
+                _CanopyHumAlarmLow = (float)getMessagePayload(nodeID, 2566).data;
                 return _CanopyHumAlarmLow;
             }
             set
@@ -145,6 +147,7 @@
         {
             get
             {
+                _CanopyHumAlarmHigh = (float)getMessagePayload(nodeID, 2567).data;
                 return _CanopyHumAlarmHigh;
             }
             set
@@ -193,6 +196,7 @@
         {
             get
             {
+                _TankTempAlarmLow = (float)getMessagePayload(nodeID, 2570).data;
                 return _TankTempAlarmLow;
             }
             set
@@ -206,6 +210,7 @@
         {
             get
             {
+                _TankTempAlarmHigh = (float)getMessagePayload(nodeID, 2571).data;
                 return _TankTempAlarmHigh;
             }
             set
@@ -255,6 +260,7 @@
         {
             get
             {
+                _SumpTempAlarmLow = (float)getMessagePayload(nodeID, 2574).data;
                 return _SumpTempAlarmLow;
             }
             set
@@ -268,6 +274,7 @@
         {
             get
             {
+                _SumpTempAlarmHigh = (float)getMessagePayload(nodeID, 2575).data;
                 return _SumpTempAlarmHigh;
             }
             set
