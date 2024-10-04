@@ -5,7 +5,7 @@
             @if (_TitleEdit)
             {
                 <MudTextField @bind-Value="@Title" Label="Outlined" Variant="Variant.Outlined" Typo="Typo.h5"></MudTextField>
-                <MudIconButton Icon="@Icons.Material.Filled.Done" Color="Color.Primary" OnClick="EditTitleOnClick" />
+                <MudIconButton Icon="@Icons.Material.Filled.Done" Color="MudBlazor.Color.Primary" OnClick="EditTitleOnClick" />
             }
             @if (!_TitleEdit)
             {
@@ -18,8 +18,8 @@
         @ChildContent
     </MudCardContent>
     <MudCardActions>
-        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="MoreInfoOnClick">More Info</MudButton>
-        <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="EditTitleOnClick">Edit Name</MudButton>
+        <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Primary" OnClick="MoreInfoOnClick">More Info</MudButton>
+        <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Primary" OnClick="EditTitleOnClick">Edit Name</MudButton>
     </MudCardActions>
 </MudCard>
 

@@ -17,12 +17,12 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="0" Color="Color.Primary">
-        <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Inherit" Edge="Edge.Start" Href="Dashboard" />
+    <MudAppBar Elevation="0" Color="MudBlazor.Color.Primary">
+        <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Color="MudBlazor.Color.Inherit" Edge="Edge.Start" Href="Dashboard" />
         <MudText Typo="Typo.h5" Class="ml-3">Fish Sense Web App</MudText>
 
         <MudSpacer />
-        <MudMenu Label="Open Menu" Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+        <MudMenu Label="Open Menu" Icon="@Icons.Material.Filled.MoreVert" Color="MudBlazor.Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="Settings">Settings</MudMenuItem>
             <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="LogoutOnClick">Logout</MudMenuItem>
         </MudMenu>
