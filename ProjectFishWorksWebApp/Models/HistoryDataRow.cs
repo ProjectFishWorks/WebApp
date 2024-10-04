@@ -17,7 +17,7 @@
                 var f =  BitConverter.ToSingle(BitConverter.GetBytes(data));
                 var d = (decimal)f;
                 //Console.WriteLine($"Decimal: {d}, float: {f}");
-                return (decimal)55.6;
+                return (int)d;
                 
             }
         }

@@ -111,7 +111,15 @@
         {
             get
             {
-                return _CanopyHumAlarmOnOff;
+                    if (getMessagePayload(nodeID, 2565).data == 1)
+                    {
+                        _CanopyHumAlarmOnOff = true;
+                    }
+                    else
+                    {
+                        _CanopyHumAlarmOnOff = false;
+                    }
+                    return _CanopyHumAlarmOnOff;
             }
             set
             {
@@ -164,6 +172,14 @@
         {
             get
             {
+                if (getMessagePayload(nodeID, 2569).data == 1)
+                {
+                    _TankTempAlarmOnOff = true;
+                }
+                else
+                {
+                    _TankTempAlarmOnOff = false;
+                }
                 return _TankTempAlarmOnOff;
             }
             set
@@ -218,6 +234,14 @@
         {
             get
             {
+                if (getMessagePayload(nodeID, 2573).data == 1)
+                {
+                    _SumpTempAlarmOnOff = true;
+                }
+                else
+                {
+                    _SumpTempAlarmOnOff = false;
+                }
                 return _SumpTempAlarmOnOff;
             }
             set
