@@ -18,7 +18,7 @@
             @if (_BaseStationTitleEdits[manifest.BaseStationID])
             {
                 <MudTextField @bind-Value="@manifest.BaseStationName" @bind-Value:after="@(() => {Console.WriteLine($"Bind Value: {manifest.BaseStationName}");_manifests.sendManifest(manifest); })" Label="Outlined" Variant="Variant.Outlined" Typo="Typo.h5"></MudTextField>
-                <MudIconButton Icon="@Icons.Material.Filled.Done" Color="Color.Primary" OnClick="@(() => updateBaseStationTitle(manifest))" />
+                <MudIconButton Icon="@Icons.Material.Filled.Done" Color="MudBlazor.Color.Primary" OnClick="@(() => updateBaseStationTitle(manifest))" />
             } 
             @if (!_BaseStationTitleEdits[manifest.BaseStationID])
             {
@@ -26,7 +26,7 @@
                     @manifest.BaseStationName
                 </MudText>
             }
-            <MudButton Variant="Variant.Text" Color="Color.Primary" OnClick="@(() => {updateBaseStationTitle(manifest); Console.WriteLine(manifest.BaseStationName);})">Edit Name</MudButton>
+            <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Primary" OnClick="@(() => {updateBaseStationTitle(manifest); Console.WriteLine(manifest.BaseStationName);})">Edit Name</MudButton>
         </MudCardHeader>
         <MudCardContent>
             @foreach(var DeviceData in manifest.Devices)

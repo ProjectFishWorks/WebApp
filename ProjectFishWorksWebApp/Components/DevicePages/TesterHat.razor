@@ -1,0 +1,111 @@
+﻿@using BlazorMQTTTestingWASM.Models
+@using MQTTnet
+@using ProjectFishWorksWebApp.Models
+
+@inject MQTTnet.ClientLib.MqttService MqttService
+
+<MudCard>
+    <MudCardHeader>
+        <MudGrid Justify="Justify.Center">
+            <h3>TesterHat</h3>
+        </MudGrid>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudGrid Spacing="10">
+            <MudItem xs="4">
+                <MudText Typo="Typo.h6">Potentiometer:</MudText>
+            </MudItem>
+            <MudItem xs="2">
+                @if (testerHat.PotentiometerValue == null)
+                {
+                    <MudProgressCircular Size="MudBlazor.Size.Medium" Color=" MudBlazor.Color.Primary" Indeterminate="true" />
+                }
+                else
+                {
+                    <MudProgressCircular Size="MudBlazor.Size.Medium" Color="MudBlazor.Color.Primary" Value="@testerHat.PotentiometerValue.Value" Min="0" Max="4096" />
+                }
+            </MudItem>
+            <MudFlexBreak />
+            <MudItem xs="3">
+                <MudSwitch @bind-Value="testerHat.ButtonValues[0]" Color="MudBlazor.Color.Secondary" ReadOnly=" true"></MudSwitch>
+                <MudText Typo="Typo.h6">Button 1</MudText>
+                <MudSlider @bind-Value="testerHat.LED1" Min=0 Max=255></MudSlider>
+                <MudText Typo="Typo.h6">LED 1</MudText>
+            </MudItem>
+            <MudItem xs="3">
+                <MudSwitch @bind-Value="testerHat.ButtonValues[1]" Color="MudBlazor.Color.Secondary" ReadOnly=" true"></MudSwitch>
+                <MudText Typo="Typo.h6">Button 2</MudText>
+                <MudSlider @bind-Value="testerHat.LED2" Min=0 Max=255></MudSlider>
+                <MudText Typo="Typo.h6">LED 2</MudText>
+                </MudItem>
+            <MudItem xs="3">
+                <MudSwitch @bind-Value="testerHat.ButtonValues[2]" Color="MudBlazor.Color.Secondary" ReadOnly=" true"></MudSwitch>
+                <MudText Typo="Typo.h6">Button 3</MudText>
+                <MudSlider @bind-Value="testerHat.LED3" Min=0 Max=255></MudSlider>
+                <MudText Typo="Typo.h6">LED 3</MudText>
+             </MudItem>
+             <MudItem xs="3">
+                <MudSwitch @bind-Value="testerHat.ButtonValues[3]" Color="MudBlazor.Color.Secondary" ReadOnly=" true"></MudSwitch>
+                <MudText Typo="Typo.h6">Button 4</MudText>
+                <MudSlider @bind-Value="testerHat.LED4" Min=0 Max=255></MudSlider>
+                <MudText Typo="Typo.h6">LED 4</MudText>
+             </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+
+<HistoryChart HistoryData="@testerHat.PotentiometerHistory" 
+              ChartTitle="Potentiometer History" 
+              YAxisTitle="Potentiometer Value" 
+              XAxisTitle="Time" 
+              NodeID="@nodeID"
+              MessageID="45056"
+              RequestData="historyChartRequestData"
+              UpdateData="historyChartUpdateData" />
+
+@code {
+    [Parameter]
+    public int systemID { get; set; } = 0;
+    [Parameter]
+    public int basestationID { get; set; } = 0;
+    [Parameter]
+    public int nodeID { get; set; } = 0;
+
+    TesterHatDevice testerHat;
+
+    //Event handlers for the HistoryChart component
+
+    //Request historical data
+    private void historyChartRequestData(object sender, HistoryChartDataEventArgs e)
+    {
+        testerHat.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+    }
+
+    //Update the historical data and chart
+    private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
+    {
+        testerHat.PotentiometerHistory = testerHat.updateHistoricalData(e.NodeID, e.MessageID,e.Hours);
+        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //Create the TesterHatDevice data model
+        this.testerHat = new TesterHatDevice(MqttService, this.systemID, this.basestationID, this.nodeID);
+
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+    }
+
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        //Refresh the UI when a message is received
+        base.StateHasChanged();
+    }
+
+
+
+}

@@ -1,24 +1,159 @@
-﻿<MudStack Row="true">
-        <MudText Typo="Typo.h6">
-            Tank Temperature: 22.1 °C
-        </MudText>
-        <MudText Typo="Typo.h6">
-            Sump Temperature: 23.5 °C
-        </MudText>
-    </MudStack>
-    <MudStack Row="true">
-        <MudChip T="string" Color="MudBlazor.Color.Success">Temp. Good</MudChip>
-        <MudChip T="string" Color="MudBlazor.Color.Warning">Humdity. Warn</MudChip>
-    </MudStack>
+﻿
+@using BlazorMQTTTestingWASM.Models
+@using MQTTnet
+@inject MQTTnet.ClientLib.MqttService MqttService
+
+
+<MudCard Outlined="true">
+    <MudCardContent>
+        <MudGrid Spacing="10">
+            <MudItem xs="6">
+                <MudText Typo="Typo.h6"
+                         Align="MudBlazor.Align.Left">
+                    Canopy Humidity: @tempHum.CanopyHum %
+                </MudText>
+                <MudToggleIconButton @bind-toggle="tempHum.CanopyHumAlarmOnOff"
+                                     Icon="@Icons.Material.Filled.AlarmOff"
+                                     Color="MudBlazor.Color.Warning"
+                                     ToggledIcon="@Icons.Material.Filled.AlarmOn"
+                                     ToggledColor="MudBlazor.Color.Tertiary"
+                                     title="@(tempHum.CanopyHumAlarmOnOff ? "On" : "Off")" />
+                Canopy Humidity Alarms are @(tempHum.CanopyHumAlarmOnOff ? "On" : "Off")
+
+                <span>
+                    @if (tempHum.CanopyHumAlarmOnOff)
+                    {
+                        <MudNumericField @bind-Value="tempHum.CanopyHumAlarmLow"
+                                         Label="Low Humidity Alarm"
+                                         Variant="Variant.Outlined"
+                                         Min="0" Max="100" />
+
+                        <MudNumericField @bind-Value="tempHum.CanopyHumAlarmHigh"
+                                         Label="High Humidity Alarm"
+                                         Variant="Variant.Outlined"
+                                         Min="0" Max="100" />
+                    }
+                </span>
+            </MudItem>
+
+            <MudItem xs="6">
+                <MudText Typo="Typo.h6"
+                         Align="MudBlazor.Align.Left">
+                    Canopy Temperature: @tempHum.CanopyTemp °C
+                </MudText>
+                <MudToggleIconButton @bind-Toggled="tempHum.CanopyTempAlarmOnOff"
+                                     Icon="@Icons.Material.Filled.AlarmOff"
+                                     Color="MudBlazor.Color.Warning"
+                                     ToggledIcon="@Icons.Material.Filled.AlarmOn"
+                                     ToggledColor="MudBlazor.Color.Tertiary"
+                                     title="@(tempHum.CanopyTempAlarmOnOff ? "On" : "Off")" />
+                Canopy Temperature Alarms are @(tempHum.CanopyTempAlarmOnOff ? "On" : "Off")
+
+                @if (tempHum.CanopyTempAlarmOnOff)
+                {
+                    <MudNumericField @bind-Value="tempHum.CanopyTempAlarmLow"
+                                     Label="Low Temperature Alarm"
+                                     Variant="Variant.Outlined"
+                                     Min="0" Max="35" />
+
+                    <MudNumericField @bind-Value="tempHum.CanopyTempAlarmHigh"
+                                     Label="High Temperature Alarm"
+                                     Variant="Variant.Outlined"
+                                     Min="0" Max="35" />
+                }
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+
+<MudCard Outlined="true">
+    <MudCardContent>
+        <MudGrid Spacing="10">
+            <MudItem xs="6">
+                <MudText Typo="Typo.h6"
+                         Align="MudBlazor.Align.Left">
+                    Tank Temperature: @tempHum.TankTemp °C
+                </MudText>
+                <MudToggleIconButton @bind-Toggled="tempHum.TankTempAlarmOnOff"
+                                     Icon="@Icons.Material.Filled.AlarmOff"
+                                     Color="MudBlazor.Color.Warning"
+                                     ToggledIcon="@Icons.Material.Filled.AlarmOn"
+                                     ToggledColor="MudBlazor.Color.Tertiary"
+                                     title="@(tempHum.TankTempAlarmOnOff ? "On" : "Off")" />
+                Tank Temperature Alarms are @(tempHum.TankTempAlarmOnOff ? "On" : "Off")
+
+                <span>
+                    @if (tempHum.TankTempAlarmOnOff)
+                    {
+                        <MudNumericField @bind-Value="tempHum.TankTempAlarmLow"
+                                         Label="Low Temperature Alarm"
+                                         Variant="Variant.Outlined"
+                                         Min="0" Max="35" />
+
+                        <MudNumericField @bind-Value="tempHum.TankTempAlarmHigh"
+                                         Label="High Temperature Alarm"
+                                         Variant="Variant.Outlined"
+                                         Min="0" Max="35" />
+                    }
+                </span>
+            </MudItem>
+
+            <MudItem xs="6">
+                <MudText Typo="Typo.h6"
+                         Align="MudBlazor.Align.Left">
+                    Sump Temperature: @tempHum.SumpTemp °C
+                </MudText>
+                <MudToggleIconButton @bind-Toggled="tempHum.SumpTempAlarmOnOff"
+                                     Icon="@Icons.Material.Filled.AlarmOff"
+                                     Color="MudBlazor.Color.Warning"
+                                     ToggledIcon="@Icons.Material.Filled.AlarmOn"
+                                     ToggledColor="MudBlazor.Color.Tertiary"
+                                     title="@(tempHum.SumpTempAlarmOnOff ? "On" : "Off")" />
+                Canopy Temperature Alarms are @(tempHum.SumpTempAlarmOnOff ? "On" : "Off")
+
+                @if (tempHum.SumpTempAlarmOnOff)
+                {
+                    <MudNumericField @bind-Value="tempHum.SumpTempAlarmLow"
+                                     Label="Low Temperature Alarm"
+                                     Variant="Variant.Outlined"
+                                     Min="0" Max="35" />
+
+                    <MudNumericField @bind-Value="tempHum.SumpTempAlarmHigh"
+                                     Label="High Temperature Alarm"
+                                     Variant="Variant.Outlined"
+                                     Min="0" Max="35" />
+                }
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
 
 @code {
 
     [Parameter]
-    public int SystemID { get; set; }
-
+    public int SystemID { get; set; } = 0;
     [Parameter]
-    public int BaseStationID { get; set; }
-
+    public int BasestationID { get; set; } = 0;
     [Parameter]
-    public int NodeID { get; set; }
+    public int NodeID { get; set; } = 0;
+
+    TempHumDevice tempHum;
+
+    private KeyValuePair<int, float?> windDirections;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.tempHum = new TempHumDevice(MqttService, this.SystemID, this.BasestationID, this.NodeID);
+
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+    }
+
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        base.StateHasChanged();
+    }
 }
+
