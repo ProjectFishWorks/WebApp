@@ -1,9 +1,6 @@
 ﻿using ApexCharts;
-using MQTTnet;
-using MudBlazor;
-using static MudBlazor.CategoryTypes;
 
-namespace BlazorMQTTTestingWASM.Models
+namespace ProjectFishWorksWebApp.Models.DeviceModels
 {
     public class TesterHatDevice : Device
     {

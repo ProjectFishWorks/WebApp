@@ -1,4 +1,4 @@
-﻿namespace BlazorMQTTTestingWASM.Models
+﻿namespace ProjectFishWorksWebApp.Models.DeviceModels
 {
     public class TempHumDevice : Device
     {

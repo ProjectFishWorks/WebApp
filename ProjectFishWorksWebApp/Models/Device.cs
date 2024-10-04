@@ -3,7 +3,7 @@ using MQTTnet;
 
 using System.Text.Json;
 
-namespace BlazorMQTTTestingWASM.Models
+namespace ProjectFishWorksWebApp.Models
 {
     //Base class for all devices
     public class Device

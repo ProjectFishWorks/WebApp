@@ -1,6 +1,4 @@
-﻿using BlazorMQTTTestingWASM.Models;
-
-namespace BlazorMQTTTestingWASM
+﻿namespace ProjectFishWorksWebApp.Models.DeviceModels
 {
     public class LightingControlDevice : Device
     {

@@ -1,4 +1,4 @@
-﻿namespace BlazorMQTTTestingWASM
+﻿namespace ProjectFishWorksWebApp.Models
 {
     public class HistoryChartDataEventArgs
     {

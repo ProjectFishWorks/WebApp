@@ -1,4 +1,4 @@
-﻿namespace BlazorMQTTTestingWASM
+﻿namespace ProjectFishWorksWebApp.Models
 {
 
     //Data structure for deserializeing historical data messages 
