@@ -49,7 +49,14 @@
         {
             get
             {
-           
+                if (getMessagePayload(nodeID, 2561).data == 1)
+                {
+                    _CanopyTempAlarmOnOff = true;
+                }
+                else
+                {
+                    _CanopyTempAlarmOnOff = false;
+                }
                 return _CanopyTempAlarmOnOff;
             }
             set
@@ -63,6 +70,7 @@
         {
             get
             {
+                _CanopyTempAlarmLow = (float)getMessagePayload(nodeID, 2562).data;
                 return _CanopyTempAlarmLow;
             }
             set

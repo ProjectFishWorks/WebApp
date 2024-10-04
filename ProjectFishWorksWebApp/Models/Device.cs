@@ -132,7 +132,7 @@ namespace ProjectFishWorksWebApp.Models
                 string[] parts = kvp.Key.Split('/');
                 if (parts.Length == 5)
                 {
-                    if (parts[0] == "out" && parts[1] == systemID.ToString() && parts[2] == basestationID.ToString() && parts[3] == nodeID.ToString() && parts[4] == messageID.ToString())
+                    if ((parts[0] == "out" || (parts[0] == "in")) && parts[1] == systemID.ToString() && parts[2] == basestationID.ToString() && parts[3] == nodeID.ToString() && parts[4] == messageID.ToString())
                     {
                         //Deserialize the JSON payload
                         MQTTData? mQTTData = JsonSerializer.Deserialize<MQTTData>(kvp.Value);
