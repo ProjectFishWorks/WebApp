@@ -24,7 +24,7 @@
                                  Name="Value"
                                  SeriesType="SeriesType.Line"
                                  XValue="@(e => e.time)"
-                                 YValue="@(e => e.dataFloat)"
+                                 YValue="@(e => e.data)"
                                  OrderBy="e=>e.X" />
 
             </ApexChart>
@@ -192,7 +192,7 @@
                 Title = new AxisTitle
                 {
                     Text = YAxisTitle,
-                },
+                },   
             }
         };
         _options.Grid = new Grid
