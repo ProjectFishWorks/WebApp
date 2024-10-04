@@ -17,7 +17,7 @@ namespace ProjectFishWorksWebApp.Models
         {
             get
             {
-                var messsages = _mqttService.AllMessages.Where(x => (x.Key.StartsWith($"manifestIn/{_systemID}")));
+                var messsages = _mqttService.AllMessages.Where(x => (x.Key.StartsWith($"manifestOut/{_systemID}")));
 
                 _manifests = new List<BaseStationManifestData>();
 
@@ -47,7 +47,7 @@ namespace ProjectFishWorksWebApp.Models
         {
             string payload = JsonSerializer.Serialize(manifest);
             MqttApplicationMessage message = new MqttApplicationMessageBuilder()
-                .WithTopic($"manifestOut/{manifest.SystemID}/{manifest.BaseStationID}")
+                .WithTopic($"manifestIn/{manifest.SystemID}/{manifest.BaseStationID}")
                 .WithPayload(payload)
                 .WithRetainFlag()
                 .Build();
