@@ -1,4 +1,5 @@
 ﻿
+@using ProjectFishWorksWebApp.Models
 @using ProjectFishWorksWebApp.Models.DeviceModels
 @using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
@@ -130,14 +131,14 @@
     </MudCardContent>
 </MudCard>
 
-<HistoryChart HistoryData="@tempHum.CanopyTemp"
+<HistoryChart HistoryData="@tempHum.TempHumHistory"
               ChartTitle="Potentiometer History"
               YAxisTitle="Potentiometer Value"
               XAxisTitle="Time"
-              NodeID="@nodeID"
+              NodeID="@NodeID"
               MessageID="2560"
-              RequestData="historyChartRequestData"
-              UpdateData="historyChartUpdateData" />
+              RequestData="tempHumChartRequestData"
+              UpdateData="tempHumChartUpdateData" />
 
 @code {
 
@@ -149,6 +150,21 @@
     public int NodeID { get; set; } = 0;
 
     TempHumDevice tempHum;
+
+    //Event handlers for the HistoryChart component
+
+    //Request historical data
+    private void tempHumChartRequestData(object sender, HistoryChartDataEventArgs e)
+    {
+        tempHum.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+    }
+
+    //Update the historical data and chart
+    private void tempHumChartUpdateData(object sender, HistoryChartDataEventArgs e)
+    {
+        tempHum.TempHumHistory = tempHum.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
+    }
 
     private KeyValuePair<int, float?> windDirections;
 
@@ -165,13 +181,13 @@
     //Request historical data
     private void historyChartRequestData(object sender, HistoryChartDataEventArgs e)
     {
-        tenpHum.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        tempHum.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
     }
 
     //Update the historical data and chart
     private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
     {
-        tempHum.PotentiometerHistory = testerHat.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        tempHum.TempHumHistory = tempHum.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
         base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
     }
 

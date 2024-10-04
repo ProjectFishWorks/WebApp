@@ -6,6 +6,18 @@
     {
         public ulong data;
 
+        public decimal? dataFloat
+        {
+            get
+            {
+                if (data == null)
+                {
+                    return null;
+                }
+                return (decimal)BitConverter.ToDouble(BitConverter.GetBytes(data), 0);
+            }
+        }
+
         public DateTime time;
     }
 }

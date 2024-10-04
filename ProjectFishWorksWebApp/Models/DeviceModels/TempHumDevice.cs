@@ -29,6 +29,8 @@
             Console.WriteLine(nodeID);
         }
 
+        public List<HistoryDataRow>? TempHumHistory { get; set; }
+
         public float? CanopyTemp
         {
             get
