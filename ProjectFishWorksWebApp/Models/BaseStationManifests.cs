@@ -17,7 +17,7 @@ namespace ProjectFishWorksWebApp.Models
         {
             get
             {
-                var messsages = _mqttService.AllMessages.Where(x => (x.Key.StartsWith($"manifestOut/{_systemID}")));
+                var messsages = _mqttService.AllMessages.Where(x => (x.Key.StartsWith($"manifestIn/{_systemID}")));
 
                 _manifests = new List<BaseStationManifestData>();
 
