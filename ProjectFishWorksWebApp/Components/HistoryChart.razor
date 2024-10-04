@@ -9,11 +9,9 @@
                        Icon="@Icons.Material.Filled.Refresh" />
     </MudCardHeader>
     <MudCardContent>
-        <MudGrid>
             <MudItem xs="2">
                 <MudNumericField @bind-Value="_historyHours" @bind-Value:after="onHoursUpdate" Label="Hours" Min="1" Max="24" FullWidth="false" />
             </MudItem>
-        </MudGrid>
 
         @if (HistoryData != null)
         {

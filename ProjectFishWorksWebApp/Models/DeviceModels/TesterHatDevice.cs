@@ -14,8 +14,6 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
 
         private List<HistoryDataRow>? _potentiometerHistory;
 
-        private ApexChart<HistoryDataRow> chart;
-
         private int _historyHours = 1;
 
         public TesterHatDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID,int basestationID,int nodeID) : base(mqttService, systemID, basestationID)
@@ -23,17 +21,8 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
             this.nodeID = nodeID;
         }
 
-        public List<HistoryDataRow>? PotentiometerHistory
-        {
-            set
-            {
-                _potentiometerHistory = value;
-            }
-            get
-            {
-                return _potentiometerHistory;
-            }
-        }
+        public List<HistoryDataRow>? PotentiometerHistory { get; set; }
+        
 
         public int LED1
         {

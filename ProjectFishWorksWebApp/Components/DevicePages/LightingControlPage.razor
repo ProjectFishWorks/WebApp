@@ -1,15 +1,99 @@
-﻿<MudStack Row="true">
-    <MudText Typo="Typo.h6">
-        Blue Brightness
-    </MudText>
-    <MudProgressLinear Value="25" Color="MudBlazor.Color.Info" />
+﻿@using MQTTnet
+@inject MQTTnet.ClientLib.MqttService MqttService
+@using ProjectFishWorksWebApp.Models.DeviceModels
 
 
-    <MudText Typo="Typo.h6">
-        White Brightness
-    </MudText>
-    <MudProgressLinear Value="75" Color="MudBlazor.Color.Warning" />
-</MudStack>
+
+
+<!--  ......................................Manual adjusment LED override switch and sliders................................  -->
+
+<MudCard Outlined=true>
+    <MudCardHeader>
+        <MudGrid Justify="Justify.Center">
+        </MudGrid>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudCard Outlined=true>
+            <MudCardContent>
+                <MudSwitch @bind-Value="lightingControlDevice.ManualLEDControlOverrideSwitch"
+                           Label="Override"
+                           Color="MudBlazor.Color.Warning" />
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudSlider @bind-Value="lightingControlDevice.OverrideWhiteIntensity"
+                                   Variant="Variant.Filled"
+                                   MudBlazor.Size="Size.large"
+                                   Color="MudBlazor.Color.Warning"
+                                   Min=0 Max=255
+                                   Disabled="@(!lightingControlDevice.ManualLEDControlOverrideSwitch)">
+                            "White LED : @(Math.Round((lightingControlDevice.OverrideWhiteIntensity / 255.0M * 100.0M), 1))%"
+                        </MudSlider>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudSlider @bind-Value="lightingControlDevice.OverrideBlueIntensity"
+                                   Variant="Variant.Filled"
+                                   MudBlazor.Size="Size.large"
+                                   Min=0 Max=255
+                                   Disabled="@(!lightingControlDevice.ManualLEDControlOverrideSwitch)">
+                            "Blue LED : @(Math.Round((lightingControlDevice.OverrideBlueIntensity / 255.0M * 100.0M), 1))%"
+                        </MudSlider>
+                    </MudItem>
+                </MudGrid>
+            </MudCardContent>
+        </MudCard>
+
+
+        <!--  ......................................Adjust Demo Loop Durations seconds................................  -->
+
+
+        <MudGrid Spacing="10">
+            <MudItem xs="6">
+                <MudText Typo="Typo.h6">Adjust Demo Loop Durations seconds</MudText>
+                <MudNumericField @bind-Value="lightingControlDevice.DawnTime" Label="Set Dawn Durration" Variant="Variant.Outlined" Min="5" Max="30" />
+                <MudNumericField @bind-Value="lightingControlDevice.SunriseTime" Label="Set Sunrise Duration" Variant="Variant.Outlined" Min="2" Max="30" />
+                <MudNumericField @bind-Value="lightingControlDevice.HighNoon" Label="Set High Noon Duration" Variant="Variant.Outlined" Min="2" Max="30" />
+                <MudNumericField @bind-Value="lightingControlDevice.SunsetTime" Label="Set Sunset Duration" Variant="Variant.Outlined" Min="2" Max="30" />
+                <MudNumericField @bind-Value="lightingControlDevice.DuskTime" Label="Set Dusk Duration" Variant="Variant.Outlined" Min="5" Max="30" />
+                <MudNumericField @bind-Value="lightingControlDevice.NightTime" Label="Set Night Duration" Variant="Variant.Outlined" />
+                <MudNumericField @bind-Value="lightingControlDevice.BlueOnlyMaxIntensity" Label="Set Dusk & Dawn Max Intensity" Variant="Variant.Outlined" Step=".5M" />
+            </MudItem>
+
+            <!--  ......................................Current LED Status Progress bars.........................  -->
+
+            <MudItem xs="3">
+                <MudText Justify="Justify.Center" Typo="Typo.subtitle1">Current White Intensity</MudText>
+                <MudProgressLinear Vertical="true"
+                                   Color="MudBlazor.Color.Warning"
+                                   Rounded="true" MudBlazor.Size="Size.large"
+                                   Style="height:400px ;width:30px;"
+                                   Value="@(lightingControlDevice.CurrentWhiteIntensity / 255.0 * 100.0)"
+                                   Min="0" Max="100">
+                    <MudText Typo="Typo.subtitle1"
+                             Color="MudBlazor.Color.Dark"
+                             Min="0" Max="100">
+                        <b>@(Math.Round((lightingControlDevice.CurrentWhiteIntensity / 255M * 100M), 1))</b>
+                    </MudText>
+                </MudProgressLinear>
+            </MudItem>
+
+            <MudItem xs="3" Class="margin-bottom-50">
+                <MudText Justify="Justify.Center" Typo="Typo.subtitle1">Current Blue Intensity</MudText>
+                <MudProgressLinear Vertical="true"
+                                   Color="MudBlazor.Color.Info"
+                                   Rounded="true" MudBlazor.Size="Size.large"
+                                   Style="height:400px ;width:30px;"
+                                   Value="@(lightingControlDevice.CurrentBlueIntensity / 255.0 * 100.0)"
+                                   Min="0" Max="100">
+                    <MudText Typo="Typo.subtitle1"
+                             Color="MudBlazor.Color.Dark">
+                        <b>@(Math.Round((lightingControlDevice.CurrentBlueIntensity / 255M * 100M), 1))</b>
+                    </MudText>
+                </MudProgressLinear>
+            </MudItem>
+
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
 
 @code {
     [Parameter]
@@ -20,4 +104,23 @@
 
     [Parameter]
     public int NodeID { get; set; }
+
+
+    LightingControlDevice lightingControlDevice;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.lightingControlDevice = new LightingControlDevice(MqttService, this.SystemID, BaseStationID, this.NodeID);
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+    }
+
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        base.StateHasChanged();
+    }
 }
+
+
