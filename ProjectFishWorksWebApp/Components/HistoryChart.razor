@@ -24,7 +24,7 @@
                                  Name="Value"
                                  SeriesType="SeriesType.Line"
                                  XValue="@(e => e.time)"
-                                 YValue="@(e => e.dataFloat)"
+                                 YValue="@(e => isFloatData ? e.dataFloat : e.data)"
                                  OrderBy="e=>e.X" />
 
             </ApexChart>
@@ -89,6 +89,9 @@
     //Event Handler for updating history data
     [Parameter]
     public EventHandler<HistoryChartDataEventArgs>? UpdateData { get; set; }
+
+    [Parameter]
+    public bool isFloatData { get; set; } = false;
 
     private List<HistoryDataRow>? _historyData;
 
