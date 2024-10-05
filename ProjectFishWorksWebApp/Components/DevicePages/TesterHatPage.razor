@@ -56,13 +56,11 @@
 </MudCard>
 
 <HistoryChart HistoryData="@testerHat.PotentiometerHistory" 
-              ChartTitle="Potentiometer History" 
-              YAxisTitle="Potentiometer Value" 
-              XAxisTitle="Time" 
               NodeID="@nodeID"
-              MessageID="2564"
+              MessageIDs="@(new Dictionary<int, HistoryChartMessageIDData>{{45056, new HistoryChartMessageIDData{PerameterName = "Potentiometer Value", XAxisName="Time" , YAxisName="Counts" }}})"
               RequestData="historyChartRequestData"
-              UpdateData="historyChartUpdateData" />
+              UpdateData="historyChartUpdateData" 
+              isFloatData="false"/>
 
 @code {
     [Parameter]

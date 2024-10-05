@@ -6,40 +6,49 @@
 <MudGrid>
     <MudItem xs="6">
         <MudStack>
-            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Right">
-                Tank Humidity:
+            <MudText Typo="Typo.body1" Align="MudBlazor.Align.Right" >
+                <b>Tank Humidity:</b>
             </MudText>
-            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Right">
-                Canopy Temperature:
+            <MudText Typo="Typo.body1" Align="MudBlazor.Align.Right">
+                <b>Canopy Temperature:</b>
             </MudText>
-            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Right">
-                Tank Temperature:
+            <MudText Typo="Typo.body1" Align="MudBlazor.Align.Right">
+                <b>Tank Temperature:</b>
             </MudText>
-            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Right">
-                Sump Temperature:
+            <MudText Typo="Typo.body1" Align="MudBlazor.Align.Right">
+                <b>Sump Temperature:</b>
             </MudText>
         </MudStack>
     </MudItem>
     <MudItem xs="6">
         <MudStack>
-            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Left">
-                @tempHum.CanopyHum %
+            <MudText Typo="Typo.body1" Align="MudBlazor.Align.Left" Color="@((tempHum.CanopyHum > tempHum.CanopyHumAlarmHigh || tempHum.CanopyHum < tempHum.CanopyHumAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
+                <b>@tempHum.CanopyHum %</b>
             </MudText>
-            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Left">
-                @tempHum.CanopyTemp °C
+            <MudText Typo="Typo.body1" Align="MudBlazor.Align.Left" Color="@((tempHum.CanopyTemp > tempHum.CanopyTempAlarmHigh || tempHum.CanopyTemp < tempHum.CanopyTempAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
+                <b>@tempHum.CanopyTemp °C</b>
             </MudText>
-            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Left">
-                @tempHum.TankTemp °C
+            <MudText Typo="Typo.body1" Align="MudBlazor.Align.Left" Color="@((tempHum.TankTemp > tempHum.TankTempAlarmHigh || tempHum.TankTemp < tempHum.TankTempAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
+                <b>@tempHum.TankTemp °C</b>
             </MudText>
-            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Left">
-                @tempHum.SumpTemp °C
+            <MudText Typo="Typo.body1" Align="MudBlazor.Align.Left" Color="@((tempHum.SumpTemp > tempHum.SumpTempAlarmHigh || tempHum.SumpTemp < tempHum.SumpTempAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
+                <b>@tempHum.SumpTemp °C</b>
             </MudText>
         </MudStack>
+    </MudItem>
+    <MudItem xs="6">
+        @if(tempHum.Alarm)
+        {
+            <MudChip T="string" Color="MudBlazor.Color.Error">Alarm</MudChip>
+        }
+        else
+        {
+            <MudChip T="string" Color="MudBlazor.Color.Success">No Alarms</MudChip>
+        }
     </MudItem>
 </MudGrid>
 
 
-<MudChip T="string" Color="MudBlazor.Color.Success">No Alarms</MudChip>
 
 
 @code {
