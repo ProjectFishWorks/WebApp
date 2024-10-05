@@ -19,6 +19,7 @@
         private bool _SumpTempAlarmOnOff = false;
         private float? _SumpTempAlarmLow = 0;
         private float? _SumpTempAlarmHigh = 0;
+        private int decimalCount = 1;
 
 
         public TempHumDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID,int basestationID,int nodeID) : base(mqttService, systemID, basestationID)
@@ -28,11 +29,13 @@
             Console.WriteLine(nodeID);
         }
 
+        public List<HistoryDataRow>? TempHumHistory { get; set; }
+
         public float? CanopyTemp
         {
             get
             {
-                _CanopyTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2560).dataFloat,2);
+                _CanopyTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2560).dataFloat,decimalCount);
                 return _CanopyTemp;
             }
             set
@@ -46,7 +49,14 @@
         {
             get
             {
-           
+                if (getMessagePayload(nodeID, 2561).data == 1)
+                {
+                    _CanopyTempAlarmOnOff = true;
+                }
+                else
+                {
+                    _CanopyTempAlarmOnOff = false;
+                }
                 return _CanopyTempAlarmOnOff;
             }
             set
@@ -60,6 +70,7 @@
         {
             get
             {
+                _CanopyTempAlarmLow = (float)getMessagePayload(nodeID, 2562).data;
                 return _CanopyTempAlarmLow;
             }
             set
@@ -73,6 +84,7 @@
         {
             get
             {
+                _CanopyTempAlarmHigh = (float)getMessagePayload(nodeID, 2563).data;
                 return _CanopyTempAlarmHigh;
             }
             set
@@ -86,7 +98,7 @@
         {
             get
             {
-                _CanopyHum = getMessagePayload(nodeID, 2564).dataFloat;
+                _CanopyHum = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2564).dataFloat, decimalCount);
                 return _CanopyHum;
             }
             set
@@ -100,7 +112,15 @@
         {
             get
             {
-                return _CanopyHumAlarmOnOff;
+                    if (getMessagePayload(nodeID, 2565).data == 1)
+                    {
+                        _CanopyHumAlarmOnOff = true;
+                    }
+                    else
+                    {
+                        _CanopyHumAlarmOnOff = false;
+                    }
+                    return _CanopyHumAlarmOnOff;
             }
             set
             {
@@ -113,6 +133,7 @@
         {
             get
             {
+                _CanopyHumAlarmLow = (float)getMessagePayload(nodeID, 2566).data;
                 return _CanopyHumAlarmLow;
             }
             set
@@ -126,6 +147,7 @@
         {
             get
             {
+                _CanopyHumAlarmHigh = (float)getMessagePayload(nodeID, 2567).data;
                 return _CanopyHumAlarmHigh;
             }
             set
@@ -139,7 +161,7 @@
         {
             get
             {
-                _TankTemp = getMessagePayload(nodeID, 2568).dataFloat;
+                _TankTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2568).dataFloat, decimalCount);
                 return _TankTemp;
             }
             set
@@ -153,6 +175,14 @@
         {
             get
             {
+                if (getMessagePayload(nodeID, 2569).data == 1)
+                {
+                    _TankTempAlarmOnOff = true;
+                }
+                else
+                {
+                    _TankTempAlarmOnOff = false;
+                }
                 return _TankTempAlarmOnOff;
             }
             set
@@ -166,6 +196,7 @@
         {
             get
             {
+                _TankTempAlarmLow = (float)getMessagePayload(nodeID, 2570).data;
                 return _TankTempAlarmLow;
             }
             set
@@ -179,6 +210,7 @@
         {
             get
             {
+                _TankTempAlarmHigh = (float)getMessagePayload(nodeID, 2571).data;
                 return _TankTempAlarmHigh;
             }
             set
@@ -193,7 +225,7 @@
         {
             get
             {
-                _SumpTemp = getMessagePayload(nodeID, 2572).dataFloat;
+                _SumpTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2572).dataFloat, decimalCount);
                 return _SumpTemp;
             }
             set
@@ -207,6 +239,14 @@
         {
             get
             {
+                if (getMessagePayload(nodeID, 2573).data == 1)
+                {
+                    _SumpTempAlarmOnOff = true;
+                }
+                else
+                {
+                    _SumpTempAlarmOnOff = false;
+                }
                 return _SumpTempAlarmOnOff;
             }
             set
@@ -220,6 +260,7 @@
         {
             get
             {
+                _SumpTempAlarmLow = (float)getMessagePayload(nodeID, 2574).data;
                 return _SumpTempAlarmLow;
             }
             set
@@ -233,6 +274,7 @@
         {
             get
             {
+                _SumpTempAlarmHigh = (float)getMessagePayload(nodeID, 2575).data;
                 return _SumpTempAlarmHigh;
             }
             set

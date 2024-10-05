@@ -9,6 +9,18 @@
         {
             public ulong time { get; set; }
             public ulong data { get; set; }
+
+            public float? dataFloat
+            {
+                get
+                {
+                    if (data == null)
+                    {
+                        return null;
+                    }
+                    return BitConverter.ToSingle(BitConverter.GetBytes(data), 0);
+                }
+            }
         }
 
         public int hoursToRead { get; set; }

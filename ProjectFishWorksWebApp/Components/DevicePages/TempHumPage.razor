@@ -1,4 +1,5 @@
 ﻿
+@using ProjectFishWorksWebApp.Models
 @using ProjectFishWorksWebApp.Models.DeviceModels
 @using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
@@ -9,10 +10,11 @@
         <MudGrid Spacing="10">
             <MudItem xs="6">
                 <MudText Typo="Typo.h6"
-                         Align="MudBlazor.Align.Left">
+                         Align="MudBlazor.Align.Left"
+                         Color="@((tempHum.CanopyHum > tempHum.CanopyHumAlarmHigh || tempHum.CanopyHum < tempHum.CanopyHumAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
                     Canopy Humidity: @tempHum.CanopyHum %
                 </MudText>
-                <MudToggleIconButton @bind-toggle="tempHum.CanopyHumAlarmOnOff"
+                <MudToggleIconButton @bind-Toggled="tempHum.CanopyHumAlarmOnOff"
                                      Icon="@Icons.Material.Filled.AlarmOff"
                                      Color="MudBlazor.Color.Warning"
                                      ToggledIcon="@Icons.Material.Filled.AlarmOn"
@@ -20,7 +22,6 @@
                                      title="@(tempHum.CanopyHumAlarmOnOff ? "On" : "Off")" />
                 Canopy Humidity Alarms are @(tempHum.CanopyHumAlarmOnOff ? "On" : "Off")
 
-                <span>
                     @if (tempHum.CanopyHumAlarmOnOff)
                     {
                         <MudNumericField @bind-Value="tempHum.CanopyHumAlarmLow"
@@ -33,12 +34,12 @@
                                          Variant="Variant.Outlined"
                                          Min="0" Max="100" />
                     }
-                </span>
             </MudItem>
 
             <MudItem xs="6">
                 <MudText Typo="Typo.h6"
-                         Align="MudBlazor.Align.Left">
+                         Align="MudBlazor.Align.Left"
+                         Color="@((tempHum.CanopyTemp > tempHum.CanopyTempAlarmHigh || tempHum.CanopyTemp < tempHum.CanopyTempAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
                     Canopy Temperature: @tempHum.CanopyTemp °C
                 </MudText>
                 <MudToggleIconButton @bind-Toggled="tempHum.CanopyTempAlarmOnOff"
@@ -71,7 +72,8 @@
         <MudGrid Spacing="10">
             <MudItem xs="6">
                 <MudText Typo="Typo.h6"
-                         Align="MudBlazor.Align.Left">
+                         Align="MudBlazor.Align.Left"
+                         Color="@((tempHum.CanopyTemp > tempHum.TankTempAlarmHigh || tempHum.TankTemp < tempHum.TankTempAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
                     Tank Temperature: @tempHum.TankTemp °C
                 </MudText>
                 <MudToggleIconButton @bind-Toggled="tempHum.TankTempAlarmOnOff"
@@ -100,7 +102,8 @@
 
             <MudItem xs="6">
                 <MudText Typo="Typo.h6"
-                         Align="MudBlazor.Align.Left">
+                         Align="MudBlazor.Align.Left"
+                         Color="@((tempHum.SumpTemp > tempHum.SumpTempAlarmHigh || tempHum.SumpTemp < tempHum.SumpTempAlarmLow) ? MudBlazor.Color.Error : MudBlazor.Color.Default)">
                     Sump Temperature: @tempHum.SumpTemp °C
                 </MudText>
                 <MudToggleIconButton @bind-Toggled="tempHum.SumpTempAlarmOnOff"
@@ -127,6 +130,29 @@
         </MudGrid>
     </MudCardContent>
 </MudCard>
+<MudCard>
+    <MudCardHeader>
+        <MudStack>
+            <MudText Typo="Typo.h5">History</MudText>
+            <MudSelect @bind-Value="historyMessageID" @bind-Value:after="OnHistoryMessageIDChange" Label="Select Perameter" Placeholder="Please Select">
+                <MudSelectItem Value="2564">Canopy Humidity</MudSelectItem>
+                <MudSelectItem Value="2568">Tank Temperature</MudSelectItem>
+                <MudSelectItem Value="2572">Sump Temperature</MudSelectItem>
+            </MudSelect>
+        </MudStack>
+    </MudCardHeader>
+    <MudCardContent>
+        <HistoryChart HistoryData="@tempHum.TempHumHistory"
+                      ChartTitle="Temp"
+                      YAxisTitle="Temp"
+                      XAxisTitle="Time"
+                      NodeID="@NodeID"
+                      MessageID="@historyMessageID"
+                      RequestData="tempHumChartRequestData"
+                      UpdateData="tempHumChartUpdateData" />
+    </MudCardContent>
+</MudCard>
+
 
 @code {
 
@@ -137,9 +163,30 @@
     [Parameter]
     public int NodeID { get; set; } = 0;
 
+    private int historyMessageID { get; set; }
+
     TempHumDevice tempHum;
 
-    private KeyValuePair<int, float?> windDirections;
+    public void OnHistoryMessageIDChange()
+    {
+        Console.WriteLine($"Message ID Changed: {historyMessageID}");
+        base.StateHasChanged();
+    }
+
+    //Event handlers for the HistoryChart component
+
+    //Request historical data
+    private void tempHumChartRequestData(object sender, HistoryChartDataEventArgs e)
+    {
+        tempHum.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+    }
+
+    //Update the historical data and chart
+    private void tempHumChartUpdateData(object sender, HistoryChartDataEventArgs e)
+    {
+        tempHum.TempHumHistory = tempHum.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -149,6 +196,19 @@
         {
             MqttService.MessageReceived += MqttClient_MessageReceived;
         }
+    }
+
+    //Request historical data
+    private void historyChartRequestData(object sender, HistoryChartDataEventArgs e)
+    {
+        tempHum.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+    }
+
+    //Update the historical data and chart
+    private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
+    {
+        tempHum.TempHumHistory = tempHum.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
     }
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
