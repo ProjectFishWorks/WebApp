@@ -130,29 +130,14 @@
         </MudGrid>
     </MudCardContent>
 </MudCard>
-<MudCard>
-    <MudCardHeader>
-        <MudStack>
-            <MudText Typo="Typo.h5">History</MudText>
-            <MudSelect @bind-Value="historyMessageID" @bind-Value:after="OnHistoryMessageIDChange" Label="Select Perameter" Placeholder="Please Select">
-                <MudSelectItem Value="2564">Canopy Humidity</MudSelectItem>
-                <MudSelectItem Value="2568">Tank Temperature</MudSelectItem>
-                <MudSelectItem Value="2572">Sump Temperature</MudSelectItem>
-            </MudSelect>
-        </MudStack>
-    </MudCardHeader>
-    <MudCardContent>
-        <HistoryChart HistoryData="@tempHum.TempHumHistory"
-                      ChartTitle="Temp"
-                      YAxisTitle="Temp"
-                      XAxisTitle="Time"
-                      NodeID="@NodeID"
-                      MessageID="@historyMessageID"
-                      RequestData="tempHumChartRequestData"
-                      UpdateData="tempHumChartUpdateData" 
-                      isFloatData="true"/>
-    </MudCardContent>
-</MudCard>
+
+    <HistoryChart HistoryData="@tempHum.TempHumHistory"
+                    NodeID="@NodeID"
+                    MessageIDs="@historyMessageIDs"
+                    RequestData="tempHumChartRequestData"
+                    UpdateData="tempHumChartUpdateData" 
+                    isFloatData="true"/>
+
 
 
 @code {
@@ -164,15 +149,15 @@
     [Parameter]
     public int NodeID { get; set; } = 0;
 
-    private int historyMessageID { get; set; }
+    private Dictionary<int, HistoryChartMessageIDData> historyMessageIDs = new Dictionary<int, HistoryChartMessageIDData>
+    {
+        {2560, new HistoryChartMessageIDData{PerameterName = "Canopy Temperature", XAxisName = "Time", YAxisName = "Temperature"}},
+        {2564, new HistoryChartMessageIDData{PerameterName = "Canopy Humidity", XAxisName = "Time", YAxisName = "Humidity"}},
+        {2568, new HistoryChartMessageIDData{PerameterName = "Tank Temperature", XAxisName = "Time", YAxisName = "Temperature"}},
+        {2572, new HistoryChartMessageIDData{PerameterName = "Sump Temperature", XAxisName = "Time", YAxisName = "Temperature"}}
+    };
 
     TempHumDevice tempHum;
-
-    public void OnHistoryMessageIDChange()
-    {
-        Console.WriteLine($"Message ID Changed: {historyMessageID}");
-        base.StateHasChanged();
-    }
 
     //Event handlers for the HistoryChart component
 

@@ -2,45 +2,58 @@
 @using ProjectFishWorksWebApp.Models
 @inject MQTTnet.ClientLib.MqttService MqttService
 
-<MudCard>
-    <MudCardHeader>
-        <MudText Typo="Typo.h5">@ChartTitle</MudText>
-        <MudIconButton @onclick="onRefreshHistory"
-                       Icon="@Icons.Material.Filled.Refresh" />
-    </MudCardHeader>
-    <MudCardContent>
-            <MudItem xs="2">
-                <MudNumericField @bind-Value="_historyHours" @bind-Value:after="onHoursUpdate" Label="Hours" Min="1" Max="24" FullWidth="false" />
-            </MudItem>
+<MudStack Spacing="3">
+    <MudText Typo="Typo.h4">History</MudText>
+    @if(MessageIDs.Count > 1)
+    {
+        <MudSelect Label="Message ID" @bind-Value="_messageID" @bind-Value:after="onMessageIDChange" Variant="Variant.Outlined">
+            @foreach (var messageID in MessageIDs)
+            {
+                <MudSelectItem Value="@messageID.Key">@messageID.Value.PerameterName</MudSelectItem>
+            }
+        </MudSelect>
+    }
 
-        @if (HistoryData != null)
-        {
-            <ApexChart TItem="HistoryDataRow"
-                       Options="@_options"
-                       XAxisType="XAxisType.Datetime"
-                       @ref="_chart">
-                <ApexPointSeries TItem="HistoryDataRow"
-                                 Items="_historyData"
-                                 Name="Value"
-                                 SeriesType="SeriesType.Line"
-                                 XValue="@(e => e.time)"
-                                 YValue="@(e => isFloatData ? e.dataFloat : e.data)"
-                                 OrderBy="e=>e.X" />
-
-            </ApexChart>
-        }
-        else
-        {
-            <MudGrid>
-                <MudItem xs="12">
-                    <MudText Typo="Typo.h4" Align="MudBlazor.Align.Center">History Loading</MudText>
-                    <MudProgressLinear Size="MudBlazor.Size.Medium" Color=" MudBlazor.Color.Primary" Indeterminate="true" />
+    <MudCard>
+        <MudCardHeader>
+            <MudText Typo="Typo.h5">@MessageIDs[_messageID].PerameterName</MudText>
+            <MudIconButton @onclick="onRefreshHistory"
+                           Icon="@Icons.Material.Filled.Refresh" />
+        </MudCardHeader>
+        <MudCardContent>
+                <MudItem xs="2">
+                    <MudNumericField @bind-Value="_historyHours" @bind-Value:after="onHoursUpdate" Label="Hours" Min="1" Max="24" FullWidth="false" />
                 </MudItem>
-            </MudGrid>
 
-        }
-    </MudCardContent>
-</MudCard>
+            @if (HistoryData != null)
+            {
+                <ApexChart TItem="HistoryDataRow"
+                           Options="@_options"
+                           XAxisType="XAxisType.Datetime"
+                           @ref="_chart">
+                    <ApexPointSeries TItem="HistoryDataRow"
+                                     Items="_historyData"
+                                     Name="Value"
+                                     SeriesType="SeriesType.Line"
+                                     XValue="@(e => e.time)"
+                                     YValue="@(e => isFloatData ? e.dataFloat : e.data)"
+                                     OrderBy="e=>e.X" />
+
+                </ApexChart>
+            }
+            else
+            {
+                <MudGrid>
+                    <MudItem xs="12">
+                        <MudText Typo="Typo.h4" Align="MudBlazor.Align.Center">History Loading</MudText>
+                        <MudProgressLinear Size="MudBlazor.Size.Medium" Color=" MudBlazor.Color.Primary" Indeterminate="true" />
+                    </MudItem>
+                </MudGrid>
+
+            }
+        </MudCardContent>
+    </MudCard>
+</MudStack>
 
 @code {
 
@@ -62,25 +75,13 @@
 
     private int _MessageID;
 
-    //Chart Title
-    [Parameter]
-    public string ChartTitle { get; set; } = "Edit Title";
-
-    //Y Axis Title
-    [Parameter]
-    public string YAxisTitle { get; set; } = "Y Axis";
-
-    //X Axis Title
-    [Parameter]
-    public string XAxisTitle { get; set; } = "X Axis";
-
     //Node ID to get the data from
     [Parameter]
     public int NodeID { get; set; } = 0;
 
     //Message ID to get the data from
     [Parameter]
-    public int MessageID { get; set; }
+    public Dictionary<int, HistoryChartMessageIDData> MessageIDs { get; set; }
 
     //Event Handler for requesting history data
     [Parameter]
@@ -101,6 +102,8 @@
     //Options for the chart
     private ApexChartOptions<HistoryDataRow>? _options;
 
+    private int _messageID;
+
     //Number of hours to get the history data for
     private int _historyHours = 1;
 
@@ -111,7 +114,7 @@
             //If we get incoming history data, update the history data
             if(UpdateData != null)
             {
-                UpdateData.Invoke(this, new HistoryChartDataEventArgs(NodeID, MessageID, _historyHours));
+                UpdateData.Invoke(this, new HistoryChartDataEventArgs(NodeID, _messageID, _historyHours));
             }
         }
     }
@@ -123,7 +126,7 @@
         if(RequestData != null)
         {
             //Request new history data
-            RequestData.Invoke(this, new HistoryChartDataEventArgs(NodeID, MessageID, _historyHours));
+            RequestData.Invoke(this, new HistoryChartDataEventArgs(NodeID, _messageID, _historyHours));
         }
     }
 
@@ -133,7 +136,49 @@
         Console.WriteLine("Hours Updated");
         if(RequestData != null)
         {
-            RequestData.Invoke(this, new HistoryChartDataEventArgs(NodeID, MessageID, _historyHours));
+            RequestData.Invoke(this, new HistoryChartDataEventArgs(NodeID, _messageID, _historyHours));
+        }
+    }
+
+    private void onMessageIDChange()
+    {
+        Console.WriteLine("Message ID Changed");
+
+        _options.Yaxis = new List<YAxis>
+        {
+            new YAxis
+            {
+                Title = new AxisTitle
+                {
+                    Text = MessageIDs[_messageID].YAxisName,
+                },
+            }
+        };
+
+        _options.Xaxis = new XAxis
+        {
+            TickAmount = 8,
+            Title = new AxisTitle
+            {
+                Text = MessageIDs[_messageID].XAxisName,
+            },
+            Labels = new XAxisLabels
+            {
+                DatetimeFormatter = new DatetimeFormatter
+                {
+                    Year = "yyyy",
+                    Month = "MMM 'yy",
+                    Day = "dd MMM",
+                    Hour = "HH:mm"
+                },
+                DatetimeUTC = false //Display in local time
+            }
+        };
+
+        _chart.UpdateOptionsAsync(true, true, true);
+        if(RequestData != null)
+        {
+            RequestData.Invoke(this, new HistoryChartDataEventArgs(NodeID, _messageID, _historyHours));
         }
     }
 
@@ -144,12 +189,13 @@
             MqttService.MessageReceived += MqttClient_MessageReceived;
         }
 
+        _messageID = MessageIDs.Keys.First();
+
         if (RequestData != null)
         {
             //Request new history data
-            RequestData.Invoke(this, new HistoryChartDataEventArgs(NodeID, MessageID, _historyHours));
+            RequestData.Invoke(this, new HistoryChartDataEventArgs(NodeID, _messageID, _historyHours));
         }
-
 
         //Configure the chart options
         _options = new ApexChartOptions<HistoryDataRow>
@@ -171,35 +217,7 @@
                     Format = "dd MMM yyyy HH:mm"
                 }
             };
-        _options.Xaxis = new XAxis
-            {
-                TickAmount = 8,
-                Title = new AxisTitle
-                {
-                    Text = XAxisTitle,
-                },
-                Labels = new XAxisLabels
-                {
-                    DatetimeFormatter = new DatetimeFormatter
-                    {
-                        Year = "yyyy",
-                        Month = "MMM 'yy",
-                        Day = "dd MMM",
-                        Hour = "HH:mm"
-                    },
-                    DatetimeUTC = false //Display in local time
-                }
-            };
-        _options.Yaxis = new List<YAxis>
-        {
-            new YAxis
-            {
-                Title = new AxisTitle
-                {
-                    Text = YAxisTitle,
-                },   
-            }
-        };
+
         _options.Grid = new Grid
             {
                 Show = true,
