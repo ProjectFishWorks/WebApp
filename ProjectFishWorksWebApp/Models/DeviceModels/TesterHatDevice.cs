@@ -28,6 +28,7 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
+                _LED1 = (int)getMessagePayload(nodeID, 49152).data;
                 return _LED1;
             }
             set
@@ -41,6 +42,7 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
+                _LED2 = (int)getMessagePayload(nodeID, 49153).data;
                 return _LED2;
             }
             set
@@ -54,6 +56,7 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
+                _LED3 = (int)getMessagePayload(nodeID, 49154).data;
                 return _LED3;
             }
             set
@@ -67,6 +70,7 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
+                _LED4 = (int)getMessagePayload(nodeID, 49155).data;
                 return _LED4;
             }
             set
