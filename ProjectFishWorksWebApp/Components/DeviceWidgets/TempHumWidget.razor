@@ -1,15 +1,46 @@
-﻿<MudStack Row="true">
-    <MudText Typo="Typo.h6">
-        Tank Temperature: 22.1 °C
-    </MudText>
-    <MudText Typo="Typo.h6">
-        Sump Temperature:  °C
-    </MudText>
-</MudStack>
-<MudStack Row="true">
-    <MudChip T="string" Color="MudBlazor.Color.Success">Temp. Good</MudChip>
-    <MudChip T="string" Color="MudBlazor.Color.Warning">Humdity. Warn</MudChip>
-</MudStack>
+﻿@using MQTTnet
+@using ProjectFishWorksWebApp.Models.DeviceModels
+@inject MQTTnet.ClientLib.MqttService MqttService
+
+
+<MudGrid>
+    <MudItem xs="6">
+        <MudStack>
+            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Right">
+                Tank Humidity:
+            </MudText>
+            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Right">
+                Canopy Temperature:
+            </MudText>
+            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Right">
+                Tank Temperature:
+            </MudText>
+            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Right">
+                Sump Temperature:
+            </MudText>
+        </MudStack>
+    </MudItem>
+    <MudItem xs="6">
+        <MudStack>
+            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Left">
+                @tempHum.CanopyHum %
+            </MudText>
+            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Left">
+                @tempHum.CanopyTemp °C
+            </MudText>
+            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Left">
+                @tempHum.TankTemp °C
+            </MudText>
+            <MudText Typo="Typo.subtitle2" Align="MudBlazor.Align.Left">
+                @tempHum.SumpTemp °C
+            </MudText>
+        </MudStack>
+    </MudItem>
+</MudGrid>
+
+
+<MudChip T="string" Color="MudBlazor.Color.Success">No Alarms</MudChip>
+
 
 @code {
 
@@ -21,4 +52,21 @@
 
     [Parameter]
     public int NodeID { get; set; }
-}
+
+    TempHumDevice tempHum;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.tempHum = new TempHumDevice(MqttService, this.SystemID, this.BaseStationID, this.NodeID);
+
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+    }
+
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        base.StateHasChanged();
+    }
+    }
