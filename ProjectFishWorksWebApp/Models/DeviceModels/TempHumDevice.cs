@@ -29,6 +29,13 @@
             Console.WriteLine(nodeID);
         }
 
+        public bool Alarm {
+            get
+            {
+                return getMessagePayload(nodeID, 901).data == 1;
+            }
+        }
+
         public List<HistoryDataRow>? TempHumHistory { get; set; }
 
         public float? CanopyTemp
