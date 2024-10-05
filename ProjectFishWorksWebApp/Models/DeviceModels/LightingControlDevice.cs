@@ -25,7 +25,8 @@
         {
             get
             {
-                return _DawnTime;
+                _DawnTime = ((int)getMessagePayload(nodeID, 2562).data);
+                return _DawnTime / 1000;
             }
             set
             {
@@ -38,7 +39,8 @@
         {
             get
             {
-                return _DuskTime;
+                _DuskTime = ((int)getMessagePayload(nodeID, 2563).data);
+                return _DuskTime / 1000;
             }
             set
             {
@@ -51,7 +53,8 @@
         {
             get
             {
-                return _SunriseTime;
+                _SunriseTime = ((int)getMessagePayload(nodeID, 2564).data);
+                return _SunriseTime / 1000;
             }
             set
             {
@@ -64,12 +67,13 @@
         {
             get
             {
-                return _SunsetTime;
+                _SunsetTime = ((int)getMessagePayload(nodeID, 2565).data);
+                return _SunsetTime / 1000;
             }
             set
             {
                 _SunsetTime = value;
-                sendMessageData(nodeID, 2565, (ulong)_SunsetTime);
+                sendMessageData(nodeID, 2565, (ulong)_SunsetTime * 1000);
             }
         }
 
@@ -77,7 +81,8 @@
         {
             get
             {
-                return _HighNoon;
+                _HighNoon = ((int)getMessagePayload(nodeID, 2566).data);
+                return _HighNoon / 1000;
             }
             set
             {
@@ -90,7 +95,8 @@
         {
             get
             {
-                return _NightTime;
+                _NightTime = ((int)getMessagePayload(nodeID, 2567).data);
+                return _NightTime / 1000;
             }
             set
             {
@@ -103,6 +109,7 @@
         {
             get
             {
+                _BlueOnlyMaxIntensity = ((decimal)getMessagePayload(nodeID, 2568).data);
                 return _BlueOnlyMaxIntensity;
             }
             set
@@ -133,7 +140,17 @@
         {
             get
             {
-                return _ManualLEDControlOverrideSwitch;
+                {
+                    if (getMessagePayload(nodeID, 2571).data == 1)
+                    {
+                        _ManualLEDControlOverrideSwitch = true;
+                    }
+                    else
+                    {
+                        _ManualLEDControlOverrideSwitch = false;
+                    }
+                    return _ManualLEDControlOverrideSwitch;
+                }
             }
             set
             {
@@ -146,6 +163,7 @@
         {
             get
             {
+                _OverrideWhiteIntensity = ((int)getMessagePayload(nodeID, 2573).data);
                 return _OverrideWhiteIntensity;
             }
             set
@@ -159,6 +177,7 @@
         {
             get
             {
+                _OverrideBlueIntensity = ((int)getMessagePayload(nodeID, 2573).data);
                 return _OverrideBlueIntensity;
             }
             set

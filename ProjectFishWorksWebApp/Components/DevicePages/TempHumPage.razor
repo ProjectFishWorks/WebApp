@@ -166,8 +166,6 @@
         base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
     }
 
-    private KeyValuePair<int, float?> windDirections;
-
     protected override async Task OnInitializedAsync()
     {
         this.tempHum = new TempHumDevice(MqttService, this.SystemID, this.BasestationID, this.NodeID);
