@@ -130,15 +130,29 @@
         </MudGrid>
     </MudCardContent>
 </MudCard>
+<MudCard>
+    <MudCardHeader>
+        <MudStack>
+            <MudText Typo="Typo.h5">History</MudText>
+            <MudSelect @bind-Value="historyMessageID" @bind-Value:after="OnHistoryMessageIDChange" Label="Select Perameter" Placeholder="Please Select">
+                <MudSelectItem Value="2564">Canopy Humidity</MudSelectItem>
+                <MudSelectItem Value="2568">Tank Temperature</MudSelectItem>
+                <MudSelectItem Value="2572">Sump Temperature</MudSelectItem>
+            </MudSelect>
+        </MudStack>
+    </MudCardHeader>
+    <MudCardContent>
+        <HistoryChart HistoryData="@tempHum.TempHumHistory"
+                      ChartTitle="Temp"
+                      YAxisTitle="Temp"
+                      XAxisTitle="Time"
+                      NodeID="@NodeID"
+                      MessageID="@historyMessageID"
+                      RequestData="tempHumChartRequestData"
+                      UpdateData="tempHumChartUpdateData" />
+    </MudCardContent>
+</MudCard>
 
-<HistoryChart HistoryData="@tempHum.TempHumHistory"
-              ChartTitle="Temp"
-              YAxisTitle="Temp"
-              XAxisTitle="Time"
-              NodeID="@NodeID"
-              MessageID="2568"
-              RequestData="tempHumChartRequestData"
-              UpdateData="tempHumChartUpdateData" />
 
 @code {
 
@@ -149,7 +163,15 @@
     [Parameter]
     public int NodeID { get; set; } = 0;
 
+    private int historyMessageID { get; set; }
+
     TempHumDevice tempHum;
+
+    public void OnHistoryMessageIDChange()
+    {
+        Console.WriteLine($"Message ID Changed: {historyMessageID}");
+        base.StateHasChanged();
+    }
 
     //Event handlers for the HistoryChart component
 

@@ -60,6 +60,8 @@
         }
     }
 
+    private int _MessageID;
+
     //Chart Title
     [Parameter]
     public string ChartTitle { get; set; } = "Edit Title";
@@ -78,7 +80,7 @@
 
     //Message ID to get the data from
     [Parameter]
-    public int MessageID { get; set; } = 0;
+    public int MessageID { get; set; }
 
     //Event Handler for requesting history data
     [Parameter]
