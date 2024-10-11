@@ -4,7 +4,7 @@
 @inject MQTTnet.ClientLib.MqttService MqttService
 
 
-
+ 
 
 <!--  ......................................Manual adjusment LED override switch and sliders................................  -->
 
@@ -49,14 +49,14 @@
 
         <MudGrid Spacing="10">
             <MudItem xs="6">
-                <MudText Typo="Typo.h6">Adjust Demo Loop Durations seconds</MudText>
-                <MudNumericField @bind-Value="lightingControlDevice.DawnTime" Label="Set Dawn Durration" Variant="Variant.Outlined" Min="5" Max="30" />
+                <MudText Typo="Typo.h6">Adjust Demo Loop Duration Times In Seconds</MudText>
+                <MudNumericField @bind-Value="lightingControlDevice.DawnTime" Label="Set Dawn Durration" Variant="Variant.Outlined" Min="5" Max="30" %/>
                 <MudNumericField @bind-Value="lightingControlDevice.SunriseTime" Label="Set Sunrise Duration" Variant="Variant.Outlined" Min="2" Max="30" />
                 <MudNumericField @bind-Value="lightingControlDevice.HighNoon" Label="Set Noon Duration" Variant="Variant.Outlined" Min="2" Max="30" />
                 <MudNumericField @bind-Value="lightingControlDevice.SunsetTime" Label="Set Sunset Duration" Variant="Variant.Outlined" Min="2" Max="30" />
                 <MudNumericField @bind-Value="lightingControlDevice.DuskTime" Label="Set Dusk Duration" Variant="Variant.Outlined" Min="5" Max="30" />
                 <MudNumericField @bind-Value="lightingControlDevice.NightTime" Label="Set Night Duration" Variant="Variant.Outlined" />
-                <MudNumericField @bind-Value="lightingControlDevice.BlueOnlyMaxIntensity" Label="Set Dusk & Dawn Max Intensity" Variant="Variant.Outlined" Step=".5M" />
+                <MudNumericField @bind-Value="lightingControlDevice.BlueOnlyMaxIntensity" Label="Set The Dusk & Dawn Max Blue Intensity %" Variant="Variant.Outlined" Step=".5M" />
             </MudItem>
 
             <!--  ......................................Current LED Status Progress bars.........................  -->
