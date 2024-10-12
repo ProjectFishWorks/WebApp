@@ -29,7 +29,8 @@
             Console.WriteLine(nodeID);
         }
 
-        public bool Alarm {
+        public bool Alarm 
+        {
             get
             {
                 return getMessagePayload(nodeID, 901).data == 1;

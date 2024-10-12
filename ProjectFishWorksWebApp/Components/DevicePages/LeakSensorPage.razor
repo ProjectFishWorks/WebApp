@@ -1,10 +1,57 @@
-﻿@using ProjectFishWorksWebApp.Models
+﻿@using MQTTnet
 @using ProjectFishWorksWebApp.Models.DeviceModels
-@using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
 
+<
+<MudCard Outlined=true>
+    <MudItem xs=3>
+        if (leakSensorDevice.LeakDetected == 1)
+        {
+            <MudChip T=string Color=MudBlazor.Color.Error>Leak Detected</MudChip>
+        }
+        else
+        {
+            <MudChip T=string Color=MudBlazor.Color.Success>No Leak Detected</MudChip>
+        }
+    </MudItem>
+    <MudItem xs=3>
+        if (leakSensorDevice.HighWaterLevel == 1)
+        {
+            <MudChip T=string Color=MudBlazor.Color.Error>High Water Level</MudChip>
+        }
+        else
+        {
+            <MudChip T=string Color=MudBlazor.Color.Success>Normal Water Level</MudChip>
+        }
+    </MudItem>
+</MudCard>
 
 
 @code {
+    [Parameter]
+    public int SystemID { get; set; }
+
+    [Parameter]
+    public int BaseStationID { get; set; }
+
+    [Parameter]
+    public int NodeID { get; set; }
+
+
+    LeakSensorDevice leakSensorDevice;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.leakSensorDevice = new LeakSensorDevice(MqttService, this.SystemID, BaseStationID, this.NodeID);
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+    }
+
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        base.StateHasChanged();
+    }
 
 }
