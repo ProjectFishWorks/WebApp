@@ -3,18 +3,18 @@
     public class LightingControlDevice : Device
     {
         private int nodeID;
-        private int _DawnTime = 0;
-        private int _DuskTime = 0;
-        private int _SunriseTime = 0;
-        private int _SunsetTime = 0;
-        private int _HighNoon = 0;
-        private int _NightTime = 0;
-        private decimal _BlueOnlyMaxIntensity = 0;
-        private int _CurrentWhiteIntensity = 0;
-        private int _CurrentBlueIntensity = 0;
-        private bool _ManualLEDControlOverrideSwitch;
-        private int _OverrideWhiteIntensity = 0;
-        private int _OverrideBlueIntensity = 0;
+        private int? _DawnTime = 0;
+        private int? _DuskTime = 0;
+        private int? _SunriseTime = 0;
+        private int? _SunsetTime = 0;
+        private int? _HighNoon = 0;
+        private int? _NightTime = 0;
+        private decimal? _BlueOnlyMaxIntensity = 0;
+        private int? _CurrentWhiteIntensity = 0;
+        private int? _CurrentBlueIntensity = 0;
+        private bool _ManualLEDControlOverrideSwitch = false;
+        private int? _OverrideWhiteIntensity = 0;
+        private int? _OverrideBlueIntensity = 0;
         public LightingControlDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
         {
             this.nodeID = nodeID;
@@ -25,11 +25,22 @@
         {
             get
             {
-                _DawnTime = ((int)getMessagePayload(nodeID, 2562).data);
-                return _DawnTime / 1000;
+                //_DawnTime = ((int?)getMessagePayload(nodeID, 2562).data);
+                if( _DawnTime.HasValue)
+                {
+
+                    return _DawnTime.Value / 1000;
+
+                }
+                else
+                {
+                    Console.WriteLine("Dawn Time Null");
+                    return -1;
+                }
             }
             set
             {
+                Console.WriteLine("Setting Dawn Time");
                 _DawnTime = value;
                 sendMessageData(nodeID, 2562, (ulong)_DawnTime * 1000);
             }
@@ -39,8 +50,16 @@
         {
             get
             {
-                _DuskTime = ((int)getMessagePayload(nodeID, 2563).data);
-                return _DuskTime / 1000;
+                _DuskTime = ((int?)getMessagePayload(nodeID, 2563).data);
+                if (_DuskTime.HasValue)
+                {
+                    return _DuskTime.Value / 1000;
+                }
+                else
+                {
+                    return -1;
+                }
+
             }
             set
             {
@@ -53,8 +72,16 @@
         {
             get
             {
-                _SunriseTime = ((int)getMessagePayload(nodeID, 2564).data);
-                return _SunriseTime / 1000;
+                _SunriseTime = ((int?)getMessagePayload(nodeID, 2564).data);
+                if (_SunriseTime.HasValue)
+                {
+                    return _SunriseTime.Value / 1000;
+                }
+                else
+                {
+                    return -1;
+                }
+
             }
             set
             {
@@ -67,8 +94,16 @@
         {
             get
             {
-                _SunsetTime = ((int)getMessagePayload(nodeID, 2565).data);
-                return _SunsetTime / 1000;
+                _SunsetTime = ((int?)getMessagePayload(nodeID, 2565).data);
+                if (_SunsetTime.HasValue)
+                {
+                    return _SunsetTime.Value / 1000;
+                }
+                else
+                {
+                    return -1;
+                }
+
             }
             set
             {
@@ -81,8 +116,14 @@
         {
             get
             {
-                _HighNoon = ((int)getMessagePayload(nodeID, 2566).data);
-                return _HighNoon / 1000;
+                _HighNoon = ((int?)getMessagePayload(nodeID, 2566).data);
+                if (_HighNoon.HasValue){
+                    return _HighNoon.Value / 1000;
+                }
+                else
+                {
+                    return -1; 
+                }
             }
             set
             {
@@ -95,8 +136,16 @@
         {
             get
             {
-                _NightTime = ((int)getMessagePayload(nodeID, 2567).data);
-                return _NightTime / 1000;
+                _NightTime = ((int?)getMessagePayload(nodeID, 2567).data);
+                if (_NightTime.HasValue)
+                {
+                    return _NightTime.Value / 1000;
+                }
+                else
+                {
+                    return -1;
+                }
+
             }
             set
             {
@@ -109,8 +158,15 @@
         {
             get
             {
-                _BlueOnlyMaxIntensity = ((decimal)getMessagePayload(nodeID, 2568).data);
-                return _BlueOnlyMaxIntensity;
+                _BlueOnlyMaxIntensity = ((decimal?)getMessagePayload(nodeID, 2568).data);
+                if (_BlueOnlyMaxIntensity.HasValue)
+                {
+                    return _BlueOnlyMaxIntensity.Value;
+                }
+                else
+                {
+                    return -1;
+                }
             }
             set
             {
@@ -123,7 +179,17 @@
         {
             get
             {
-                return (int)getMessagePayload(nodeID, 2569).data;
+                int? value = (int?)getMessagePayload(nodeID, 2569).data;
+
+                if (value.HasValue)
+                {
+                    return value.Value;
+                }
+                else
+                {
+                    return -1;
+                }
+
             }
         }
 
@@ -132,7 +198,16 @@
         {
             get
             {
-                return (int)getMessagePayload(nodeID, 2570).data;
+                int? value = (int?)getMessagePayload(nodeID, 2570).data;
+
+                if (value.HasValue)
+                {
+                    return value.Value;
+                }
+                else
+                {
+                    return -1;
+                }
             }
         }
 
@@ -140,22 +215,14 @@
         {
             get
             {
-                {
-                    if (getMessagePayload(nodeID, 2571).data == 1)
-                    {
-                        _ManualLEDControlOverrideSwitch = true;
-                    }
-                    else
-                    {
-                        _ManualLEDControlOverrideSwitch = false;
-                    }
-                    return _ManualLEDControlOverrideSwitch;
-                }
+                bool value = (getMessagePayload(nodeID, 2571).data == 1);
+                Console.WriteLine($"override = {value}");
+                return value;
+
             }
             set
             {
-                _ManualLEDControlOverrideSwitch = value;
-                sendMessageData(nodeID, 2571, (ulong)(_ManualLEDControlOverrideSwitch ? 1 : 0));
+                sendMessageData(nodeID, 2571, (ulong)(value ? 1 : 0));
             }
         }
 
@@ -163,8 +230,16 @@
         {
             get
             {
-                _OverrideWhiteIntensity = ((int)getMessagePayload(nodeID, 2573).data);
-                return _OverrideWhiteIntensity;
+                _OverrideWhiteIntensity = ((int?)getMessagePayload(nodeID, 2573).data);
+                if( _OverrideWhiteIntensity != null)
+                {
+                    return _OverrideWhiteIntensity.Value;
+                }
+                else
+                {
+                    return 0;
+                }
+
             }
             set
             {
@@ -177,8 +252,15 @@
         {
             get
             {
-                _OverrideBlueIntensity = ((int)getMessagePayload(nodeID, 2573).data);
-                return _OverrideBlueIntensity;
+                _OverrideBlueIntensity = ((int?)getMessagePayload(nodeID, 2573).data);
+                if (_OverrideBlueIntensity != null)
+                { 
+                    return _OverrideBlueIntensity.Value; 
+                }
+                else
+                {
+                    return 0;
+                }
             }
             set
             {
