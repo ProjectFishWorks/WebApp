@@ -270,30 +270,6 @@
             }
         }
 
-
-        /*        public decimal BlueOnlyMaxIntensity
-        {
-            get
-            {
-                _BlueOnlyMaxIntensity = ((decimal?)getMessagePayload(nodeID, 2568).data);
-                if (_BlueOnlyMaxIntensity.HasValue)
-                {
-                    return _BlueOnlyMaxIntensity.Value;
-                }
-                else
-                {
-                    return -1;
-                }
-            }
-            set
-            {
-                _BlueOnlyMaxIntensity = value;
-                sendMessageData(nodeID, 2568, (ulong)_BlueOnlyMaxIntensity);
-                Console.WriteLine("BlueOnlyMaxIntensity: " + _BlueOnlyMaxIntensity.Value);
-            }
-        }*/
-
-
         public decimal MaxWhiteIntensity
         {
             get
@@ -312,6 +288,7 @@
             {
                 _MaxWhiteIntensity = value;
                 sendMessageData(nodeID, 2574, (ulong)_MaxWhiteIntensity);
+                Console.WriteLine("MaxWhiteIntensity: " + _MaxWhiteIntensity.Value);
             }
         }
 
@@ -333,6 +310,7 @@
             {
                 _MaxBlueIntensity = value;
                 sendMessageData(nodeID, 2575, (ulong)_MaxBlueIntensity);
+                Console.WriteLine("MaxBlueIntensity: " + _MaxBlueIntensity.Value);
             }
         }
 
