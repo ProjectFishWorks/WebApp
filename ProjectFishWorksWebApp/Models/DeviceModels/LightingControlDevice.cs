@@ -15,6 +15,9 @@
         private bool _ManualLEDControlOverrideSwitch = false;
         private int? _OverrideWhiteIntensity = 0;
         private int? _OverrideBlueIntensity = 0;
+        private decimal? _MaxWhiteIntensity = 0;
+        private decimal? _MaxBlueIntensity = 0;
+
         public LightingControlDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
         {
             this.nodeID = nodeID;
@@ -170,6 +173,7 @@
             {
                 _BlueOnlyMaxIntensity = value;
                 sendMessageData(nodeID, 2568, (ulong)_BlueOnlyMaxIntensity);
+                Console.WriteLine("BlueOnlyMaxIntensity: " + _BlueOnlyMaxIntensity.Value);
             }
         }
 
@@ -263,6 +267,72 @@
             {
                 _OverrideBlueIntensity = value;
                 sendMessageData(nodeID, 2573, (ulong)_OverrideBlueIntensity);
+            }
+        }
+
+
+        /*        public decimal BlueOnlyMaxIntensity
+        {
+            get
+            {
+                _BlueOnlyMaxIntensity = ((decimal?)getMessagePayload(nodeID, 2568).data);
+                if (_BlueOnlyMaxIntensity.HasValue)
+                {
+                    return _BlueOnlyMaxIntensity.Value;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            set
+            {
+                _BlueOnlyMaxIntensity = value;
+                sendMessageData(nodeID, 2568, (ulong)_BlueOnlyMaxIntensity);
+                Console.WriteLine("BlueOnlyMaxIntensity: " + _BlueOnlyMaxIntensity.Value);
+            }
+        }*/
+
+
+        public decimal MaxWhiteIntensity
+        {
+            get
+            {
+                _MaxWhiteIntensity = ((decimal?)getMessagePayload(nodeID, 2574).data);
+                if (_MaxWhiteIntensity.HasValue)
+                {
+                    return _MaxWhiteIntensity.Value;
+                }
+                else
+                {
+                    return 100;
+                }
+            }
+            set
+            {
+                _MaxWhiteIntensity = value;
+                sendMessageData(nodeID, 2574, (ulong)_MaxWhiteIntensity);
+            }
+        }
+
+        public decimal MaxBlueIntensity
+        {
+            get
+            {
+                _MaxBlueIntensity = ((decimal?)getMessagePayload(nodeID, 2575).data);
+                if (_MaxBlueIntensity.HasValue)
+                {
+                    return _MaxBlueIntensity.Value;
+                }
+                else
+                {
+                    return 100;
+                }
+            }
+            set
+            {
+                _MaxBlueIntensity = value;
+                sendMessageData(nodeID, 2575, (ulong)_MaxBlueIntensity);
             }
         }
 

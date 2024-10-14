@@ -48,14 +48,16 @@
     <MudGrid Spacing="10">
         <MudItem xs="6">
             <MudText Typo="Typo.h6">Adjust Demo Loop Duration Times (Seconds)</MudText>
-            <MudNumericField @bind-Value="lightingControlDevice.DawnTime" Label="Dawn" Variant="Variant.Outlined" Min="5" Max="30"/>
+            <MudNumericField @bind-Value="lightingControlDevice.DawnTime" Label="Dawn" Variant="Variant.Outlined" Min="5" Max="30" />
             <MudNumericField @bind-Value="lightingControlDevice.SunriseTime" Label="Sunrise" Variant="Variant.Outlined" Min="2" Max="30" />
             <MudNumericField @bind-Value="lightingControlDevice.HighNoon" Label="Noon" Variant="Variant.Outlined" Min="2" Max="30" />
             <MudNumericField @bind-Value="lightingControlDevice.SunsetTime" Label="Sunset" Variant="Variant.Outlined" Min="2" Max="30" />
             <MudNumericField @bind-Value="lightingControlDevice.DuskTime" Label="Dusk" Variant="Variant.Outlined" Min="5" Max="30" />
             <MudNumericField @bind-Value="lightingControlDevice.NightTime" Label="Night" Variant="Variant.Outlined" />
-            <MudText Typo="Typo.h6">Adjust Demo Loop Intensities (%)</MudText>
-            <MudNumericField @bind-Value="lightingControlDevice.BlueOnlyMaxIntensity" Label="Dusk & Dawn Max Blue" Variant="Variant.Outlined" Step=".5M" />
+            <MudText Typo="Typo.h6">Adjust LED Maximum Intensities (%)</MudText>
+            <MudNumericField @bind-Value="lightingControlDevice.BlueOnlyMaxIntensity" Label="Dusk & Dawn Max Blue" Variant="Variant.Outlined" Step=".5M" Min="0" Max="100" />
+            <MudNumericField @bind-Value="lightingControlDevice.MaxWhiteIntensity" Label="Maximum White" Variant="Variant.Outlined" Step=".5M" Min="0" Max="100" />
+            <MudNumericField @bind-Value="lightingControlDevice.MaxBlueIntensity" Label="Maximum Blue" Variant="Variant.Outlined" Step=".5M" Min="0" Max="100" />
         </MudItem>
 
         <!--  ......................................Current LED Status Progress bars.........................  -->
