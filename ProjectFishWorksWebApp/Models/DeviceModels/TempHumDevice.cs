@@ -2,8 +2,8 @@
 {
     public class TempHumDevice : Device
     {
-        private int nodeID;                         // 0x1000
-        private float? _CanopyTemp = 0;              //
+        private int nodeID;                         
+        private float? _CanopyTemp = 0;              
         private float? _CanopyHum = 0;
         private float? _TankTemp = 0;
         private float? _SumpTemp = 0;
@@ -29,7 +29,8 @@
             Console.WriteLine(nodeID);
         }
 
-        public bool Alarm {
+        public bool Alarm 
+        {
             get
             {
                 return getMessagePayload(nodeID, 901).data == 1;
