@@ -214,7 +214,6 @@
             get
             {
                 bool value = (getMessagePayload(nodeID, 2571).data == 1);
-                Console.WriteLine($"override = {value}");
                 return value;
 
             }
@@ -228,7 +227,7 @@
         {
             get
             {
-                _OverrideWhiteIntensity = ((int?)getMessagePayload(nodeID, 2573).data);
+                _OverrideWhiteIntensity = ((int?)getMessagePayload(nodeID, 2572).data);
                 if( _OverrideWhiteIntensity != null)
                 {
                     return _OverrideWhiteIntensity.Value;
