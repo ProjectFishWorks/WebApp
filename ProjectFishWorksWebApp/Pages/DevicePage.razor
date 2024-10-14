@@ -7,22 +7,18 @@
 
 <PageTitle>Device - @DeviceData.DeviceName</PageTitle>
 
-<MudCard>
-    <MudCardHeader>
-        <MudText Typo="Typo.h4">@DeviceData.DeviceName</MudText>
-    </MudCardHeader>
-    <MudCardContent>
-        @{
-        IDictionary<string, object> perameters = new Dictionary<string, object>();
-        perameters.Add("SystemID", SystemID);
-        perameters.Add("BaseStationID", BaseStationID);
-        perameters.Add("NodeID", NodeID);
+<MudStack>
+    <MudText Typo="Typo.h4">@DeviceData.DeviceName</MudText>
+    <MudText Typo="Typo.subtitle1">@(_manifests.Manifests.First(m => (m.SystemID == SystemID && m.BaseStationID == BaseStationID)).BaseStationName) - ID: @(DeviceData.NodeID)</MudText>
+    @{
+    IDictionary<string, object> perameters = new Dictionary<string, object>();
+    perameters.Add("SystemID", SystemID);
+    perameters.Add("BaseStationID", BaseStationID);
+    perameters.Add("NodeID", NodeID);
 
-        <DynamicComponent Type="@_manifests.stringToPageType(DeviceData.DeviceType)" Parameters="@perameters" />
-
-        }
-    </MudCardContent>
-</MudCard>
+    <DynamicComponent Type="@_manifests.stringToPageType(DeviceData.DeviceType)" Parameters="@perameters" />
+    }
+</MudStack>
 
 @code {
 
