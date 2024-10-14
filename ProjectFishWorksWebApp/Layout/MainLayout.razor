@@ -27,8 +27,11 @@
             <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="LogoutOnClick">Logout</MudMenuItem>
         </MudMenu>
     </MudAppBar>
-    <MudMainContent>
-        @Body
+    <MudMainContent >
+        <MudContainer MaxWidth="MaxWidth.Small">
+            @Body
+        </MudContainer>
+
     </MudMainContent>
 </MudLayout>
 
