@@ -9,14 +9,14 @@
         private int? _SunsetTime = 0;
         private int? _HighNoon = 0;
         private int? _NightTime = 0;
-        private decimal? _BlueOnlyMaxIntensity = 0;
+        private int? _BlueOnlyMaxIntensity = 0;
         private int? _CurrentWhiteIntensity = 0;
         private int? _CurrentBlueIntensity = 0;
         private bool _ManualLEDControlOverrideSwitch = false;
         private int? _OverrideWhiteIntensity = 0;
         private int? _OverrideBlueIntensity = 0;
-        private decimal? _MaxWhiteIntensity = 0;
-        private decimal? _MaxBlueIntensity = 0;
+        private int? _MaxWhiteIntensity = 0;
+        private int? _MaxBlueIntensity = 0;
 
         public LightingControlDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
         {
@@ -155,11 +155,11 @@
             }
         }
 
-        public decimal BlueOnlyMaxIntensity
+        public int BlueOnlyMaxIntensity
         {
             get
             {
-                _BlueOnlyMaxIntensity = ((decimal?)getMessagePayload(nodeID, 2568).data);
+                _BlueOnlyMaxIntensity = ((byte)getMessagePayload(nodeID, 2568).data);
                 if (_BlueOnlyMaxIntensity.HasValue)
                 {
                     return _BlueOnlyMaxIntensity.Value;
@@ -270,11 +270,11 @@
             }
         }
 
-        public decimal MaxWhiteIntensity
+        public int MaxWhiteIntensity
         {
             get
             {
-                _MaxWhiteIntensity = ((decimal?)getMessagePayload(nodeID, 2574).data);
+                _MaxWhiteIntensity = ((int?)getMessagePayload(nodeID, 2574).data);
                 if (_MaxWhiteIntensity.HasValue)
                 {
                     return _MaxWhiteIntensity.Value;
@@ -292,11 +292,11 @@
             }
         }
 
-        public decimal MaxBlueIntensity
+        public int MaxBlueIntensity
         {
             get
             {
-                _MaxBlueIntensity = ((decimal?)getMessagePayload(nodeID, 2575).data);
+                _MaxBlueIntensity = ((int?)getMessagePayload(nodeID, 2575).data);
                 if (_MaxBlueIntensity.HasValue)
                 {
                     return _MaxBlueIntensity.Value;
