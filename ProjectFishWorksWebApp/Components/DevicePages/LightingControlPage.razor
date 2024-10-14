@@ -71,7 +71,7 @@
                 <MudText Typo="Typo.subtitle1"
                             Color="MudBlazor.Color.Dark"
                             Min="0" Max="100">
-                    <b>@(Math.Round((lightingControlDevice.CurrentWhiteIntensity / 255M * 100M), 1))%</b>
+                    <b>@(Math.Clamp(Math.Round((lightingControlDevice.CurrentWhiteIntensity / 255M * 100M), 1),0,100))%</b>
                 </MudText>
             </MudProgressLinear>
         </MudItem>
@@ -86,7 +86,7 @@
                                 Min="0" Max="100">
                 <MudText Typo="Typo.subtitle1"
                             Color="MudBlazor.Color.Dark">
-                    <b>@(Math.Round((lightingControlDevice.CurrentBlueIntensity / 255M * 100M), 1))%</b>
+                    <b>@(Math.Clamp(Math.Round((lightingControlDevice.CurrentBlueIntensity / 255M * 100M), 1),0,100))%</b>
                 </MudText>
             </MudProgressLinear>
         </MudItem>
