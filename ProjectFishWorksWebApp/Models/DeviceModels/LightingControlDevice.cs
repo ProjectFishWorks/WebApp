@@ -25,7 +25,7 @@
         {
             get
             {
-                //_DawnTime = ((int?)getMessagePayload(nodeID, 2562).data);
+                _DawnTime = ((int?)getMessagePayload(nodeID, 2562).data);
                 if( _DawnTime.HasValue)
                 {
 
@@ -34,13 +34,11 @@
                 }
                 else
                 {
-                    Console.WriteLine("Dawn Time Null");
                     return -1;
                 }
             }
             set
             {
-                Console.WriteLine("Setting Dawn Time");
                 _DawnTime = value;
                 sendMessageData(nodeID, 2562, (ulong)_DawnTime * 1000);
             }
