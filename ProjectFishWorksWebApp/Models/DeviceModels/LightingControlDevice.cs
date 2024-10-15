@@ -9,12 +9,15 @@
         private int? _SunsetTime = 0;
         private int? _HighNoon = 0;
         private int? _NightTime = 0;
-        private decimal? _BlueOnlyMaxIntensity = 0;
+        private int? _BlueOnlyMaxIntensity = 0;
         private int? _CurrentWhiteIntensity = 0;
         private int? _CurrentBlueIntensity = 0;
         private bool _ManualLEDControlOverrideSwitch = false;
         private int? _OverrideWhiteIntensity = 0;
         private int? _OverrideBlueIntensity = 0;
+        private int? _MaxWhiteIntensity = 0;
+        private int? _MaxBlueIntensity = 0;
+
         public LightingControlDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
         {
             this.nodeID = nodeID;
@@ -152,11 +155,11 @@
             }
         }
 
-        public decimal BlueOnlyMaxIntensity
+        public int BlueOnlyMaxIntensity
         {
             get
             {
-                _BlueOnlyMaxIntensity = ((decimal?)getMessagePayload(nodeID, 2568).data);
+                _BlueOnlyMaxIntensity = ((byte)getMessagePayload(nodeID, 2568).data);
                 if (_BlueOnlyMaxIntensity.HasValue)
                 {
                     return _BlueOnlyMaxIntensity.Value;
@@ -170,6 +173,7 @@
             {
                 _BlueOnlyMaxIntensity = value;
                 sendMessageData(nodeID, 2568, (ulong)_BlueOnlyMaxIntensity);
+                Console.WriteLine("BlueOnlyMaxIntensity: " + _BlueOnlyMaxIntensity.Value);
             }
         }
 
@@ -263,6 +267,50 @@
             {
                 _OverrideBlueIntensity = value;
                 sendMessageData(nodeID, 2573, (ulong)_OverrideBlueIntensity);
+            }
+        }
+
+        public int MaxWhiteIntensity
+        {
+            get
+            {
+                _MaxWhiteIntensity = ((int?)getMessagePayload(nodeID, 2574).data);
+                if (_MaxWhiteIntensity.HasValue)
+                {
+                    return _MaxWhiteIntensity.Value;
+                }
+                else
+                {
+                    return 100;
+                }
+            }
+            set
+            {
+                _MaxWhiteIntensity = value;
+                sendMessageData(nodeID, 2574, (ulong)_MaxWhiteIntensity);
+                Console.WriteLine("MaxWhiteIntensity: " + _MaxWhiteIntensity.Value);
+            }
+        }
+
+        public int MaxBlueIntensity
+        {
+            get
+            {
+                _MaxBlueIntensity = ((int?)getMessagePayload(nodeID, 2575).data);
+                if (_MaxBlueIntensity.HasValue)
+                {
+                    return _MaxBlueIntensity.Value;
+                }
+                else
+                {
+                    return 100;
+                }
+            }
+            set
+            {
+                _MaxBlueIntensity = value;
+                sendMessageData(nodeID, 2575, (ulong)_MaxBlueIntensity);
+                Console.WriteLine("MaxBlueIntensity: " + _MaxBlueIntensity.Value);
             }
         }
 
