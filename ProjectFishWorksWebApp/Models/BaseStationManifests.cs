@@ -49,7 +49,6 @@ namespace ProjectFishWorksWebApp.Models
             MqttApplicationMessage message = new MqttApplicationMessageBuilder()
                 .WithTopic($"manifestIn/{manifest.SystemID}/{manifest.BaseStationID}")
                 .WithPayload(payload)
-                .WithRetainFlag()
                 .Build();
             _mqttService.Publish(message);
         }
