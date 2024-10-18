@@ -16,18 +16,20 @@
         _BaseStationTitleEdits.TryAdd(manifest.BaseStationID, false);
         <MudCard Elevation="8">
             <MudCardHeader>
-                @if (_BaseStationTitleEdits[manifest.BaseStationID])
-                {
-                    <MudTextField @bind-Value="@manifest.BaseStationName" @bind-Value:after="@(() => {Console.WriteLine($"Bind Value: {manifest.BaseStationName}");_manifests.sendManifest(manifest); })" Label="Outlined" Variant="Variant.Outlined" Typo="Typo.h5"></MudTextField>
-                    <MudIconButton Icon="@Icons.Material.Filled.Done" Color="MudBlazor.Color.Primary" OnClick="@(() => updateBaseStationTitle(manifest))" />
-                } 
-                @if (!_BaseStationTitleEdits[manifest.BaseStationID])
-                {
-                    <MudText Typo="Typo.h4">
-                        @manifest.BaseStationName
-                    </MudText>
-                }
-                <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Primary" OnClick="@(() => {updateBaseStationTitle(manifest); Console.WriteLine(manifest.BaseStationName);})">Edit Name</MudButton>
+                <MudStack>
+                    @if (_BaseStationTitleEdits[manifest.BaseStationID])
+                    {
+                        <MudTextField @bind-Value="@manifest.BaseStationName" @bind-Value:after="@(() => {Console.WriteLine($"Bind Value: {manifest.BaseStationName}");_manifests.sendManifest(manifest); })" Label="Outlined" Variant="Variant.Outlined" Typo="Typo.h5"></MudTextField>
+                        <MudIconButton Icon="@Icons.Material.Filled.Done" Color="MudBlazor.Color.Primary" OnClick="@(() => updateBaseStationTitle(manifest))" />
+                    } 
+                    @if (!_BaseStationTitleEdits[manifest.BaseStationID])
+                    {
+                        <MudText Typo="Typo.h4">
+                            @manifest.BaseStationName
+                        </MudText>
+                    }
+                    <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Secondary" Style="width:fit-content" OnClick="@(() => {updateBaseStationTitle(manifest); Console.WriteLine(manifest.BaseStationName);})">Edit Name</MudButton>
+                </MudStack>
             </MudCardHeader>
             <MudCardContent>
                 <MudStack Spacing="4">
