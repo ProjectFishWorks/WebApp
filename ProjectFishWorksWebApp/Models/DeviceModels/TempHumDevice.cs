@@ -169,13 +169,13 @@
         {
             get
             {
-                _TankTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2568).dataFloat, decimalCount);
+                _TankTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2572).dataFloat, decimalCount);
                 return _TankTemp;
             }
             set
             {
                 _TankTemp = value;
-                sendMessageData(nodeID, 2568, (ulong)_TankTemp);
+                sendMessageData(nodeID, 2572, (ulong)_TankTemp);
             }
         }
 
@@ -233,13 +233,13 @@
         {
             get
             {
-                _SumpTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2572).dataFloat, decimalCount);
+                _SumpTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2568).dataFloat, decimalCount);
                 return _SumpTemp;
             }
             set
             {
                 _SumpTemp = value;
-                sendMessageData(nodeID, 2572, (ulong)_SumpTemp);
+                sendMessageData(nodeID, 2568, (ulong)_SumpTemp);
             }
         }
 
