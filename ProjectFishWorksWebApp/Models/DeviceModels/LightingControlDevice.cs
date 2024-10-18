@@ -42,6 +42,7 @@
             }
             set
             {
+                Console.WriteLine("Setting Dawn Time");
                 _DawnTime = value;
                 sendMessageData(nodeID, 2562, (ulong)_DawnTime * 1000);
             }
