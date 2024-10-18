@@ -10,44 +10,49 @@
 
 <PageTitle>Project Fish Work - Dashboard</PageTitle>
 
-@foreach (BaseStationManifestData manifest in _manifests.Manifests)
-{
-    _BaseStationTitleEdits.TryAdd(manifest.BaseStationID, false);
-    <MudCard>
-        <MudCardHeader>
-            @if (_BaseStationTitleEdits[manifest.BaseStationID])
-            {
-                <MudTextField @bind-Value="@manifest.BaseStationName" @bind-Value:after="@(() => {Console.WriteLine($"Bind Value: {manifest.BaseStationName}");_manifests.sendManifest(manifest); })" Label="Outlined" Variant="Variant.Outlined" Typo="Typo.h5"></MudTextField>
-                <MudIconButton Icon="@Icons.Material.Filled.Done" Color="MudBlazor.Color.Primary" OnClick="@(() => updateBaseStationTitle(manifest))" />
-            } 
-            @if (!_BaseStationTitleEdits[manifest.BaseStationID])
-            {
-                <MudText Typo="Typo.h5">
-                    @manifest.BaseStationName
-                </MudText>
-            }
-            <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Primary" OnClick="@(() => {updateBaseStationTitle(manifest); Console.WriteLine(manifest.BaseStationName);})">Edit Name</MudButton>
-        </MudCardHeader>
-        <MudCardContent>
-            @foreach(var DeviceData in manifest.Devices)
-            {
-                IDictionary<string, object> perameters = new Dictionary<string, object>();
-                perameters.Add("SystemID", SystemID);
-                perameters.Add("BaseStationID", manifest.BaseStationID);
-                perameters.Add("NodeID", DeviceData.NodeID);
-
-                <Widget SystemID="@SystemID" BaseStationID="manifest.BaseStationID" NodeID="DeviceData.NodeID" @bind-Title="DeviceData.DeviceName" @bind-Title:after="@(() => {_manifests.sendManifest(manifest);})">
-                    @if (_manifests.stringToWidgetType(DeviceData.DeviceType) != null)
+<MudStack Spacing="10">
+    @foreach (BaseStationManifestData manifest in _manifests.Manifests)
+    {
+        _BaseStationTitleEdits.TryAdd(manifest.BaseStationID, false);
+        <MudCard Elevation="8">
+            <MudCardHeader>
+                @if (_BaseStationTitleEdits[manifest.BaseStationID])
+                {
+                    <MudTextField @bind-Value="@manifest.BaseStationName" @bind-Value:after="@(() => {Console.WriteLine($"Bind Value: {manifest.BaseStationName}");_manifests.sendManifest(manifest); })" Label="Outlined" Variant="Variant.Outlined" Typo="Typo.h5"></MudTextField>
+                    <MudIconButton Icon="@Icons.Material.Filled.Done" Color="MudBlazor.Color.Primary" OnClick="@(() => updateBaseStationTitle(manifest))" />
+                } 
+                @if (!_BaseStationTitleEdits[manifest.BaseStationID])
+                {
+                    <MudText Typo="Typo.h4">
+                        @manifest.BaseStationName
+                    </MudText>
+                }
+                <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Primary" OnClick="@(() => {updateBaseStationTitle(manifest); Console.WriteLine(manifest.BaseStationName);})">Edit Name</MudButton>
+            </MudCardHeader>
+            <MudCardContent>
+                <MudStack Spacing="4">
+                    @foreach (var DeviceData in manifest.Devices)
                     {
-                        <DynamicComponent Type="@_manifests.stringToWidgetType(DeviceData.DeviceType)" Parameters="@perameters" />
+                        IDictionary<string, object> perameters = new Dictionary<string, object>();
+                        perameters.Add("SystemID", SystemID);
+                        perameters.Add("BaseStationID", manifest.BaseStationID);
+                        perameters.Add("NodeID", DeviceData.NodeID);
+
+                        <Widget SystemID="@SystemID" BaseStationID="manifest.BaseStationID" NodeID="DeviceData.NodeID" @bind-Title="DeviceData.DeviceName" @bind-Title:after="@(() => {_manifests.sendManifest(manifest);})">
+                            @if (_manifests.stringToWidgetType(DeviceData.DeviceType) != null)
+                            {
+                                <DynamicComponent Type="@_manifests.stringToWidgetType(DeviceData.DeviceType)" Parameters="@perameters" />
+                            }
+                        </Widget>
+
                     }
-                </Widget>
+                </MudStack>
 
-            }
-        </MudCardContent>
-    </MudCard>
+            </MudCardContent>
+        </MudCard>
 
-}
+    }
+</MudStack>
 
 @code{
     public int SystemID { get; set; } = 0;
