@@ -15,14 +15,7 @@
             }
     </MudCardHeader>
     <MudCardContent>
-        <ErrorBoundary>
-            <ChildContent>
-                @ChildContent
-            </ChildContent>
-            <ErrorContent>
-                <MudText Typo="Typo.h6" Color="MudBlazor.Color.Error"><MudIcon Icon="@Icons.Material.Filled.Warning" />  Error Loading Widget Data</MudText>
-            </ErrorContent>
-        </ErrorBoundary>
+        @ChildContent
     </MudCardContent>
     <MudCardActions>
         <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Secondary" OnClick="MoreInfoOnClick">More Info</MudButton>

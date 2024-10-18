@@ -78,7 +78,7 @@
         {
             get
             {
-                _CanopyTempAlarmLow = (float)getMessagePayload(nodeID, 2562).data;
+                _CanopyTempAlarmLow = (float?)getMessagePayload(nodeID, 2562).data;
                 return _CanopyTempAlarmLow;
             }
             set
@@ -92,7 +92,7 @@
         {
             get
             {
-                _CanopyTempAlarmHigh = (float)getMessagePayload(nodeID, 2563).data;
+                _CanopyTempAlarmHigh = (float?)getMessagePayload(nodeID, 2563).data;
                 return _CanopyTempAlarmHigh;
             }
             set
@@ -141,7 +141,7 @@
         {
             get
             {
-                _CanopyHumAlarmLow = (float)getMessagePayload(nodeID, 2566).data;
+                _CanopyHumAlarmLow = (float?)getMessagePayload(nodeID, 2566).data;
                 return _CanopyHumAlarmLow;
             }
             set
@@ -155,7 +155,7 @@
         {
             get
             {
-                _CanopyHumAlarmHigh = (float)getMessagePayload(nodeID, 2567).data;
+                _CanopyHumAlarmHigh = (float?)getMessagePayload(nodeID, 2567).data;
                 return _CanopyHumAlarmHigh;
             }
             set
@@ -169,13 +169,13 @@
         {
             get
             {
-                _TankTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2568).dataFloat, decimalCount);
+                _TankTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2572).dataFloat, decimalCount);
                 return _TankTemp;
             }
             set
             {
                 _TankTemp = value;
-                sendMessageData(nodeID, 2568, (ulong)_TankTemp);
+                sendMessageData(nodeID, 2572, (ulong)_TankTemp);
             }
         }
 
@@ -204,7 +204,7 @@
         {
             get
             {
-                _TankTempAlarmLow = (float)getMessagePayload(nodeID, 2570).data;
+                _TankTempAlarmLow = (float?)getMessagePayload(nodeID, 2570).data;
                 return _TankTempAlarmLow;
             }
             set
@@ -218,7 +218,7 @@
         {
             get
             {
-                _TankTempAlarmHigh = (float)getMessagePayload(nodeID, 2571).data;
+                _TankTempAlarmHigh = (float?)getMessagePayload(nodeID, 2571).data;
                 return _TankTempAlarmHigh;
             }
             set
@@ -233,13 +233,13 @@
         {
             get
             {
-                _SumpTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2572).dataFloat, decimalCount);
+                _SumpTemp = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2568).dataFloat, decimalCount);
                 return _SumpTemp;
             }
             set
             {
                 _SumpTemp = value;
-                sendMessageData(nodeID, 2572, (ulong)_SumpTemp);
+                sendMessageData(nodeID, 2568, (ulong)_SumpTemp);
             }
         }
 
@@ -268,7 +268,7 @@
         {
             get
             {
-                _SumpTempAlarmLow = (float)getMessagePayload(nodeID, 2574).data;
+                _SumpTempAlarmLow = (float?)getMessagePayload(nodeID, 2574).data;
                 return _SumpTempAlarmLow;
             }
             set
@@ -282,7 +282,7 @@
         {
             get
             {
-                _SumpTempAlarmHigh = (float)getMessagePayload(nodeID, 2575).data;
+                _SumpTempAlarmHigh = (float?)getMessagePayload(nodeID, 2575).data;
                 return _SumpTempAlarmHigh;
             }
             set
