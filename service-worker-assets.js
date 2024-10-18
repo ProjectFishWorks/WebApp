@@ -69,7 +69,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-YJ9S9jXT58OXtEfVkwxPdyq4PBsLSaSOEWBk5TB0ITM=",
+      "hash": "sha256-77\/kF3FxC4T5+iODSF5GhCGywM7M2i9XNgyXFYi5wWw=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -81,15 +81,15 @@
       "url": "_framework\/Microsoft.AspNetCore.Components.Forms.wasm"
     },
     {
-      "hash": "sha256-VHeD4fsvtX+GOWW8WDuUw6iThjNYQdBy4SFjR1En8+I=",
+      "hash": "sha256-4hK5PnVJ+RjZ04KyEy9T3+ZmLQRJ5EK9quIXZK4LDKU=",
       "url": "_framework\/Microsoft.AspNetCore.Components.wasm"
     },
     {
-      "hash": "sha256-biav0Acf4RaAJc1yjR30ErEhGLzYDlvEb+DcViSO71Q=",
+      "hash": "sha256-\/byxrInyilnc4Bfyf5k\/FuBGmxGjKvFdQSPua9mRGYQ=",
       "url": "_framework\/Microsoft.AspNetCore.Components.Web.wasm"
     },
     {
-      "hash": "sha256-fPxnSIZZoZh3W05KUfK9pde3Pp3MKV1ZL4EXh2G5\/q0=",
+      "hash": "sha256-ryRFuMizZ7Q1Nu4i2xN8Qhjx53r6hBFZm\/fE8VAnjOY=",
       "url": "_framework\/Microsoft.AspNetCore.Components.WebAssembly.wasm"
     },
     {
@@ -121,7 +121,7 @@
       "url": "_framework\/Microsoft.Extensions.Localization.wasm"
     },
     {
-      "hash": "sha256-19YftloKv3Ed9CZSEdbeabfpTelHazIc6ViNY9jLVyA=",
+      "hash": "sha256-HQ1WtCKBUIeqbBC2j0NtTZNQHqZBwbswLBDooQml2RE=",
       "url": "_framework\/Microsoft.Extensions.Logging.Abstractions.wasm"
     },
     {
@@ -145,7 +145,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-6Ku0Viyph6uuIJnKHgUWG0oOcnbywY3EXuyTMnezM+c=",
+      "hash": "sha256-Fiqw3lYEJpPtKNYLXlu2lIGb0h636MAG+5gaouAxGuQ=",
       "url": "_framework\/MQTTnet.ClientLib.wasm"
     },
     {
@@ -153,7 +153,7 @@
       "url": "_framework\/MQTTnet.wasm"
     },
     {
-      "hash": "sha256-aXr+PJktaSApUcmsS+DPicOk4XJcKgLqLFJr1wis59A=",
+      "hash": "sha256-f6QzpA9z5Gm8GZZOIeedr\/5k0wt9LCYqU0gItvJYOYk=",
       "url": "_framework\/MudBlazor.wasm"
     },
     {
@@ -161,7 +161,7 @@
       "url": "_framework\/netstandard.wasm"
     },
     {
-      "hash": "sha256-Z6RWS3Avkigk+GfO55W1dffSq5mAMqnUFiYRJfeSTsk=",
+      "hash": "sha256-7PrKk4cRP0D2x\/fJgiLwCEDJ9dIo79mTqX70AjJUuRE=",
       "url": "_framework\/ProjectFishWorksWebApp.wasm"
     },
     {
@@ -345,5 +345,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "VuJE+g3Q"
+  "version": "4sDunIsk"
 };
