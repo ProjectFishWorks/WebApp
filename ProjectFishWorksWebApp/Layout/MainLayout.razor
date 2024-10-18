@@ -68,12 +68,17 @@
         StateHasChanged();
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override bool ShouldRender()
     {
         if (!MqttService.IsConnected())
         {
             OpenDialogAsync();
         }
+        return base.ShouldRender();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
         base.OnAfterRender(firstRender);
     }
 
