@@ -7,7 +7,7 @@
 @inject IDialogService DialogService
 
 @* Required *@
-<MudThemeProvider />
+<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" />
 <MudPopoverProvider />
 
 @* Needed for dialogs *@
@@ -24,14 +24,14 @@
         <MudSpacer />
         <MudMenu Label="Open Menu" Icon="@Icons.Material.Filled.MoreVert" Color="MudBlazor.Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="Settings">Settings</MudMenuItem>
+            <MudMenuItem Icon="@(_isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" OnClick="OnDarkModeSwitchClick">@(_isDarkMode ? "Light Mode" : "Dark Mode") </MudMenuItem>
             <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="LogoutOnClick">Logout</MudMenuItem>
         </MudMenu>
     </MudAppBar>
-    <MudMainContent >
+    <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Small">
             @Body
         </MudContainer>
-
     </MudMainContent>
 </MudLayout>
 
@@ -42,11 +42,30 @@
 </style>
 
 @code {
+    private MudTheme _theme = new();
+    private bool _isDarkMode;
+
+    private MudThemeProvider _mudThemeProvider;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isDarkMode = await _mudThemeProvider.GetSystemPreference();
+            StateHasChanged();
+        }
+    }
 
     private void LogoutOnClick()
     {
         MqttService.Disconnect();
         base.StateHasChanged();
+    }
+
+    private void OnDarkModeSwitchClick()
+    {
+        _isDarkMode = !_isDarkMode;
+        StateHasChanged();
     }
 
     protected override void OnAfterRender(bool firstRender)
