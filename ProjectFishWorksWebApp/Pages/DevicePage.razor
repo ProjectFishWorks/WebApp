@@ -16,15 +16,8 @@
     perameters.Add("BaseStationID", BaseStationID);
     perameters.Add("NodeID", NodeID);
 
-    <ErrorBoundary>
-    <ChildContent>
         <DynamicComponent Type="@_manifests.stringToPageType(DeviceData.DeviceType)" Parameters="@perameters" />
-    </ChildContent>
-    <ErrorContent>
-        <MudText Typo="Typo.h6" Color="MudBlazor.Color.Error"><MudIcon Icon="@Icons.Material.Filled.Warning" />  Error Loading Device Data</MudText>
-    </ErrorContent>
 
-    </ErrorBoundary>
 
 
     }
