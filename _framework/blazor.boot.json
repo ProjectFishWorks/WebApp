@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "ProjectFishWorksWebApp",
   "resources": {
-    "hash": "sha256-By8Mo5b/SOoQh8LJXVUU8Odi4j5fd3KV1CcScxcHg7M=",
+    "hash": "sha256-2jCxnuBKdgwZTFT7+uKXewwecFtjZl+LZuZmlb1x9BQ=",
     "jsModuleNative": {
       "dotnet.native.8.0.10.4xsnm8lwn6.js": "sha256-QVxMlY7ohmjgde/bZMA0dlWDAeuUP+tEfkiSdg4DFcE="
     },
@@ -19,9 +19,9 @@
     "assembly": {
       "Blazor-ApexCharts.wasm": "sha256-4mV9xovVFn4rxtiMOitQWW5ivJikWhYJr0+p/VThLA0=",
       "Microsoft.AspNetCore.Components.Forms.wasm": "sha256-un0mWHcNYsRjdRZz/RwoEXZ36QV3diPGsr1753foDzQ=",
-      "Microsoft.AspNetCore.Components.wasm": "sha256-4hK5PnVJ+RjZ04KyEy9T3+ZmLQRJ5EK9quIXZK4LDKU=",
-      "Microsoft.AspNetCore.Components.Web.wasm": "sha256-/byxrInyilnc4Bfyf5k/FuBGmxGjKvFdQSPua9mRGYQ=",
-      "Microsoft.AspNetCore.Components.WebAssembly.wasm": "sha256-ryRFuMizZ7Q1Nu4i2xN8Qhjx53r6hBFZm/fE8VAnjOY=",
+      "Microsoft.AspNetCore.Components.wasm": "sha256-VHeD4fsvtX+GOWW8WDuUw6iThjNYQdBy4SFjR1En8+I=",
+      "Microsoft.AspNetCore.Components.Web.wasm": "sha256-biav0Acf4RaAJc1yjR30ErEhGLzYDlvEb+DcViSO71Q=",
+      "Microsoft.AspNetCore.Components.WebAssembly.wasm": "sha256-fPxnSIZZoZh3W05KUfK9pde3Pp3MKV1ZL4EXh2G5/q0=",
       "Microsoft.Extensions.Configuration.Abstractions.wasm": "sha256-87sn2TYqgdZ95sXmavjKEzoEfMgHnYQ9LOvnMX+aZcI=",
       "Microsoft.Extensions.Configuration.Json.wasm": "sha256-Sxmy2ZS134URxbHEvdbS6NcQ3zXS7UWx/5ZPpwiW7FA=",
       "Microsoft.Extensions.Configuration.wasm": "sha256-jYqHUZ07UYWc8POk7xhas6xQYH7t1qoTcylqoDqncJk=",
@@ -29,17 +29,17 @@
       "Microsoft.Extensions.DependencyInjection.wasm": "sha256-gg8xZqJsBBrrNEyUGzYqhL3sqkuZ4AHAvdTdL9nZ0S0=",
       "Microsoft.Extensions.Localization.Abstractions.wasm": "sha256-Dm9te/DlnMCZm9EqvYZNWv3dCOvciDT+mvVVEzGwD5w=",
       "Microsoft.Extensions.Localization.wasm": "sha256-hcJFVGS1x8m5ZeBhvyIEBqYSQKIzBLnbw77jq3TNVmA=",
-      "Microsoft.Extensions.Logging.Abstractions.wasm": "sha256-HQ1WtCKBUIeqbBC2j0NtTZNQHqZBwbswLBDooQml2RE=",
+      "Microsoft.Extensions.Logging.Abstractions.wasm": "sha256-19YftloKv3Ed9CZSEdbeabfpTelHazIc6ViNY9jLVyA=",
       "Microsoft.Extensions.Logging.wasm": "sha256-8BH+kQfjYuZWxprOICXJ4+tU0OdJOYDKN7G0S3zYYHI=",
       "Microsoft.Extensions.Options.wasm": "sha256-gE1BXyLWVUnQwUrxnkNGo22RSc/PIEaAypz1VWboWP4=",
       "Microsoft.Extensions.Primitives.wasm": "sha256-Ms2HR5Gpug/0uRAzdk4SUNT76Ml3CjFv9Jo+dUIMGac=",
       "Microsoft.JSInterop.wasm": "sha256-NoQFRFIexvB9XuRxt/fQOpG/00GjsvWaTb34SnsOufY=",
       "Microsoft.JSInterop.WebAssembly.wasm": "sha256-rhDkGvVEd5YGb2JsVk1xQC7gCF8TXNfpDfo9dGFhuyI=",
-      "MQTTnet.ClientLib.wasm": "sha256-Fiqw3lYEJpPtKNYLXlu2lIGb0h636MAG+5gaouAxGuQ=",
+      "MQTTnet.ClientLib.wasm": "sha256-2z+X9nXGOixv5NwVFC72oJkB33TBEwG7AwwcH/S0nXY=",
       "MQTTnet.wasm": "sha256-PGK00q7Oe1M83gdVhtkC88AWaKBqQuOAq+p5uUm/CuM=",
       "MudBlazor.wasm": "sha256-f6QzpA9z5Gm8GZZOIeedr/5k0wt9LCYqU0gItvJYOYk=",
       "netstandard.wasm": "sha256-GYo9bPkwwAm7S0QaQqOJhKrYk2qxN2Aym3by0JPILVE=",
-      "ProjectFishWorksWebApp.wasm": "sha256-7PrKk4cRP0D2x/fJgiLwCEDJ9dIo79mTqX70AjJUuRE=",
+      "ProjectFishWorksWebApp.wasm": "sha256-Ymhl41ZeXu5u0emWAUCtL0uIH1eHXeenqJ2Y4vVsado=",
       "System.Collections.Concurrent.wasm": "sha256-1rukmd5U3ZFt2IRWWGMBWFUFlUebPcXX2Ouq9CP6Z3Q=",
       "System.Collections.Immutable.wasm": "sha256-2flzaScEYuhJDiXpFxqvHyBIQIgMih6vSGFQnncn1W0=",
       "System.Collections.NonGeneric.wasm": "sha256-09UGC2ydts6l1FvuOjU4X4worlMaCw5aFFNcOXEX3H8=",
