@@ -3,6 +3,10 @@
 @using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
 
+@using System.Text.Json;
+
+@using Newtonsoft.Json;
+
 <PageTitle>Settings</PageTitle>
 
 <MudCard>
@@ -24,7 +28,22 @@
 
 <MudCard>
     <MudCardHeader>
-        <MudText Typo="Typo.h5">Raw Messages</MudText>
+        <MudText Typo="Typo.h5">Edit Manifest Files</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudSelect Label="Base Station ID" Variant="Variant.Outlined" Typo="Typo.h6" @bind-Value="_currentBaseStationID">
+            @foreach (var id in baseStationIDs)
+            {
+                <MudSelectItem Value="@id">@id</MudSelectItem>
+            }
+        </MudSelect>
+        <MudTextField Label="Manifest JSON" Variant="Variant.Outlined" Typo="Typo.h6" @bind-Value="ManifestJSON" AutoGrow></MudTextField>
+    </MudCardContent>
+</MudCard>
+
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h5">Raw Received Messages</MudText>
     </MudCardHeader>
     <MudCardContent>
         <MudDataGrid Items="@MqttService.AllMessages" Filterable="false" SortMode="@SortMode.Multiple" Groupable="false">
@@ -38,6 +57,60 @@
 </MudCard>
 
 @code {
+
+    private int _systemID = 0;
+
+    private int _currentBaseStationID = 0;
+    private string _currentManifest = "";
+
+    public List<int> baseStationIDs
+    {
+        get
+        {
+            var messsages = MqttService.AllMessages.Where(x => (x.Key.StartsWith($"manifestOut/{_systemID}")));
+
+            return messsages.Select(x => x.Key.Split('/')[2]).Distinct().Select(x => int.Parse(x)).ToList();
+
+        }
+    }
+
+    public string ManifestJSON
+    {
+        get
+        {
+
+            var message = MqttService.AllMessages.Where(x => x.Key == $"manifestOut/{_systemID}/{_currentBaseStationID}").FirstOrDefault();
+            if (message.Value != null)
+            {
+                string text = JsonConvert.SerializeObject(JsonConvert.DeserializeObject(message.Value), Formatting.Indented);
+                _currentManifest = text;
+                return text;
+            }
+            else
+            {
+                return "";
+            }
+        }
+        set
+        {
+            Console.WriteLine(value);
+            MqttApplicationMessage message = new MqttApplicationMessageBuilder()
+                .WithTopic($"manifestIn/{_systemID}/{_currentBaseStationID}")
+                .WithPayload(value)
+                .Build();
+            MqttService.Publish(message);
+        }
+    }
+
+    private void sendManifest()
+    {
+        Console.WriteLine(_currentManifest);
+        MqttApplicationMessage message = new MqttApplicationMessageBuilder()
+            .WithTopic($"manifestIn/{_systemID}/{_currentBaseStationID}")
+            .WithPayload(_currentManifest)
+            .Build();
+        MqttService.Publish(message);
+    }
 
     protected override void OnInitialized()
     {
