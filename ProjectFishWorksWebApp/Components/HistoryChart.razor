@@ -1,7 +1,8 @@
 ﻿@using MQTTnet
 @using ProjectFishWorksWebApp.Models
 @inject MQTTnet.ClientLib.MqttService MqttService
-
+<MudCard>
+    <MudCardHeader>
 <MudStack Spacing="3">
     <MudText Typo="Typo.h4">History</MudText>
     @if(MessageIDs.Count > 1)
@@ -14,11 +15,14 @@
         </MudSelect>
     }
 
-    <MudCard>
-        <MudCardHeader>
-            <MudText Typo="Typo.h5">@MessageIDs[_messageID].PerameterName</MudText>
-            <MudIconButton @onclick="onRefreshHistory"
-                           Icon="@Icons.Material.Filled.Refresh" />
+        
+        <MudStack Row="true">
+                <MudText Typo="Typo.h5">@MessageIDs[_messageID].PerameterName</MudText>
+                <MudIconButton @onclick="onRefreshHistory"
+                               Icon="@Icons.Material.Filled.Refresh" />
+            </MudStack>
+        </MudStack>
+
         </MudCardHeader>
         <MudCardContent>
                 <MudItem xs="2">
@@ -53,7 +57,7 @@
             }
         </MudCardContent>
     </MudCard>
-</MudStack>
+
 
 @code {
 

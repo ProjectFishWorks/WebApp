@@ -3,50 +3,51 @@
 @inject MQTTnet.ClientLib.MqttService MqttService
 
 
-<MudStack Spacing="3">
-    <MudText Typo="Typo.h6">Canopy Humidty</MudText>
+
+<MudGrid>
+    <MudItem xs="6">
+    <MudStack Spacing="3">
+    <MudText Typo="Typo.h6">Canopy</MudText>
     <MudProgressLinear Value="(double)tempHum.CanopyHum"
-                       Min="(double)tempHum.CanopyHumAlarmLow"
-                       Max="(double)tempHum.CanopyHumAlarmHigh"
+                       Min="(double)tempHum.CanopyHumAlarmLow - 10"
+                       Max="(double)tempHum.CanopyHumAlarmHigh + 10"
                        Style="height:40px"
-                       Color="MudBlazor.Color.Success">
+                       Color="@(getBarColor(tempHum.CanopyHumAlarmLow, tempHum.CanopyHumAlarmHigh, tempHum.CanopyHum, tempHum.CanopyHumAlarmOnOff))">
         <MudText Typo="Typo.h4"><b>@tempHum.CanopyHum %</b></MudText>
     </MudProgressLinear>
 
-    <MudText Typo="Typo.h6">Canopy Temperature</MudText>
+    <MudText Typo="Typo.h6">Canopy</MudText>
     <MudProgressLinear Value="(double)tempHum.CanopyTemp"
                        Min="(double)tempHum.CanopyTempAlarmLow - 5"
                        Max="(double)tempHum.CanopyTempAlarmHigh + 5"
                        Style="height:40px"
-                       Color="@(getBarColor(tempHum.CanopyTempAlarmLow, tempHum.CanopyTempAlarmHigh, tempHum.CanopyTemp))">
+                       Color="@(getBarColor(tempHum.CanopyTempAlarmLow, tempHum.CanopyTempAlarmHigh, tempHum.CanopyTemp, tempHum.CanopyTempAlarmOnOff))">
         <MudText Typo="Typo.h4"><b>@tempHum.CanopyTemp °C</b></MudText>
     </MudProgressLinear>
+    </MudStack>
+    </MudItem>
+    <MudItem xs="6">
+        <MudStack Spacing="3">
+            <MudText Typo="Typo.h6">Tank</MudText>
+            <MudProgressLinear Value="(double)tempHum.TankTemp"
+                               Min="(double)tempHum.TankTempAlarmLow - 2"
+                               Max="(double)tempHum.TankTempAlarmHigh + 2"
+                               Style="height:40px"
+                               Color="@(getBarColor(tempHum.TankTempAlarmLow, tempHum.TankTempAlarmHigh, tempHum.TankTemp, tempHum.TankTempAlarmOnOff))">
+                <MudText Typo="Typo.h4"><b>@tempHum.TankTemp °C</b></MudText>
+            </MudProgressLinear>
 
-    <MudText Typo="Typo.h6">Tank Temperature</MudText>
-    <MudProgressLinear Value="(double)tempHum.TankTemp"
-                       Min="(double)tempHum.TankTempAlarmLow - 2"
-                       Max="(double)tempHum.TankTempAlarmHigh + 2"
-                       Style="height:40px"
-                       Color="MudBlazor.Color.Success">
-        <MudText Typo="Typo.h4"><b>@tempHum.TankTemp °C</b></MudText>
-    </MudProgressLinear>
-
-    <MudText Typo="Typo.h6">Sump Temperature</MudText>
-    <MudProgressLinear Value="(double)tempHum.SumpTemp"
-                       Min="(double)tempHum.SumpTempAlarmLow - 2"
-                       Max="(double)tempHum.SumpTempAlarmHigh + 2"
-                       Style="height:40px"
-                       Color="MudBlazor.Color.Success">
-        <MudText Typo="Typo.h4"><b>@tempHum.SumpTemp °C</b></MudText>
-    </MudProgressLinear>
-
-</MudStack>
-
-
-
-
-
-
+            <MudText Typo="Typo.h6">Sump</MudText>
+            <MudProgressLinear Value="(double)tempHum.SumpTemp"
+                               Min="(double)tempHum.SumpTempAlarmLow - 2"
+                               Max="(double)tempHum.SumpTempAlarmHigh + 2"
+                               Style="height:40px"
+                               Color="@(getBarColor(tempHum.SumpTempAlarmLow, tempHum.TankTempAlarmHigh, tempHum.TankTemp, tempHum.TankTempAlarmOnOff))">
+                <MudText Typo="Typo.h4"><b>@tempHum.SumpTemp °C</b></MudText>
+            </MudProgressLinear>
+        </MudStack>
+    </MudItem>
+</MudGrid>
 
 @code {
 
@@ -61,20 +62,21 @@
 
     TempHumDevice tempHum;
 
-    private MudBlazor.Color getBarColor(float? min, float? max, float? value)
+    private MudBlazor.Color getBarColor(float? min, float? max, float? value, bool alarm)
     {
+        if (!alarm)
+        {
+            return MudBlazor.Color.Success;
+        }
         if(value < min)
         {
-            Console.WriteLine("Low");
             return MudBlazor.Color.Info;
         }else if(value > max)
         {
-            Console.WriteLine("High");
             return MudBlazor.Color.Error;
         }
         else
         {
-            Console.WriteLine("good");
             return MudBlazor.Color.Success;
         }
     } 

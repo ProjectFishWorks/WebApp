@@ -28,6 +28,7 @@
                             @manifest.BaseStationName
                         </MudText>
                     }
+                    <MudText Typo="Typo.subtitle1">ID: @manifest.BaseStationID</MudText>
                     <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Secondary" Style="width:fit-content" OnClick="@(() => {updateBaseStationTitle(manifest); Console.WriteLine(manifest.BaseStationName);})">Edit Name</MudButton>
                 </MudStack>
             </MudCardHeader>
