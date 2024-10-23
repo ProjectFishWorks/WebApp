@@ -108,7 +108,7 @@ namespace ProjectFishWorksWebApp.Models
                         HistoryDataRow chartDataRow = new HistoryDataRow();
                         chartDataRow.data = entry.data;
                         //Convert from Unix time(UTC) to a local date time
-                        chartDataRow.time = DateTimeOffset.FromUnixTimeSeconds((long)entry.time).LocalDateTime;
+                        chartDataRow.time = DateTimeOffset.FromUnixTimeSeconds((long)entry.time).UtcDateTime;
                         chartData.Add(chartDataRow);
                     }
                 }
