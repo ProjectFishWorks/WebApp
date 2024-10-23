@@ -93,23 +93,12 @@
         }
         set
         {
-            Console.WriteLine(value);
             MqttApplicationMessage message = new MqttApplicationMessageBuilder()
                 .WithTopic($"manifestIn/{_systemID}/{_currentBaseStationID}")
                 .WithPayload(value)
                 .Build();
             MqttService.Publish(message);
         }
-    }
-
-    private void sendManifest()
-    {
-        Console.WriteLine(_currentManifest);
-        MqttApplicationMessage message = new MqttApplicationMessageBuilder()
-            .WithTopic($"manifestIn/{_systemID}/{_currentBaseStationID}")
-            .WithPayload(_currentManifest)
-            .Build();
-        MqttService.Publish(message);
     }
 
     protected override void OnInitialized()
