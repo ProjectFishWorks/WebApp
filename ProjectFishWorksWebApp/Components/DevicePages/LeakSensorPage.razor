@@ -4,29 +4,42 @@
 
 <MudCard Outlined=true>
     <MudItem xs=3>
-        if (leakSensorDevice.LeakDetected == 1)
+        @if (leakSensorDevice.LeakDetected == true)
         {
-            <MudChip T=string Color=MudBlazor.Color.Error>Leak Detected</MudChip>
+            <MudChip T="string"
+                Color="MudBlazor.Color.Error">
+                Leak Detected
+            </MudChip>
         }
         else
         {
-            <MudChip T=string Color=MudBlazor.Color.Success>No Leak Detected</MudChip>
+            <MudChip T="string"
+                Color="MudBlazor.Color.Success">
+                No Leak Detected
+            </MudChip>
         }
     </MudItem>
     <MudItem xs=3>
-        if (leakSensorDevice.HighWaterLevel == 1)
+        @if (leakSensorDevice.HighWaterLevel == true)
         {
-            <MudChip T=string Color=MudBlazor.Color.Error>High Water Level</MudChip>
+            <MudChip T="string" 
+                Color="MudBlazor.Color.Error">
+                High Water Level
+            </MudChip>
         }
         else
         {
-            <MudChip T=string Color=MudBlazor.Color.Success>Normal Water Level</MudChip>
+            <MudChip T=string
+                Color="MudBlazor.Color.Success">
+                Normal Water Level
+            </MudChip>
         }
     </MudItem>
 </MudCard>
 
 
-@code {
+@code 
+{
     [Parameter]
     public int SystemID { get; set; }
 
