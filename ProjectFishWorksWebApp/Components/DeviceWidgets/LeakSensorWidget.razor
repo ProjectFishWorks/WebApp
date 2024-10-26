@@ -2,9 +2,8 @@
 @using ProjectFishWorksWebApp.Models.DeviceModels
 @inject MQTTnet.ClientLib.MqttService MqttService
 
-<MudCard Outlined=true>
-    <MudItem xs=3>
-        @if (leakSensorDevice.LeakDetected == true)
+    <MudStack Row="true">
+        @if (leakSensorDevice.Leak1Detected || leakSensorDevice.Leak2Detected || leakSensorDevice.Leak3Detected || leakSensorDevice.Leak4Detected)
         {
             <MudChip T="string"
                      Color="MudBlazor.Color.Error">
@@ -18,9 +17,7 @@
                 No Leak Detected
             </MudChip>
         }
-    </MudItem>
-    <MudItem xs=3>
-        @if (leakSensorDevice.HighWaterLevel == true)
+    @if (leakSensorDevice.HighWaterLevel1 || leakSensorDevice.HighWaterLevel2 || leakSensorDevice.HighWaterLevel3 || leakSensorDevice.HighWaterLevel4)
         {
             <MudChip T="string"
                      Color="MudBlazor.Color.Error">
@@ -34,8 +31,7 @@
                 Normal Water Level
             </MudChip>
         }
-    </MudItem>
-</MudCard>
+    </MudStack>
 
 
 @code
