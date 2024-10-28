@@ -31,7 +31,7 @@
         {
             get
             {
-                _LeakDetected = getMessagePayload(nodeID, 2560).data == 1;
+                _LeakDetected = getMessagePayload(nodeID, 2561).data == 1;
                 return _LeakDetected;
             }
             set
@@ -44,7 +44,7 @@
         {
             get
             {
-                _LeakDetected = getMessagePayload(nodeID, 2560).data == 1;
+                _LeakDetected = getMessagePayload(nodeID, 2562).data == 1;
                 return _LeakDetected;
             }
             set
@@ -57,7 +57,7 @@
         {
             get
             {
-                _LeakDetected = getMessagePayload(nodeID, 2560).data == 1;
+                _LeakDetected = getMessagePayload(nodeID, 2563).data == 1;
                 return _LeakDetected;
             }
             set
