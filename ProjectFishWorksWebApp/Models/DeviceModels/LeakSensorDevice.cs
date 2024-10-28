@@ -14,7 +14,7 @@
         }
 
 
-        public bool LeakDetected
+        public bool Leak1Detected
         {
             get
             {
@@ -27,38 +27,100 @@
                 sendMessageData(nodeID, 2560, (ulong)(_LeakDetected ? 1 : 0));
             }
         }
-
-
-        public bool HighWaterLevel
+        public bool Leak2Detected
         {
             get
             {
-                _HighWaterLevel = getMessagePayload(nodeID, 2561).data == 1;
+                _LeakDetected = getMessagePayload(nodeID, 2561).data == 1;
+                return _LeakDetected;
+            }
+            set
+            {
+                _LeakDetected = value;
+                sendMessageData(nodeID, 2560, (ulong)(_LeakDetected ? 1 : 0));
+            }
+        }
+        public bool Leak3Detected
+        {
+            get
+            {
+                _LeakDetected = getMessagePayload(nodeID, 2562).data == 1;
+                return _LeakDetected;
+            }
+            set
+            {
+                _LeakDetected = value;
+                sendMessageData(nodeID, 2560, (ulong)(_LeakDetected ? 1 : 0));
+            }
+        }
+        public bool Leak4Detected
+        {
+            get
+            {
+                _LeakDetected = getMessagePayload(nodeID, 2563).data == 1;
+                return _LeakDetected;
+            }
+            set
+            {
+                _LeakDetected = value;
+                sendMessageData(nodeID, 2560, (ulong)(_LeakDetected ? 1 : 0));
+            }
+        }
+
+
+        public bool HighWaterLevel1
+        {
+            get
+            {
+                _HighWaterLevel = getMessagePayload(nodeID, 2817).data == 1;
                 return _HighWaterLevel;
             }
             set
             {
                 _HighWaterLevel = value;
-                sendMessageData(nodeID, 2561, (ulong)(_HighWaterLevel ? 1 : 0));
+                sendMessageData(nodeID, 2817, (ulong)(_HighWaterLevel ? 1 : 0));
             }
         }
-
-        public bool LowWaterLevel
+        public bool HighWaterLevel2
         {
             get
             {
-                _LowWaterLevel = getMessagePayload(nodeID, 2562).data == 1;
-                return _LowWaterLevel;
+                _HighWaterLevel = getMessagePayload(nodeID, 2818).data == 1;
+                return _HighWaterLevel;
             }
             set
             {
-                _LowWaterLevel = value;
-                sendMessageData(nodeID, 2562, (ulong)(_LowWaterLevel ? 1 : 0));
+                _HighWaterLevel = value;
+                sendMessageData(nodeID, 2818, (ulong)(_HighWaterLevel ? 1 : 0));
             }
         }
-        /*#define NODE_ID 0xB2              // 178
-#define LEAK_DETECTED_MESSAGE_ID 0x0A00    // 2560
-#define HIGH_WATER_LEVEL_MESSAGE_ID 0x0A01   // 2561
-        */
+        public bool HighWaterLevel3
+        {
+            get
+            {
+                _HighWaterLevel = getMessagePayload(nodeID, 2819).data == 1;
+                return _HighWaterLevel;
+            }
+            set
+            {
+                _HighWaterLevel = value;
+                sendMessageData(nodeID, 2819, (ulong)(_HighWaterLevel ? 1 : 0));
+            }
+        }
+        public bool HighWaterLevel4
+        {
+            get
+            {
+                _HighWaterLevel = getMessagePayload(nodeID, 2820).data == 1;
+                return _HighWaterLevel;
+            }
+            set
+            {
+                _HighWaterLevel = value;
+                sendMessageData(nodeID, 2820, (ulong)(_HighWaterLevel ? 1 : 0));
+            }
+        }
+
+
     }
 }

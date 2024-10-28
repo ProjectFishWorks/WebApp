@@ -160,7 +160,7 @@
         {
             get
             {
-                _BlueOnlyMaxIntensity = ((byte)getMessagePayload(nodeID, 2568).data);
+                _BlueOnlyMaxIntensity = ((int?)getMessagePayload(nodeID, 2568).data);
                 if (_BlueOnlyMaxIntensity.HasValue)
                 {
                     return _BlueOnlyMaxIntensity.Value;
