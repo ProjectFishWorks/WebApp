@@ -1,0 +1,59 @@
+﻿@using MQTTnet
+@using ProjectFishWorksWebApp.Models
+@using ProjectFishWorksWebApp.Models.DeviceModels
+@using ApexCharts
+
+@inject MQTTnet.ClientLib.MqttService MqttService
+
+<MudCard>
+    <MudCardHeader>
+        <MudGrid Justify="Justify.Center">
+            <h3>TesterHat</h3>
+        </MudGrid>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudGrid Spacing="10">
+            <MudItem xs="6">
+                <MudSwitch @bind-Value="aCControlDevice.Relay1Control" Color="MudBlazor.Color.Secondary"></MudSwitch>
+                <MudText Typo="Typo.h6">Outlet 1</MudText>
+            </MudItem>
+            <MudItem xs="6">
+                <MudSwitch @bind-Value="aCControlDevice.Relay2Control" Color="MudBlazor.Color.Secondary"></MudSwitch>
+                <MudText Typo="Typo.h6">Outlet 2</MudText>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+
+
+@code {
+    [Parameter]
+    public int systemID { get; set; } = 0;
+    [Parameter]
+    public int basestationID { get; set; } = 0;
+    [Parameter]
+    public int nodeID { get; set; } = 0;
+
+    ACControlDevice aCControlDevice;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //Create the TesterHatDevice data model
+        this.aCControlDevice = new ACControlDevice(MqttService, this.systemID, this.basestationID, this.nodeID);
+
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+    }
+
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        base.StateHasChanged();
+    }
+
+
+
+}
