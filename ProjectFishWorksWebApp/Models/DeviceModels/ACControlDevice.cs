@@ -7,6 +7,9 @@
         {
             this.nodeID = nodeID;
         }
+
+        public List<HistoryDataRow>? CurrentHistory { get; set; }
+
         public bool Relay1Control
         {
             get
@@ -35,7 +38,14 @@
         {
             get
             {
-                return getMessagePayload(nodeID, 2562).dataFloat;
+                return (float)Math.Round((decimal)getMessagePayload(nodeID, 2562).dataFloat,3);
+            }
+        }
+        public float? LineWattage
+        {
+            get
+            {
+                return (float)Math.Round((decimal)getMessagePayload(nodeID, 2562).dataFloat * 120, 2);
             }
         }
         public int RelayOneAlertNode
