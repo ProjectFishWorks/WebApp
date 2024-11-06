@@ -5,25 +5,33 @@
 
 @inject MQTTnet.ClientLib.MqttService MqttService
 
-<MudCard>
-    <MudCardHeader>
-        <MudGrid Justify="Justify.Center">
-            <h3>TesterHat</h3>
-        </MudGrid>
-    </MudCardHeader>
-    <MudCardContent>
-        <MudGrid Spacing="10">
-            <MudItem xs="6">
-                <MudSwitch @bind-Value="aCControlDevice.Relay1Control" Color="MudBlazor.Color.Secondary"></MudSwitch>
-                <MudText Typo="Typo.h6">Outlet 1</MudText>
-            </MudItem>
-            <MudItem xs="6">
-                <MudSwitch @bind-Value="aCControlDevice.Relay2Control" Color="MudBlazor.Color.Secondary"></MudSwitch>
-                <MudText Typo="Typo.h6">Outlet 2</MudText>
-            </MudItem>
-        </MudGrid>
-    </MudCardContent>
-</MudCard>
+
+<MudGrid Spacing="10">
+    <MudItem xs="6">
+        <MudSwitch @bind-Value="aCControlDevice.Relay1Control" Color="MudBlazor.Color.Secondary"></MudSwitch>
+        <MudText Typo="Typo.h6">Outlet 1</MudText>
+    </MudItem>
+    <MudItem xs="6">
+        <MudSwitch @bind-Value="aCControlDevice.Relay2Control" Color="MudBlazor.Color.Secondary"></MudSwitch>
+        <MudText Typo="Typo.h6">Outlet 2</MudText>
+    </MudItem>
+</MudGrid>
+
+<MudText Typo="Typo.h6">Line Current: @(aCControlDevice.LineCurrent.ToString())A</MudText>
+
+<MudNumericField @bind-Value="aCControlDevice.RelayOneAlertNode"></MudNumericField>
+<MudNumericField @bind-Value="aCControlDevice.RelayTwoAlertNode"></MudNumericField>
+
+<MudStack Row="true">
+    <MudChip T="string" Color="@(aCControlDevice.RelayOneInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
+        @(aCControlDevice.RelayOneInAlert ? "Relay 1 Alert Override!" : "Relay 1 No Alert Override")
+    </MudChip>
+    <MudChip T="string" Color="@(aCControlDevice.RelayTwoInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
+        @(aCControlDevice.RelayTwoInAlert ? "Relay 2 Alert Override!" : "Relay 2 No Alert Override")
+    </MudChip>
+</MudStack>
+
+
 
 
 @code {
