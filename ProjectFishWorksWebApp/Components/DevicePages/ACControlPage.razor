@@ -21,7 +21,12 @@
                     <MudChip T="string" Color="@(aCControlDevice.RelayOneInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
                         @(aCControlDevice.RelayOneInAlert ? "Alert Override!" : "No Alert Override")
                     </MudChip>
-                    <MudNumericField Label="Alert Trigger Device" @bind-Value="aCControlDevice.RelayOneAlertNode"></MudNumericField>
+                    <MudSelect Label="Select Alert Trigger Device" @bind-Value="aCControlDevice.RelayOneAlertNode">
+                        @foreach (var node in Nodes)
+                        {
+                            <MudSelectItem Value="@node.Key">@node.Value</MudSelectItem>
+                        }
+                    </MudSelect>
                 </MudStack>
             </MudCardContent>
         </MudCard>
@@ -40,7 +45,12 @@
                     <MudChip T="string" Color="@(aCControlDevice.RelayTwoInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
                         @(aCControlDevice.RelayTwoInAlert ? "Alert Override!" : "No Alert Override")
                     </MudChip>
-                    <MudNumericField Label="Alert Trigger Device" @bind-Value="aCControlDevice.RelayTwoAlertNode"></MudNumericField>
+                    <MudSelect Label="Select Alert Trigger Device" @bind-Value="aCControlDevice.RelayTwoAlertNode">
+                        @foreach (var node in Nodes)
+                        {
+                            <MudSelectItem Value="@node.Key">@node.Value</MudSelectItem>
+                        }
+                    </MudSelect>
                 </MudStack>
             </MudCardContent>
         </MudCard>
@@ -91,6 +101,30 @@
 
     ACControlDevice aCControlDevice;
 
+    BaseStationManifests baseStationManifests;
+
+    private Dictionary<int, string> Nodes
+    {
+        get
+        {
+            Dictionary<int, string> nodes = new();
+
+            if(baseStationManifests == null)
+            {
+                return nodes;
+            }
+
+            var devices = baseStationManifests.Manifests.Find(x => x.BaseStationID == basestationID).Devices;
+
+            foreach(var device in devices)
+            {
+                nodes.Add(device.NodeID, device.DeviceName);
+            }
+            return nodes;
+
+        }
+    }
+
     //Request historical data
     private void historyChartRequestData(object sender, HistoryChartDataEventArgs e)
     {
@@ -115,6 +149,8 @@
         {
             MqttService.MessageReceived += MqttClient_MessageReceived;
         }
+
+        baseStationManifests = new BaseStationManifests(systemID, MqttService);
     }
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
