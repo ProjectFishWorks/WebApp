@@ -1,5 +1,4 @@
-﻿
-@using ProjectFishWorksWebApp.Models
+﻿@using ProjectFishWorksWebApp.Models
 @using ProjectFishWorksWebApp.Models.DeviceModels
 @using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
@@ -73,18 +72,18 @@
                                      title="@(tempHum.CanopyHumAlarmOnOff ? "On" : "Off")" />
                 Canopy Humidity
 
-                    @if (tempHum.CanopyHumAlarmOnOff)
-                    {   
-                        <MudNumericField @bind-Value="tempHum.CanopyHumAlarmLow"
-                                         Label="Low"
-                                         Variant="Variant.Text"
-                                         Min="0" Max="100" />
+                @if (tempHum.CanopyHumAlarmOnOff)
+                {
+                    <MudNumericField @bind-Value="tempHum.CanopyHumAlarmLow"
+                                     Label="Low"
+                                     Variant="Variant.Text"
+                                     Min="0" Max="100" />
 
-                        <MudNumericField @bind-Value="tempHum.CanopyHumAlarmHigh"
-                                         Label="High"
-                                         Variant="Variant.Text"
-                                         Min="0" Max="100" />
-                    }
+                    <MudNumericField @bind-Value="tempHum.CanopyHumAlarmHigh"
+                                     Label="High"
+                                     Variant="Variant.Text"
+                                     Min="0" Max="100" />
+                }
             </MudItem>
 
             <MudItem xs="6">
@@ -163,11 +162,11 @@
 </MudCard>
 
 <HistoryChart HistoryData="@tempHum.TempHumHistory"
-                NodeID="@NodeID"
-                MessageIDs="@historyMessageIDs"
-                RequestData="tempHumChartRequestData"
-                UpdateData="tempHumChartUpdateData" 
-                isFloatData="true"/>
+              NodeID="@NodeID"
+              MessageIDs="@historyMessageIDs"
+              RequestData="tempHumChartRequestData"
+              UpdateData="tempHumChartUpdateData"
+              isFloatData="true" />
 
 
 
