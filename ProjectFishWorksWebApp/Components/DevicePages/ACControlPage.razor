@@ -52,7 +52,7 @@
                         @(aCControlDevice.RelayTwoInAlert ? "Alert Override!" : "No Alert Override")
                     </MudChip>
                     <MudSelect Label="Select Alert Trigger Device" @bind-Value="aCControlDevice.RelayTwoAlertNode">
-                        <MudSelectItem Value="-255">None</MudSelectItem>
+                        <MudSelectItem Value="255">None</MudSelectItem>
                         @foreach (var node in Nodes)
                         {
                             <MudSelectItem Value="@node.Key">@node.Value</MudSelectItem>
