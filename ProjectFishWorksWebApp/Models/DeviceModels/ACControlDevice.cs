@@ -18,7 +18,7 @@
             }
             set
             {
-                sendMessageData(nodeID,2560,value ?  (ulong)1 : (ulong)0);
+                sendMessageData(nodeID, 2560, value ? (ulong)1 : (ulong)0);
             }
         }
 
@@ -38,7 +38,7 @@
         {
             get
             {
-                return (float)Math.Round((decimal)getMessagePayload(nodeID, 2562).dataFloat,3);
+                return (float)Math.Round((decimal)getMessagePayload(nodeID, 2562).dataFloat, 3);
             }
         }
         public float? LineWattage
@@ -92,7 +92,7 @@
         {
             get
             {
-               return (getMessagePayload(RelayOneAlertNode, 901).data == 1 || getMessagePayload(RelayOneAlertNode, 900).data == 1);
+                return (getMessagePayload(RelayOneAlertNode, 901).data == 1 || getMessagePayload(RelayOneAlertNode, 900).data == 1);
             }
         }
         public bool RelayTwoInAlert
@@ -102,5 +102,30 @@
                 return (getMessagePayload(RelayTwoAlertNode, 901).data == 1 || getMessagePayload(RelayTwoAlertNode, 900).data == 1);
             }
         }
-}
+
+        public bool RelayOneAlertInvert
+        {
+            get
+            {
+                return getMessagePayload(nodeID, 2567).data == 1;
+            }
+            set
+            {
+                sendMessageData(nodeID, 2567, value ? (ulong)1 : (ulong)0);
+            }
+        }
+
+        public bool RelayTwoAlertInvert
+        {
+            get
+            {
+                return getMessagePayload(nodeID, 2568).data == 1;
+            }
+            set
+            {
+                sendMessageData(nodeID, 2568, value ? (ulong)1 : (ulong)0);
+            }
+        }
+
+    }
 }
