@@ -86,31 +86,6 @@
                                          Min="0" Max="100" />
                     }
             </MudItem>
-
-            <MudItem xs="6">
-                <MudToggleIconButton @bind-Toggled="tempHum.CanopyTempAlarmOnOff"
-                                     Icon="@Icons.Material.Filled.AlarmOff"
-                                     Color="MudBlazor.Color.Warning"
-                                     ToggledIcon="@Icons.Material.Filled.AlarmOn"
-                                     ToggledColor="MudBlazor.Color.Tertiary"
-                                     title="@(tempHum.CanopyTempAlarmOnOff ? "On" : "Off")" />
-                Canopy Temperature
-
-                @if (tempHum.CanopyTempAlarmOnOff)
-                {
-                    <MudNumericField @bind-Value="tempHum.CanopyTempAlarmLow"
-                                     Label="Low"
-                                     Variant="Variant.Text"
-                                     Min="0" Max="35" />
-
-                    <MudNumericField @bind-Value="tempHum.CanopyTempAlarmHigh"
-                                     Label="High"
-                                     Variant="Variant.Text"
-                                     Min="0" Max="35" />
-                }
-            </MudItem>
-        </MudGrid>
-        <MudGrid Spacing="10">
             <MudItem xs="6">
                 <MudToggleIconButton @bind-Toggled="tempHum.TankTempAlarmOnOff"
                                      Icon="@Icons.Material.Filled.AlarmOff"
@@ -126,15 +101,42 @@
                         <MudNumericField @bind-Value="tempHum.TankTempAlarmLow"
                                          Label="Low"
                                          Variant="Variant.Text"
-                                         Min="0" Max="35" />
+                                         Min="0" Max="255" />
 
                         <MudNumericField @bind-Value="tempHum.TankTempAlarmHigh"
                                          Label="High"
                                          Variant="Variant.Text"
-                                         Min="0" Max="35" />
+                                         Min="0" Max="255" />
                     }
                 </span>
             </MudItem>
+
+            
+        </MudGrid>
+        <MudGrid Spacing="10">
+            <MudItem xs="6">
+                <MudToggleIconButton @bind-Toggled="tempHum.CanopyTempAlarmOnOff"
+                                     Icon="@Icons.Material.Filled.AlarmOff"
+                                     Color="MudBlazor.Color.Warning"
+                                     ToggledIcon="@Icons.Material.Filled.AlarmOn"
+                                     ToggledColor="MudBlazor.Color.Tertiary"
+                                     title="@(tempHum.CanopyTempAlarmOnOff ? "On" : "Off")" />
+                Canopy Temperature
+
+                @if (tempHum.CanopyTempAlarmOnOff)
+                {
+                    <MudNumericField @bind-Value="tempHum.CanopyTempAlarmLow"
+                                     Label="Low"
+                                     Variant="Variant.Text"
+                                     Min="0" Max="255" />
+
+                    <MudNumericField @bind-Value="tempHum.CanopyTempAlarmHigh"
+                                     Label="High"
+                                     Variant="Variant.Text"
+                                     Min="0" Max="255" />
+                }
+            </MudItem>
+            
 
             <MudItem xs="6">
                 <MudToggleIconButton @bind-Toggled="tempHum.SumpTempAlarmOnOff"
@@ -150,12 +152,12 @@
                     <MudNumericField @bind-Value="tempHum.SumpTempAlarmLow"
                                      Label="Low"
                                      Variant="Variant.Text"
-                                     Min="0" Max="35" />
+                                     Min="0" Max="255" />
 
                     <MudNumericField @bind-Value="tempHum.SumpTempAlarmHigh"
                                      Label="High"
                                      Variant="Variant.Text"
-                                     Min="0" Max="35" />
+                                     Min="0" Max="255" />
                 }
             </MudItem>
         </MudGrid>
@@ -184,8 +186,8 @@
     {
         {2560, new HistoryChartMessageIDData{PerameterName = "Canopy Temperature", XAxisName = "Time", YAxisName = "Temperature"}},
         {2564, new HistoryChartMessageIDData{PerameterName = "Canopy Humidity", XAxisName = "Time", YAxisName = "Humidity"}},
-        {2568, new HistoryChartMessageIDData{PerameterName = "Tank Temperature", XAxisName = "Time", YAxisName = "Temperature"}},
-        {2572, new HistoryChartMessageIDData{PerameterName = "Sump Temperature", XAxisName = "Time", YAxisName = "Temperature"}}
+        {2572, new HistoryChartMessageIDData{PerameterName = "Tank Temperature", XAxisName = "Time", YAxisName = "Temperature"}},
+        {2568, new HistoryChartMessageIDData{PerameterName = "Sump Temperature", XAxisName = "Time", YAxisName = "Temperature"}}
     };
 
     TempHumDevice tempHum;
