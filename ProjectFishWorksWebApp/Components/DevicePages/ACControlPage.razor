@@ -22,11 +22,17 @@
                         @(aCControlDevice.RelayOneInAlert ? "Alert Override!" : "No Alert Override")
                     </MudChip>
                     <MudSelect Label="Select Alert Trigger Device" @bind-Value="aCControlDevice.RelayOneAlertNode">
+                        <MudSelectItem Value="255">None</MudSelectItem>
                         @foreach (var node in Nodes)
                         {
                             <MudSelectItem Value="@node.Key">@node.Value</MudSelectItem>
                         }
                     </MudSelect>
+                    <MudSwitch @bind-Value="aCControlDevice.RelayOneAlertInvert"
+                               Color="MudBlazor.Color.Success"
+                               UncheckedColor="MudBlazor.Color.Error">
+                        @(aCControlDevice.RelayOneAlertInvert ? "Relay #1 will turn ON during alert" : "Relay #1 will turn OFF during alert")
+                    </MudSwitch>
                 </MudStack>
             </MudCardContent>
         </MudCard>
@@ -46,11 +52,17 @@
                         @(aCControlDevice.RelayTwoInAlert ? "Alert Override!" : "No Alert Override")
                     </MudChip>
                     <MudSelect Label="Select Alert Trigger Device" @bind-Value="aCControlDevice.RelayTwoAlertNode">
+                        <MudSelectItem Value="255">None</MudSelectItem>
                         @foreach (var node in Nodes)
                         {
                             <MudSelectItem Value="@node.Key">@node.Value</MudSelectItem>
                         }
                     </MudSelect>
+                    <MudSwitch @bind-Value="aCControlDevice.RelayTwoAlertInvert"
+                               Color="MudBlazor.Color.Success"
+                               UncheckedColor="MudBlazor.Color.Error">
+                        @(aCControlDevice.RelayTwoAlertInvert ? "Relay #1 will turn ON during alert" : "Relay #1 will turn OFF during alert")
+                    </MudSwitch>
                 </MudStack>
             </MudCardContent>
         </MudCard>
