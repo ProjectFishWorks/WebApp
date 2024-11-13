@@ -19,7 +19,7 @@
                     </MudSwitch>
 
                     <MudChip T="string" Color="@(aCControlDevice.RelayOneInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
-                        @(aCControlDevice.RelayOneInAlert ? "Alert Override!" : "No Alert Override")
+                        @(aCControlDevice.RelayOneInAlert ? "Alert!" : "No Alert")
                     </MudChip>
                 </MudStack>
             </MudCardContent>
@@ -37,7 +37,7 @@
                                Disabled="@aCControlDevice.RelayTwoInAlert">
                     </MudSwitch>
                     <MudChip T="string" Color="@(aCControlDevice.RelayTwoInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
-                        @(aCControlDevice.RelayTwoInAlert ? "Alert Override!" : "No Alert Override")
+                        @(aCControlDevice.RelayTwoInAlert ? "Alert!" : "No Alert")
                     </MudChip>
                 </MudStack>
             </MudCardContent>

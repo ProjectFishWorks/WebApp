@@ -60,6 +60,8 @@
 
     private bool _isDarkMode = false;
 
+    private bool _dialogOpen = false;
+
     private MudThemeProvider _mudThemeProvider;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -84,7 +86,7 @@
 
     protected override bool ShouldRender()
     {
-        if (!MqttService.IsConnected())
+        if (!MqttService.IsConnected() )
         {
             OpenDialogAsync();
         }
@@ -96,8 +98,9 @@
         base.OnAfterRender(firstRender);
     }
 
-    private Task OpenDialogAsync()
+    private async Task OpenDialogAsync()
     {
+        _dialogOpen = true;
         Console.WriteLine("Opening dialog");
         var options = new DialogOptions 
         { 
@@ -108,7 +111,27 @@
             NoHeader = true
         };
 
-        return DialogService.ShowAsync<Components.LoginDialog>("MQTT Connection", options);
+        var dialog = await DialogService.ShowAsync<Components.LoginDialog>("MQTT Connection", options);
+        var result = await dialog.Result;
+        _dialogOpen = false;
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        MqttService.Disconnected += MqttService_Disconnected;
+    }
+    
+
+    private void MqttService_Disconnected(object sender, EventArgs e)
+    {
+        base.StateHasChanged();
+
+    }
+
+    private void MqttService_Connected(object sender, EventArgs e)
+    {
+        base.StateHasChanged();
+    }
+
 }
 
