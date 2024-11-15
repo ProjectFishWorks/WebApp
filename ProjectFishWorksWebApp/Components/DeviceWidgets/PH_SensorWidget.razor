@@ -1,0 +1,74 @@
+﻿@using MQTTnet
+@using ProjectFishWorksWebApp.Models.DeviceModels
+@inject MQTTnet.ClientLib.MqttService MqttService
+
+
+
+<MudText Typo="Typo.h6">pH Sensor Test</MudText>
+<MudGrid>
+    <MudItem xs="6">
+        <MudStack Spacing="3">
+            <MudText Typo="Typo.h6">pH Sensor</MudText>
+            <MudProgressLinear Value="(double)PHsensor.pHvalue"
+                               Min="(double)((PHsensor.pHAlarmLow ?? 0) - 0)"
+                               Max="(double)((PHsensor.pHAlarmHigh ?? 14) + 14)"
+                               Style="height:40px"
+                               Color="@(getBarColor(PHsensor.pHAlarmLow ?? 0, PHsensor.pHAlarmHigh ?? 14, PHsensor.pHvalue ?? 7, PHsensor.pHAlarmOnOff))">
+                <MudText Typo="Typo.h4"><b>@PHsensor.pHvalue %</b></MudText>
+            </MudProgressLinear>
+        </MudStack>
+    </MudItem>
+</MudGrid>
+
+@code {
+
+    [Parameter]
+    public int SystemID { get; set; }
+
+    [Parameter]
+    public int BaseStationID { get; set; }
+
+    [Parameter]
+    public int NodeID { get; set; }
+
+    PH_SensorDevice PHsensor;
+
+    private MudBlazor.Color getBarColor(float? min, float? max, float? value, bool alarm)
+    {
+        if (min == null || max == null || value == null)
+        {
+            return MudBlazor.Color.Success;
+        }
+        /*if (!alarm)
+        {
+            return MudBlazor.Color.Success;
+        }*/
+        if (value < min)
+        {
+            return MudBlazor.Color.Info;
+        }
+        else if (value > max)
+        {
+            return MudBlazor.Color.Error;
+        }
+        else
+        {
+            return MudBlazor.Color.Success;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.PHsensor = new PH_SensorDevice(MqttService, this.SystemID, this.BaseStationID, this.NodeID);
+
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+    }
+
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        base.StateHasChanged();
+    }
+}

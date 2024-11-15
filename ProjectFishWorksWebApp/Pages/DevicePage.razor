@@ -7,6 +7,7 @@
 
 <PageTitle>Device - @DeviceData.DeviceName</PageTitle>
 
+
 <MudStack>
     <MudText Typo="Typo.h4">@DeviceData.DeviceName</MudText>
     <MudText Typo="Typo.subtitle1">@(_manifests.Manifests.First(m => (m.SystemID == SystemID && m.BaseStationID == BaseStationID)).BaseStationName) - ID: @(DeviceData.NodeID)</MudText>
