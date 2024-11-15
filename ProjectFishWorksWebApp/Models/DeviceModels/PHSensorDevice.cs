@@ -1,6 +1,6 @@
 ﻿namespace ProjectFishWorksWebApp.Models.DeviceModels
 {
-    public class PH_SensorDevice : Device
+    public class PHSensorDevice : Device
     {
         private int nodeID;
         private float? _pHvalue = 0;
@@ -9,7 +9,7 @@
         private float? _pHAlarmHigh = 0;
         private int decimalCount = 1;
 
-        public PH_SensorDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
+        public PHSensorDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
         {
             this.nodeID = nodeID;
             Console.Write("Node ID");
