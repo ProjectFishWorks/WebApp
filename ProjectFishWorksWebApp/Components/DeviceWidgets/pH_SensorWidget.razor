@@ -7,13 +7,15 @@
 <MudGrid>
     <MudItem xs="6">
         <MudStack Spacing="3">
-            <MudText Typo="Typo.h6">pH Sensor</MudText>
-            <MudProgressLinear Value="(double)PHsensor.pHvalue"
+            <MudProgressLinear 
+                               Value="(double)((PHsensor.pHvalue ?? 0) -0)"
                                Min="(double)((PHsensor.pHAlarmLow ?? 0) - 0)"
                                Max="(double)((PHsensor.pHAlarmHigh ?? 14) + 14)"
                                Style="height:40px"
-                               Color="@(getBarColor(PHsensor.pHAlarmLow ?? 0, PHsensor.pHAlarmHigh ?? 14, PHsensor.pHvalue ?? 7, PHsensor.pHAlarmOnOff))">
-                <MudText Typo="Typo.h4"><b>@PHsensor.pHvalue %</b></MudText>
+                               Color="MudBlazor.Color.Warning">
+                               <MudText Typo="Typo.h4">
+                               <b>@(Math.Round((decimal)PHsensor.pHvalue,2))</b>
+                               </MudText>
             </MudProgressLinear>
         </MudStack>
     </MudItem>

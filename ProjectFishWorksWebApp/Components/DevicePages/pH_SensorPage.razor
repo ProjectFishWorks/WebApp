@@ -9,53 +9,24 @@
         <MudGrid>
             <MudItem xs="6">
                 <MudStack Spacing="3">
-                    <MudText Typo="Typo.h6">Canopy</MudText>
-                    <MudProgressLinear Value="(double)tempHum.CanopyHum"
-                                       Min="(double)((tempHum.CanopyHumAlarmLow ?? 10) - 10)"
-                                       Max="(double)((tempHum.CanopyHumAlarmHigh ?? 90) + 10)"
+                    <MudProgressLinear Value
+                                       Value="(double)((PHsensor.pHvalue ?? 0) -0)"
+                                       Min="(double)((PHsensor.pHAlarmLow ?? 0) - 0)"
+                                       Max="(double)((PHsensor.pHAlarmHigh ?? 14) + 14)"
                                        Style="height:40px"
-                                       Color="@(getBarColor(tempHum.CanopyHumAlarmLow, tempHum.CanopyHumAlarmHigh, tempHum.CanopyHum, tempHum.CanopyHumAlarmOnOff))">
-                        <MudText Typo="Typo.h4"><b>@tempHum.CanopyHum %</b></MudText>
+                                       Color="@(getBarColor(PHsensor.CanopyHumAlarmLow, PHsensor.CanopyHumAlarmHigh, PHsensor.CanopyHum, PHsensor.CanopyHumAlarmOnOff))">
+                        <MudText Typo="Typo.h4">
+                            <b>@(Math.Round((decimal)PHsensor.pHvalue, 2))</b>
+                        </MudText>
+                        <MudText Typo="Typo.h4"><b>@PHsensor.CanopyHum %</b></MudText>
                     </MudProgressLinear>
-
-                    <MudText Typo="Typo.h6">Canopy</MudText>
-                    <MudProgressLinear Value="(double)tempHum.CanopyTemp"
-                                       Min="(double)(tempHum.CanopyTempAlarmLow ?? 20) - 5"
-                                       Max="(double)(tempHum.CanopyTempAlarmHigh ?? 20) + 5"
-                                       Style="height:40px"
-                                       Color="@(getBarColor(tempHum.CanopyTempAlarmLow, tempHum.CanopyTempAlarmHigh, tempHum.CanopyTemp, tempHum.CanopyTempAlarmOnOff))">
-                        <MudText Typo="Typo.h4"><b>@tempHum.CanopyTemp °C</b></MudText>
-                    </MudProgressLinear>
-                </MudStack>
-            </MudItem>
-            <MudItem xs="6">
-                <MudStack Spacing="3">
-                    <MudText Typo="Typo.h6">Tank</MudText>
-                    <MudProgressLinear Value="(double)tempHum.TankTemp"
-                                       Min="(double)(tempHum.TankTempAlarmLow ?? 20) - 2"
-                                       Max="(double)(tempHum.TankTempAlarmHigh ?? 20) + 2"
-                                       Style="height:40px"
-                                       Color="@(getBarColor(tempHum.TankTempAlarmLow, tempHum.TankTempAlarmHigh, tempHum.TankTemp, tempHum.TankTempAlarmOnOff))">
-                        <MudText Typo="Typo.h4"><b>@tempHum.TankTemp °C</b></MudText>
-                    </MudProgressLinear>
-
-                    <MudText Typo="Typo.h6">Sump</MudText>
-                    <MudProgressLinear Value="(double)tempHum.SumpTemp"
-                                       Min="(double)(tempHum.SumpTempAlarmLow ?? 20) - 2"
-                                       Max="(double)(tempHum.SumpTempAlarmHigh ?? 20) + 2"
-                                       Style="height:40px"
-                                       Color="@(getBarColor(tempHum.SumpTempAlarmLow, tempHum.SumpTempAlarmHigh, tempHum.SumpTemp, tempHum.SumpTempAlarmOnOff))">
-                        <MudText Typo="Typo.h4"><b>@tempHum.SumpTemp °C</b></MudText>
-                    </MudProgressLinear>
+                    KS
                 </MudStack>
             </MudItem>
         </MudGrid>
     </MudCardContent>
 
 </MudCard>
-
-
-
 
 <MudCard>
     <MudCardHeader>
@@ -64,108 +35,43 @@
     <MudCardContent>
         <MudGrid Spacing="10">
             <MudItem xs="6">
-                <MudToggleIconButton @bind-Toggled="tempHum.CanopyHumAlarmOnOff"
+                <MudToggleIconButton @bind-Toggled="PHsensor.pHAlarmOnOff"
                                      Icon="@Icons.Material.Filled.AlarmOff"
                                      Color="MudBlazor.Color.Warning"
                                      ToggledIcon="@Icons.Material.Filled.AlarmOn"
                                      ToggledColor="MudBlazor.Color.Tertiary"
-                                     title="@(tempHum.CanopyHumAlarmOnOff ? "On" : "Off")" />
+                                     title="@(PHsensor.pHAlarmOnOff ? "On" : "Off")" />
                 Canopy Humidity
 
-                @if (tempHum.CanopyHumAlarmOnOff)
+                @if (PHsensor.CanopyHumAlarmOnOff)
                 {
-                    <MudNumericField @bind-Value="tempHum.CanopyHumAlarmLow"
+                    <MudNumericField @bind-Value="PHsensor.pHAlarmLow"
                                      Label="Low"
                                      Variant="Variant.Text"
-                                     Min="0" Max="100" />
+                                     Min="0" Max="14" />
 
-                    <MudNumericField @bind-Value="tempHum.CanopyHumAlarmHigh"
+                    <MudNumericField @bind-Value="PHsensor.pHAlarmHigh"
                                      Label="High"
                                      Variant="Variant.Text"
-                                     Min="0" Max="100" />
+                                     Min="0" Max="14" />
                 }
             </MudItem>
 
-            <MudItem xs="6">
-                <MudToggleIconButton @bind-Toggled="tempHum.CanopyTempAlarmOnOff"
-                                     Icon="@Icons.Material.Filled.AlarmOff"
-                                     Color="MudBlazor.Color.Warning"
-                                     ToggledIcon="@Icons.Material.Filled.AlarmOn"
-                                     ToggledColor="MudBlazor.Color.Tertiary"
-                                     title="@(tempHum.CanopyTempAlarmOnOff ? "On" : "Off")" />
-                Canopy Temperature
 
-                @if (tempHum.CanopyTempAlarmOnOff)
-                {
-                    <MudNumericField @bind-Value="tempHum.CanopyTempAlarmLow"
-                                     Label="Low"
-                                     Variant="Variant.Text"
-                                     Min="0" Max="35" />
-
-                    <MudNumericField @bind-Value="tempHum.CanopyTempAlarmHigh"
-                                     Label="High"
-                                     Variant="Variant.Text"
-                                     Min="0" Max="35" />
-                }
-            </MudItem>
         </MudGrid>
         <MudGrid Spacing="10">
-            <MudItem xs="6">
-                <MudToggleIconButton @bind-Toggled="tempHum.TankTempAlarmOnOff"
-                                     Icon="@Icons.Material.Filled.AlarmOff"
-                                     Color="MudBlazor.Color.Warning"
-                                     ToggledIcon="@Icons.Material.Filled.AlarmOn"
-                                     ToggledColor="MudBlazor.Color.Tertiary"
-                                     title="@(tempHum.TankTempAlarmOnOff ? "On" : "Off")" />
-                Tank Temperature
 
-                <span>
-                    @if (tempHum.TankTempAlarmOnOff)
-                    {
-                        <MudNumericField @bind-Value="tempHum.TankTempAlarmLow"
-                                         Label="Low"
-                                         Variant="Variant.Text"
-                                         Min="0" Max="35" />
 
-                        <MudNumericField @bind-Value="tempHum.TankTempAlarmHigh"
-                                         Label="High"
-                                         Variant="Variant.Text"
-                                         Min="0" Max="35" />
-                    }
-                </span>
-            </MudItem>
 
-            <MudItem xs="6">
-                <MudToggleIconButton @bind-Toggled="tempHum.SumpTempAlarmOnOff"
-                                     Icon="@Icons.Material.Filled.AlarmOff"
-                                     Color="MudBlazor.Color.Warning"
-                                     ToggledIcon="@Icons.Material.Filled.AlarmOn"
-                                     ToggledColor="MudBlazor.Color.Tertiary"
-                                     title="@(tempHum.SumpTempAlarmOnOff ? "On" : "Off")" />
-                Sump Temperature
-
-                @if (tempHum.SumpTempAlarmOnOff)
-                {
-                    <MudNumericField @bind-Value="tempHum.SumpTempAlarmLow"
-                                     Label="Low"
-                                     Variant="Variant.Text"
-                                     Min="0" Max="35" />
-
-                    <MudNumericField @bind-Value="tempHum.SumpTempAlarmHigh"
-                                     Label="High"
-                                     Variant="Variant.Text"
-                                     Min="0" Max="35" />
-                }
-            </MudItem>
         </MudGrid>
     </MudCardContent>
 </MudCard>
 
-<HistoryChart HistoryData="@tempHum.TempHumHistory"
+<HistoryChart HistoryData="@PHsensor.PHsensorHistory"
               NodeID="@NodeID"
               MessageIDs="@historyMessageIDs"
-              RequestData="tempHumChartRequestData"
-              UpdateData="tempHumChartUpdateData"
+              RequestData="PHsensorChartRequestData"
+              UpdateData="PHsensorChartUpdateData"
               isFloatData="true" />
 
 
@@ -179,34 +85,32 @@
     [Parameter]
     public int NodeID { get; set; } = 0;
 
+    PH_SensorDevice PHsensor;
+
     private Dictionary<int, HistoryChartMessageIDData> historyMessageIDs = new Dictionary<int, HistoryChartMessageIDData>
     {
-        {2560, new HistoryChartMessageIDData{PerameterName = "Canopy Temperature", XAxisName = "Time", YAxisName = "Temperature"}},
-        {2564, new HistoryChartMessageIDData{PerameterName = "Canopy Humidity", XAxisName = "Time", YAxisName = "Humidity"}},
-        {2568, new HistoryChartMessageIDData{PerameterName = "Tank Temperature", XAxisName = "Time", YAxisName = "Temperature"}},
-        {2572, new HistoryChartMessageIDData{PerameterName = "Sump Temperature", XAxisName = "Time", YAxisName = "Temperature"}}
+        {2560, new HistoryChartMessageIDData{PerameterName = "Canopy Temperature", XAxisName = "Time", YAxisName = "Temperature"}}
     };
 
-    TempHumDevice tempHum;
 
     //Event handlers for the HistoryChart component
 
     //Request historical data
-    private void tempHumChartRequestData(object sender, HistoryChartDataEventArgs e)
+    private void PHsensorChartRequestData(object sender, HistoryChartDataEventArgs e)
     {
-        tempHum.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        PHsensor.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
     }
 
     //Update the historical data and chart
-    private void tempHumChartUpdateData(object sender, HistoryChartDataEventArgs e)
+    private void PHsensorChartUpdateData(object sender, HistoryChartDataEventArgs e)
     {
-        tempHum.TempHumHistory = tempHum.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        PHsensor.PHsensorHistory = PHsensor.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
         base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
     }
 
     protected override async Task OnInitializedAsync()
     {
-        this.tempHum = new TempHumDevice(MqttService, this.SystemID, this.BasestationID, this.NodeID);
+        this.PHsensor = new PH_SensorDevice(MqttService, this.SystemID, this.BaseStationID, this.NodeID);
 
         if (MqttService.IsConnected())
         {
@@ -217,13 +121,13 @@
     //Request historical data
     private void historyChartRequestData(object sender, HistoryChartDataEventArgs e)
     {
-        tempHum.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        PHsensor.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
     }
 
     //Update the historical data and chart
     private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
     {
-        tempHum.TempHumHistory = tempHum.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        PHsensor.PHsensorHistory = PHsensor.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
         base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
     }
 
