@@ -31,7 +31,7 @@
     [Parameter]
     public int NodeID { get; set; }
 
-    PH_SensorDevice PHsensor;
+    PHSensorDevice PHsensor;
 
     private MudBlazor.Color getBarColor(float? min, float? max, float? value, bool alarm)
     {
@@ -59,7 +59,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        this.PHsensor = new PH_SensorDevice(MqttService, this.SystemID, this.BaseStationID, this.NodeID);
+        this.PHsensor = new PHSensorDevice(MqttService, this.SystemID, this.BaseStationID, this.NodeID);
 
         if (MqttService.IsConnected())
         {
