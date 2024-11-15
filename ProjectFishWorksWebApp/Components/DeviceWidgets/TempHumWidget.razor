@@ -6,25 +6,25 @@
 
 <MudGrid>
     <MudItem xs="6">
-    <MudStack Spacing="3">
-    <MudText Typo="Typo.h6">Canopy</MudText>
-    <MudProgressLinear Value="(double)tempHum.CanopyHum"
-                       Min="(double)((tempHum.CanopyHumAlarmLow ?? 10) - 10)"
-                       Max="(double)((tempHum.CanopyHumAlarmHigh ?? 90) + 10)"
-                       Style="height:40px"
-                       Color="@(getBarColor(tempHum.CanopyHumAlarmLow, tempHum.CanopyHumAlarmHigh, tempHum.CanopyHum, tempHum.CanopyHumAlarmOnOff))">
-        <MudText Typo="Typo.h4"><b>@tempHum.CanopyHum %</b></MudText>
-    </MudProgressLinear>
+        <MudStack Spacing="3">
+            <MudText Typo="Typo.h6">Canopy</MudText>
+            <MudProgressLinear Value="(double)tempHum.CanopyHum"
+                               Min="(double)((tempHum.CanopyHumAlarmLow ?? 10) - 10)"
+                               Max="(double)((tempHum.CanopyHumAlarmHigh ?? 90) + 10)"
+                               Style="height:40px"
+                               Color="@(getBarColor(tempHum.CanopyHumAlarmLow, tempHum.CanopyHumAlarmHigh, tempHum.CanopyHum, tempHum.CanopyHumAlarmOnOff))">
+                <MudText Typo="Typo.h4"><b>@tempHum.CanopyHum %</b></MudText>
+            </MudProgressLinear>
 
-    <MudText Typo="Typo.h6">Canopy</MudText>
-    <MudProgressLinear Value="(double)tempHum.CanopyTemp"
-                       Min="(double)(tempHum.CanopyTempAlarmLow ?? 20) - 5"
-                       Max="(double)(tempHum.CanopyTempAlarmHigh ?? 20) + 5"
-                       Style="height:40px"
-                       Color="@(getBarColor(tempHum.CanopyTempAlarmLow, tempHum.CanopyTempAlarmHigh, tempHum.CanopyTemp, tempHum.CanopyTempAlarmOnOff))">
-        <MudText Typo="Typo.h4"><b>@tempHum.CanopyTemp °C</b></MudText>
-    </MudProgressLinear>
-    </MudStack>
+            <MudText Typo="Typo.h6">Canopy</MudText>
+            <MudProgressLinear Value="(double)tempHum.CanopyTemp"
+                               Min="(double)(tempHum.CanopyTempAlarmLow ?? 20) - 5"
+                               Max="(double)(tempHum.CanopyTempAlarmHigh ?? 20) + 5"
+                               Style="height:40px"
+                               Color="@(getBarColor(tempHum.CanopyTempAlarmLow, tempHum.CanopyTempAlarmHigh, tempHum.CanopyTemp, tempHum.CanopyTempAlarmOnOff))">
+                <MudText Typo="Typo.h4"><b>@tempHum.CanopyTemp °C</b></MudText>
+            </MudProgressLinear>
+        </MudStack>
     </MudItem>
     <MudItem xs="6">
         <MudStack Spacing="3">
@@ -42,7 +42,7 @@
                                Min="(double)(tempHum.SumpTempAlarmLow ?? 20) - 2"
                                Max="(double)(tempHum.SumpTempAlarmHigh ?? 20) + 2"
                                Style="height:40px"
-                               Color="@(getBarColor(tempHum.SumpTempAlarmLow, tempHum.TankTempAlarmHigh, tempHum.TankTemp, tempHum.TankTempAlarmOnOff))">
+                               Color="@(getBarColor(tempHum.SumpTempAlarmLow, tempHum.SumpTempAlarmHigh, tempHum.SumpTemp, tempHum.SumpTempAlarmOnOff))">
                 <MudText Typo="Typo.h4"><b>@tempHum.SumpTemp °C</b></MudText>
             </MudProgressLinear>
         </MudStack>

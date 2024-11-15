@@ -19,7 +19,7 @@
                     </MudSwitch>
 
                     <MudChip T="string" Color="@(aCControlDevice.RelayOneInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
-                        @(aCControlDevice.RelayOneInAlert ? "Alert Override!" : "No Alert Override")
+                        @(aCControlDevice.RelayOneInAlert ? "Alert!" : "No Alert")
                     </MudChip>
                     <MudSelect Label="Select Alert Trigger Device" @bind-Value="aCControlDevice.RelayOneAlertNode">
                         <MudSelectItem Value="255">None</MudSelectItem>
@@ -49,7 +49,7 @@
                                Disabled="@aCControlDevice.RelayTwoInAlert">
                     </MudSwitch>
                     <MudChip T="string" Color="@(aCControlDevice.RelayTwoInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
-                        @(aCControlDevice.RelayTwoInAlert ? "Alert Override!" : "No Alert Override")
+                        @(aCControlDevice.RelayTwoInAlert ? "Alert!" : "No Alert")
                     </MudChip>
                     <MudSelect Label="Select Alert Trigger Device" @bind-Value="aCControlDevice.RelayTwoAlertNode">
                         <MudSelectItem Value="255">None</MudSelectItem>

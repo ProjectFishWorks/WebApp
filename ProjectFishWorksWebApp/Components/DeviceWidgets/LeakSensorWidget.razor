@@ -2,7 +2,7 @@
 @using ProjectFishWorksWebApp.Models.DeviceModels
 @inject MQTTnet.ClientLib.MqttService MqttService
 
-    <MudStack Row="true">
+    <MudStack>
         @if (leakSensorDevice.Leak1Detected || leakSensorDevice.Leak2Detected || leakSensorDevice.Leak3Detected || leakSensorDevice.Leak4Detected)
         {
             <MudChip T="string"
