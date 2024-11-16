@@ -26,7 +26,7 @@
         </MudCardHeader>
         <MudCardContent>
                 <MudItem xs="2">
-                    <MudNumericField @bind-Value="_historyHours" @bind-Value:after="onHoursUpdate" Label="Hours" Min="1" Max="24*7" FullWidth="false" />
+                    <MudNumericField HideSpinButtons="true" @bind-Value="_historyHours" @bind-Value:after="onHoursUpdate" Label="Hours" Min="1" Max="24*7" FullWidth="false" />
                 </MudItem>
 
             @if (HistoryData != null)
