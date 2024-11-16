@@ -53,7 +53,7 @@
             }
             set
             {
-                sendMessageData(nodeID, 2561,(ulong)(value * 1000));
+                sendMessageData(nodeID, 2561,(float)value);
             }
         }
 
@@ -70,7 +70,7 @@
             }
             set
             {
-                sendMessageData(nodeID, 2562, (ulong)(value * 1000));
+                sendMessageData(nodeID, 2562, (float)value);
             }
         }
 

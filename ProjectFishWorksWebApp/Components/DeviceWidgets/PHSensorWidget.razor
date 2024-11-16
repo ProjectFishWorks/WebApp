@@ -3,24 +3,16 @@
 @inject MQTTnet.ClientLib.MqttService MqttService
 
 
-
-<MudText Typo="Typo.h6">pH Sensor Test</MudText>
-<MudGrid>
-    <MudItem xs="6">
-        <MudStack Spacing="3">
-            <MudProgressLinear 
-                               Value="(double)((PHsensor.pHvalue ?? 0) -0)"
-                               Min="(double)((PHsensor.pHAlarmLow ?? 0) - 0)"
-                               Max="(double)((PHsensor.pHAlarmHigh ?? 14) + 14)"
-                               Style="height:40px"
-                               Color="MudBlazor.Color.Warning">
-                               <MudText Typo="Typo.h4">
-                               <b>@(Math.Round((decimal)PHsensor.pHvalue,2))</b>
-                               </MudText>
-            </MudProgressLinear>
-        </MudStack>
-    </MudItem>
-</MudGrid>
+<MudProgressLinear 
+                    Value="(double)PHsensor.pHvalue"
+                    Min="0"
+                    Max="14"
+                    Style="height:40px"
+                    Color="getBarColor(PHsensor.pHAlarmLow, PHsensor.pHAlarmHigh,PHsensor.pHvalue,PHsensor.pHAlarmOnOff)">
+                    <MudText Typo="Typo.h4">
+                    <b>@(Math.Round((decimal)PHsensor.pHvalue,2))</b>
+                    </MudText>
+</MudProgressLinear>
 
 @code {
 
@@ -41,15 +33,12 @@
         {
             return MudBlazor.Color.Success;
         }
-        /*if (!alarm)
+        if (!alarm)
         {
             return MudBlazor.Color.Success;
-        }*/
-        if (value < min)
-        {
-            return MudBlazor.Color.Info;
         }
-        else if (value > max)
+
+        if (value < min || value > max)
         {
             return MudBlazor.Color.Error;
         }

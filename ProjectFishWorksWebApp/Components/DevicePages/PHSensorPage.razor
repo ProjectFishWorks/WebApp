@@ -7,24 +7,15 @@
 
 <MudCard>
     <MudCardContent>
-        <MudGrid>
-            <MudItem xs="6">
-                <MudStack Spacing="3">
-                    <MudProgressLinear Value
-                                       Value="(double)((PHsensor.pHvalue ?? 0) -0)"
-                                       Min="(double)((PHsensor.pHAlarmLow ?? 0) - 0)"
-                                       Max="(double)((PHsensor.pHAlarmHigh ?? 14) + 14)"
-                                       Style="height:40px"
-                                       Color="@(getBarColor(PHsensor.CanopyHumAlarmLow, PHsensor.CanopyHumAlarmHigh, PHsensor.CanopyHum, PHsensor.CanopyHumAlarmOnOff))">
-                        <MudText Typo="Typo.h4">
-                            <b>@(Math.Round((decimal)PHsensor.pHvalue, 2))</b>
-                        </MudText>
-                        <MudText Typo="Typo.h4"><b>@PHsensor.CanopyHum %</b></MudText>
-                    </MudProgressLinear>
-                    KS
-                </MudStack>
-            </MudItem>
-        </MudGrid>
+        <MudProgressLinear Value="(double)PHsensor.pHvalue"
+                           Min="0"
+                           Max="14"
+                           Style="height:40px"
+                           Color="getBarColor(PHsensor.pHAlarmLow, PHsensor.pHAlarmHigh,PHsensor.pHvalue,PHsensor.pHAlarmOnOff)">
+            <MudText Typo="Typo.h4">
+                <b>@(Math.Round((decimal)PHsensor.pHvalue, 2))</b>
+            </MudText>
+        </MudProgressLinear>
     </MudCardContent>
 
 </MudCard>
@@ -34,17 +25,15 @@
         <MudText Typo="Typo.h4">Alarms</MudText>
     </MudCardHeader>
     <MudCardContent>
-        <MudGrid Spacing="10">
-            <MudItem xs="6">
                 <MudToggleIconButton @bind-Toggled="PHsensor.pHAlarmOnOff"
                                      Icon="@Icons.Material.Filled.AlarmOff"
                                      Color="MudBlazor.Color.Warning"
                                      ToggledIcon="@Icons.Material.Filled.AlarmOn"
                                      ToggledColor="MudBlazor.Color.Tertiary"
                                      title="@(PHsensor.pHAlarmOnOff ? "On" : "Off")" />
-                Canopy Humidity
+                pH Value
 
-                @if (PHsensor.CanopyHumAlarmOnOff)
+                @if (PHsensor.pHAlarmOnOff)
                 {
                     <MudNumericField @bind-Value="PHsensor.pHAlarmLow"
                                      Label="Low"
@@ -56,19 +45,12 @@
                                      Variant="Variant.Text"
                                      Min="0" Max="14" />
                 }
-            </MudItem>
 
 
-        </MudGrid>
-        <MudGrid Spacing="10">
-
-
-
-        </MudGrid>
     </MudCardContent>
 </MudCard>
 
-<HistoryChart HistoryData="@PHsensor.PHsensorHistory"
+<HistoryChart HistoryData="@PHsensor.pHHistory"
               NodeID="@NodeID"
               MessageIDs="@historyMessageIDs"
               RequestData="PHsensorChartRequestData"
@@ -86,11 +68,11 @@
     [Parameter]
     public int NodeID { get; set; } = 0;
 
-    PH_SensorDevice PHsensor;
+    PHSensorDevice PHsensor;
 
     private Dictionary<int, HistoryChartMessageIDData> historyMessageIDs = new Dictionary<int, HistoryChartMessageIDData>
     {
-        {2560, new HistoryChartMessageIDData{PerameterName = "Canopy Temperature", XAxisName = "Time", YAxisName = "Temperature"}}
+        {2560, new HistoryChartMessageIDData{PerameterName = "pH", XAxisName = "Time", YAxisName = "pH"}}
     };
 
 
@@ -105,13 +87,13 @@
     //Update the historical data and chart
     private void PHsensorChartUpdateData(object sender, HistoryChartDataEventArgs e)
     {
-        PHsensor.PHsensorHistory = PHsensor.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        PHsensor.pHHistory = PHsensor.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
         base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
     }
 
     protected override async Task OnInitializedAsync()
     {
-        this.PHsensor = new PH_SensorDevice(MqttService, this.SystemID, this.BaseStationID, this.NodeID);
+        this.PHsensor = new PHSensorDevice(MqttService, this.SystemID, this.BasestationID, this.NodeID);
 
         if (MqttService.IsConnected())
         {
@@ -128,7 +110,7 @@
     //Update the historical data and chart
     private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
     {
-        PHsensor.PHsensorHistory = PHsensor.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        PHsensor.pHHistory = PHsensor.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
         base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
     }
 
@@ -151,11 +133,8 @@
         {
             return MudBlazor.Color.Success;
         }
-        if (value < min)
-        {
-            return MudBlazor.Color.Info;
-        }
-        else if (value > max)
+
+        if (value < min || value > max)
         {
             return MudBlazor.Color.Error;
         }
