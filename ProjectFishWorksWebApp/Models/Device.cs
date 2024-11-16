@@ -168,6 +168,13 @@ namespace ProjectFishWorksWebApp.Models
             await mqttService.Publish(message);
         }
 
+        async public void sendMessageData(int nodeID, int messageID, float data)
+        {
+            ulong uLongData = (ulong)BitConverter.SingleToUInt32Bits(data);
+            Console.WriteLine(uLongData);
+            sendMessageData(nodeID, messageID, uLongData);
+        }
+
     }
 }
 

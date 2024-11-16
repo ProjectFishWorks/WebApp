@@ -3,10 +3,10 @@
     public class PHSensorDevice : Device
     {
         private int nodeID;
-        private float? _pHvalue = 0;
-        private bool _pHAlarmOnOff = false;
-        private float? _pHAlarmLow = 0;
-        private float? _pHAlarmHigh = 0;
+        //private float? _pHvalue = 7;
+        //private bool _pHAlarmOnOff = false;
+        //private float? _pHAlarmLow = 4;
+        //private float? _pHAlarmHigh = 10;
         private int decimalCount = 1;
 
         public PHSensorDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
@@ -30,13 +30,12 @@
         {
             get
             {
-                _pHvalue = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2560).dataFloat, decimalCount);
+                var _pHvalue = getMessagePayload(nodeID, 2560).dataFloat;
+                if (_pHvalue == null)
+                {
+                    return -1;
+                }
                 return _pHvalue;
-            }
-            set
-            {
-                _pHvalue = value;
-                sendMessageData(nodeID, 2560, (ulong)_pHvalue);
             }
         }
 
@@ -44,13 +43,17 @@
         {
             get
             {
-                _pHAlarmLow = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2561).dataFloat, decimalCount);
+                var _pHAlarmLow = getMessagePayload(nodeID, 2561).dataFloat;
+                if (_pHAlarmLow == null)
+                {
+                    return -1;
+                }
+                
                 return _pHAlarmLow;
             }
             set
             {
-                _pHAlarmLow = value;
-                sendMessageData(nodeID, 2561, (ulong)_pHAlarmLow);
+                sendMessageData(nodeID, 2561,(float)value);
             }
         }
 
@@ -58,13 +61,16 @@
         {
             get
             {
-                _pHAlarmHigh = (float?)Math.Round((decimal)getMessagePayload(nodeID, 2562).dataFloat, decimalCount);
+                var _pHAlarmHigh = getMessagePayload(nodeID, 2562).dataFloat;
+                if (_pHAlarmHigh == null)
+                {
+                    return -1;
+                }
                 return _pHAlarmHigh;
             }
             set
             {
-                _pHAlarmHigh = value;
-                sendMessageData(nodeID, 2562, (ulong)_pHAlarmHigh);
+                sendMessageData(nodeID, 2562, (float)value);
             }
         }
 
@@ -72,28 +78,12 @@
         {
             get
             {
-                if (getMessagePayload(nodeID, 2563).data == 1)
-                {
-                    _pHAlarmOnOff = true;
-                }
-                else
-                {
-                    _pHAlarmOnOff = false;
-                }
-                return _pHAlarmOnOff;
+                return getMessagePayload(nodeID, 2563).data == 1;
             }
             set
             {
-                if (value == true)
-                {
-                    sendMessageData(nodeID, 2563, 1);
-                }
-                else
-                {
-                    sendMessageData(nodeID, 2561, 0);
-                }
+                sendMessageData(nodeID, 2563, value ? (ulong)1 : (ulong)0);
             }
         }
-
     }
 }
