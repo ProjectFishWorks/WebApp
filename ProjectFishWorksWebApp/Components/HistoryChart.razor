@@ -25,36 +25,47 @@
 
         </MudCardHeader>
         <MudCardContent>
+            <MudStack Spacing="4">
                 <MudItem xs="2">
                     <MudNumericField HideSpinButtons="true" @bind-Value="_historyHours" @bind-Value:after="onHoursUpdate" Label="Hours" Min="1" Max="24*7" FullWidth="false" />
                 </MudItem>
 
+            @if ((HistoryReceivedHours - 1) < _historyHours && HistoryData != null)
+                {
+                    <MudText Typo="Typo.h4" Align="MudBlazor.Align.Center">History Loading</MudText>
+                    <MudProgressLinear Size="MudBlazor.Size.Large" Min="0" Max="_historyHours" Value="HistoryReceivedHours - 1" Color="MudBlazor.Color.Primary"></MudProgressLinear>
+                }
+
+
+
+
             @if (HistoryData != null)
             {
-                <ApexChart TItem="HistoryDataRow"
-                           Options="@_options"
-                           XAxisType="XAxisType.Datetime"
-                           @ref="_chart">
-                    <ApexPointSeries TItem="HistoryDataRow"
-                                     Items="_historyData"
-                                     Name="Value"
-                                     SeriesType="SeriesType.Line"
-                                     XValue="@(e => e.time)"
-                                     YValue="@(e => isFloatData ? e.dataFloat : e.data)"
-                                     OrderBy="e=>e.X" />
+                @if ((HistoryReceivedHours - 1) >= _historyHours)
+                {
+                    <ApexChart TItem="HistoryDataRow"
+                               Options="@_options"
+                               XAxisType="XAxisType.Datetime"
+                               @ref="_chart">
+                        <ApexPointSeries TItem="HistoryDataRow"
+                                         Items="_historyData"
+                                         Name="Value"
+                                         SeriesType="SeriesType.Line"
+                                         XValue="@(e => e.time)"
+                                         YValue="@(e => isFloatData ? e.dataFloat : e.data)"
+                                         OrderBy="e=>e.X" />
 
-                </ApexChart>
+                    </ApexChart>
+                }
             }
             else
             {
-                <MudGrid>
-                    <MudItem xs="12">
-                        <MudText Typo="Typo.h4" Align="MudBlazor.Align.Center">History Loading</MudText>
-                        <MudProgressLinear Size="MudBlazor.Size.Medium" Color=" MudBlazor.Color.Primary" Indeterminate="true" />
-                    </MudItem>
-                </MudGrid>
+                <MudText Typo="Typo.h4" Align="MudBlazor.Align.Center">History Loading</MudText>
+                <MudProgressLinear Size="MudBlazor.Size.Medium" Color=" MudBlazor.Color.Primary" Indeterminate="true" />
+  
 
             }
+            </MudStack>
         </MudCardContent>
     </MudCard>
 
@@ -97,6 +108,9 @@
 
     [Parameter]
     public bool isFloatData { get; set; } = false;
+
+    [Parameter]
+    public int HistoryReceivedHours { get; set; }
 
     private List<HistoryDataRow>? _historyData;
 
