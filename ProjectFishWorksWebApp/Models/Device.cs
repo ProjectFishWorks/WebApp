@@ -16,11 +16,20 @@ namespace ProjectFishWorksWebApp.Models
 
         //Basestation ID of the device
         private int basestationID;
+
+        private int _historyReceivedHours = 0;
         public Device(MQTTnet.ClientLib.MqttService mqttService,int systemID, int basestationID)
         {
             this.mqttService = mqttService;
             this.systemID = systemID;
             this.basestationID = basestationID;
+        }
+
+        public int HistoryReceivedHours { 
+            get
+            {
+                return _historyReceivedHours;
+            }
         }
 
         //Request historical data from a device
@@ -63,6 +72,8 @@ namespace ProjectFishWorksWebApp.Models
 
                 //Get all the history responses
                 var responses = mqttService.AllMessages.Where(kvp => kvp.Key.StartsWith(responseTopic)).OrderBy(kvp => kvp.Key);
+
+                _historyReceivedHours = responses.Count();
 
                 //List of time and data pairs
                 List<HistoryDataRow> chartData = new List<HistoryDataRow>();
