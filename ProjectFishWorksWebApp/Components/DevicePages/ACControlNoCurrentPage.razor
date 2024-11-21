@@ -1,0 +1,171 @@
+﻿@using MQTTnet
+@using ProjectFishWorksWebApp.Models
+@using ProjectFishWorksWebApp.Models.DeviceModels
+@using ApexCharts
+
+@inject MQTTnet.ClientLib.MqttService MqttService
+
+<MudGrid>
+    <MudItem xs="6">
+        <MudCard>
+            <MudCardContent>
+                <MudStack>
+                    <MudText Typo="Typo.h4">Outlet #1</MudText>
+                    <MudSwitch Size="MudBlazor.Size.Large"
+                               @bind-Value="aCControlDevice.Relay1Control"
+                               Color="MudBlazor.Color.Success"
+                               UncheckedColor="MudBlazor.Color.Error"
+                               Disabled="@aCControlDevice.RelayOneInAlert">
+                    </MudSwitch>
+
+                    <MudChip T="string" Color="@(aCControlDevice.RelayOneInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
+                        @(aCControlDevice.RelayOneInAlert ? "Alert!" : "No Alert")
+                    </MudChip>
+                    <MudSelect Label="Select Alert Trigger Device" @bind-Value="aCControlDevice.RelayOneAlertNode">
+                        <MudSelectItem Value="255">None</MudSelectItem>
+                        @foreach (var node in Nodes)
+                        {
+                            <MudSelectItem Value="@node.Key">@node.Value</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudSwitch @bind-Value="aCControlDevice.RelayOneAlertInvert"
+                               Color="MudBlazor.Color.Success"
+                               UncheckedColor="MudBlazor.Color.Error">
+                        @(aCControlDevice.RelayOneAlertInvert ? "Relay #1 will turn ON during alert" : "Relay #1 will turn OFF during alert")
+                    </MudSwitch>
+                </MudStack>
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+    <MudItem xs="6">
+        <MudCard>
+            <MudCardContent>
+                <MudStack>
+                    <MudText Typo="Typo.h4">Outlet #2</MudText>
+                    <MudSwitch Size="MudBlazor.Size.Large"
+                               @bind-Value="aCControlDevice.Relay2Control"
+                               Color="MudBlazor.Color.Success"
+                               UncheckedColor="MudBlazor.Color.Error"
+                               Disabled="@aCControlDevice.RelayTwoInAlert">
+                    </MudSwitch>
+                    <MudChip T="string" Color="@(aCControlDevice.RelayTwoInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
+                        @(aCControlDevice.RelayTwoInAlert ? "Alert!" : "No Alert")
+                    </MudChip>
+                    <MudSelect Label="Select Alert Trigger Device" @bind-Value="aCControlDevice.RelayTwoAlertNode">
+                        <MudSelectItem Value="255">None</MudSelectItem>
+                        @foreach (var node in Nodes)
+                        {
+                            <MudSelectItem Value="@node.Key">@node.Value</MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudSwitch @bind-Value="aCControlDevice.RelayTwoAlertInvert"
+                               Color="MudBlazor.Color.Success"
+                               UncheckedColor="MudBlazor.Color.Error">
+                        @(aCControlDevice.RelayTwoAlertInvert ? "Relay #1 will turn ON during alert" : "Relay #1 will turn OFF during alert")
+                    </MudSwitch>
+                </MudStack>
+            </MudCardContent>
+        </MudCard>
+
+    </MudItem>
+</MudGrid>
+
+
+@code {
+
+    [Parameter]
+    public int systemID { get; set; } = 0;
+    [Parameter]
+    public int basestationID { get; set; } = 0;
+    [Parameter]
+    public int nodeID { get; set; } = 0;
+
+    ACControlDevice aCControlDevice;
+
+    BaseStationManifests baseStationManifests;
+
+    private Dictionary<int, string> Nodes
+    {
+        get
+        {
+            Dictionary<int, string> nodes = new();
+
+            if(baseStationManifests == null)
+            {
+                return nodes;
+            }
+
+            var devices = baseStationManifests.Manifests.Find(x => x.BaseStationID == basestationID).Devices;
+
+            foreach(var device in devices)
+            {
+                nodes.Add(device.NodeID, device.DeviceName);
+            }
+            return nodes;
+
+        }
+    }
+
+    //Request historical data
+    private void historyChartRequestData(object sender, HistoryChartDataEventArgs e)
+    {
+        aCControlDevice.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+    }
+
+    //Update the historical data and chart
+    private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
+    {
+        aCControlDevice.CurrentHistory = aCControlDevice.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        //Create the TesterHatDevice data model
+        this.aCControlDevice = new ACControlDevice(MqttService, this.systemID, this.basestationID, this.nodeID);
+
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+
+        baseStationManifests = new BaseStationManifests(systemID, MqttService);
+    }
+
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        base.StateHasChanged();
+    }
+
+    private MudBlazor.Color getCurrentBarColor(float? current){
+        if(current == null)
+        {
+            return MudBlazor.Color.Success;
+        }
+        if(current < 10){
+            return MudBlazor.Color.Success;
+        }else{
+            return MudBlazor.Color.Error;
+        }
+    }
+
+    private MudBlazor.Color getWattageBarColor(float? wattage)
+    {
+        if (wattage == null)
+        {
+            return MudBlazor.Color.Success;
+        }
+        if (wattage < 1200)
+        {
+            return MudBlazor.Color.Success;
+        }
+        else
+        {
+            return MudBlazor.Color.Error;
+        }
+    }
+
+}
+
