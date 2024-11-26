@@ -15,8 +15,16 @@
                     return null;
                 }
                 var f =  BitConverter.ToSingle(BitConverter.GetBytes(data));
-                return (decimal)f;
-                
+                try
+                {
+                    return (decimal)f;
+                }catch (Exception e)
+                {
+                    Console.WriteLine("Error converting to decimal");
+                    return null;
+                }
+
+
             }
         }
 
