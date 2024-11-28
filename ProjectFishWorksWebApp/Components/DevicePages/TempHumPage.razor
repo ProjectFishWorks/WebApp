@@ -10,7 +10,7 @@
         <MudGrid>
             <MudItem xs="6">
                 <MudStack Spacing="3">
-                    <MudText Typo="Typo.h6">Canopy</MudText>
+                    <MudText Typo="Typo.h6">Ambient Humidity</MudText>
                     <MudProgressLinear Value="(double)tempHum.CanopyHum"
                                        Min="(double)((tempHum.CanopyHumAlarmLow ?? 10) - 10)"
                                        Max="(double)((tempHum.CanopyHumAlarmHigh ?? 90) + 10)"
@@ -19,7 +19,7 @@
                         <MudText Typo="Typo.h4"><b>@tempHum.CanopyHum %</b></MudText>
                     </MudProgressLinear>
 
-                    <MudText Typo="Typo.h6">Canopy</MudText>
+                    <MudText Typo="Typo.h6">Ambient Temp</MudText>
                     <MudProgressLinear Value="(double)tempHum.CanopyTemp"
                                        Min="(double)(tempHum.CanopyTempAlarmLow ?? 20) - 5"
                                        Max="(double)(tempHum.CanopyTempAlarmHigh ?? 20) + 5"
@@ -31,7 +31,7 @@
             </MudItem>
             <MudItem xs="6">
                 <MudStack Spacing="3">
-                    <MudText Typo="Typo.h6">Tank</MudText>
+                    <MudText Typo="Typo.h6">Tank Temp</MudText>
                     <MudProgressLinear Value="(double)tempHum.TankTemp"
                                        Min="(double)(tempHum.TankTempAlarmLow ?? 20) - 2"
                                        Max="(double)(tempHum.TankTempAlarmHigh ?? 20) + 2"
@@ -40,7 +40,7 @@
                         <MudText Typo="Typo.h4"><b>@tempHum.TankTemp °C</b></MudText>
                     </MudProgressLinear>
 
-                    <MudText Typo="Typo.h6">Sump</MudText>
+                    <MudText Typo="Typo.h6">Sump Temp</MudText>
                     <MudProgressLinear Value="(double)tempHum.SumpTemp"
                                        Min="(double)(tempHum.SumpTempAlarmLow ?? 20) - 2"
                                        Max="(double)(tempHum.SumpTempAlarmHigh ?? 20) + 2"
@@ -71,19 +71,19 @@
                                      ToggledIcon="@Icons.Material.Filled.AlarmOn"
                                      ToggledColor="MudBlazor.Color.Tertiary"
                                      title="@(tempHum.CanopyHumAlarmOnOff ? "On" : "Off")" />
-                Canopy Humidity
+                Ambient Humidity %
 
                     @if (tempHum.CanopyHumAlarmOnOff)
                     {   
                         <MudNumericField @bind-Value="tempHum.CanopyHumAlarmLow"
                                          Label="Low"
                                          Variant="Variant.Text"
-                                         Min="0" Max="100" />
-
+                                        Min="0" Max="100"/>
+                                                                                                                     
                         <MudNumericField @bind-Value="tempHum.CanopyHumAlarmHigh"
                                          Label="High"
                                          Variant="Variant.Text"
-                                         Min="0" Max="100" />
+                                         Min="0" Max="100"/> 
                     }
             </MudItem>
             <MudItem xs="6">
@@ -93,7 +93,7 @@
                                      ToggledIcon="@Icons.Material.Filled.AlarmOn"
                                      ToggledColor="MudBlazor.Color.Tertiary"
                                      title="@(tempHum.TankTempAlarmOnOff ? "On" : "Off")" />
-                Tank Temperature
+                Tank Temperature °C
 
                 <span>
                     @if (tempHum.TankTempAlarmOnOff)
@@ -121,7 +121,7 @@
                                      ToggledIcon="@Icons.Material.Filled.AlarmOn"
                                      ToggledColor="MudBlazor.Color.Tertiary"
                                      title="@(tempHum.CanopyTempAlarmOnOff ? "On" : "Off")" />
-                Canopy Temperature
+                Ambient Temperature °C
 
                 @if (tempHum.CanopyTempAlarmOnOff)
                 {
@@ -145,7 +145,7 @@
                                      ToggledIcon="@Icons.Material.Filled.AlarmOn"
                                      ToggledColor="MudBlazor.Color.Tertiary"
                                      title="@(tempHum.SumpTempAlarmOnOff ? "On" : "Off")" />
-                Sump Temperature
+                Sump Temperature °C
 
                 @if (tempHum.SumpTempAlarmOnOff)
                 {
@@ -183,10 +183,10 @@
 
     private Dictionary<int, HistoryChartMessageIDData> historyMessageIDs = new Dictionary<int, HistoryChartMessageIDData>
     {
-        {2560, new HistoryChartMessageIDData{PerameterName = "Canopy Temperature", XAxisName = "Time", YAxisName = "Temperature"}},
-        {2564, new HistoryChartMessageIDData{PerameterName = "Canopy Humidity", XAxisName = "Time", YAxisName = "Humidity"}},
-        {2572, new HistoryChartMessageIDData{PerameterName = "Tank Temperature", XAxisName = "Time", YAxisName = "Temperature"}},
-        {2568, new HistoryChartMessageIDData{PerameterName = "Sump Temperature", XAxisName = "Time", YAxisName = "Temperature"}}
+        {2560, new HistoryChartMessageIDData{PerameterName = "Ambient Temperature", XAxisName = "Time", YAxisName = "Temperature °C"}},
+        {2564, new HistoryChartMessageIDData{PerameterName = "Ambient Humidity", XAxisName = "Time", YAxisName = "Humidity %"}},
+        {2572, new HistoryChartMessageIDData{PerameterName = "Tank Temperature", XAxisName = "Time", YAxisName = "Temperature °C"}},
+        {2568, new HistoryChartMessageIDData{PerameterName = "Sump Temperature", XAxisName = "Time", YAxisName = "Temperature °C"}}
     };
 
     TempHumDevice tempHum;
