@@ -7,7 +7,7 @@
 <MudGrid>
     <MudItem xs="6">
         <MudStack Spacing="3">
-            <MudText Typo="Typo.h6">Canopy</MudText>
+            <MudText Typo="Typo.h6">Ambient Humidity</MudText>
             <MudProgressLinear Value="(double)tempHum.CanopyHum"
                                Min="(double)((tempHum.CanopyHumAlarmLow ?? 10) - 10)"
                                Max="(double)((tempHum.CanopyHumAlarmHigh ?? 90) + 10)"
@@ -16,7 +16,7 @@
                 <MudText Typo="Typo.h4"><b>@tempHum.CanopyHum %</b></MudText>
             </MudProgressLinear>
 
-            <MudText Typo="Typo.h6">Canopy</MudText>
+            <MudText Typo="Typo.h6">Ambient Temp</MudText>
             <MudProgressLinear Value="(double)tempHum.CanopyTemp"
                                Min="(double)(tempHum.CanopyTempAlarmLow ?? 20) - 5"
                                Max="(double)(tempHum.CanopyTempAlarmHigh ?? 20) + 5"
@@ -28,7 +28,7 @@
     </MudItem>
     <MudItem xs="6">
         <MudStack Spacing="3">
-            <MudText Typo="Typo.h6">Tank</MudText>
+            <MudText Typo="Typo.h6">Tank Temp</MudText>
             <MudProgressLinear Value="(double)tempHum.TankTemp"
                                Min="(double)(tempHum.TankTempAlarmLow ?? 20) - 2"
                                Max="(double)(tempHum.TankTempAlarmHigh ?? 20) + 2"
@@ -37,7 +37,7 @@
                 <MudText Typo="Typo.h4"><b>@tempHum.TankTemp °C</b></MudText>
             </MudProgressLinear>
 
-            <MudText Typo="Typo.h6">Sump</MudText>
+            <MudText Typo="Typo.h6">Sump Temp</MudText>
             <MudProgressLinear Value="(double)tempHum.SumpTemp"
                                Min="(double)(tempHum.SumpTempAlarmLow ?? 20) - 2"
                                Max="(double)(tempHum.SumpTempAlarmHigh ?? 20) + 2"
