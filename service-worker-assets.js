@@ -17,11 +17,11 @@
       "url": "favicon.png"
     },
     {
-      "hash": "sha256-DbpQaq68ZSb5IoPosBErM1QWBfsbTxpJqhU0REi6wP4=",
+      "hash": "sha256-P9wwdUgn\/XJ4cAJvVw3c4o+Hy8FWVOLLhBFCwe1TD9Y=",
       "url": "icon-192.png"
     },
     {
-      "hash": "sha256-oEo6d+KqX5fjxTiZk\/w9NB3Mi0+ycS5yLwCKwr4IkbA=",
+      "hash": "sha256-pkUfpfT0CngRQEvMnuyMy3Vr3hf9bhxW\/eeSfC4ROt4=",
       "url": "icon-512.png"
     },
     {
@@ -69,7 +69,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-bRI3yKlDYeSs8fUySw7eCBVSUmuz20eEbdv32OlQL8k=",
+      "hash": "sha256-+zRhTWNZE1o18ixAGvcsQZQeZRkDmrOoiQHQQBR+BKk=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -149,7 +149,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-Xgpbx9wJKb4xARfasjiSwuxX6HHFAPzH6WWtHbLdSDc=",
+      "hash": "sha256-J0JZ22aOWKm\/Ou7kNnPD9kp5b6t2LgCN6VnLm7z2HNI=",
       "url": "_framework\/MQTTnet.ClientLib.wasm"
     },
     {
@@ -169,7 +169,7 @@
       "url": "_framework\/Newtonsoft.Json.wasm"
     },
     {
-      "hash": "sha256-NtwJh5bVcRqsYSt+oThgKzWy+iSvtKysDESYMBxaPqI=",
+      "hash": "sha256-U\/tRBgZiAx8xC72aUzLyComFjc8Ujc+ns5t9xYIL1N4=",
       "url": "_framework\/ProjectFishWorksWebApp.wasm"
     },
     {
@@ -417,5 +417,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "WtQ\/PyNt"
+  "version": "Uv9uN5U7"
 };
