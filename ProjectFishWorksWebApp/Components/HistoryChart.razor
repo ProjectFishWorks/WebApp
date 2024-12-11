@@ -122,6 +122,8 @@
 
     private int _messageID;
 
+    private bool _firstHistoryRender = true;
+
     //Number of hours to get the history data for
     private int _historyHours = 1;
 
@@ -249,8 +251,16 @@
                 StrokeDashArray = 4
             };
 
-        onMessageIDChange();
+    }
 
-
+    protected override bool ShouldRender()
+    {
+        if (_chart != null && _firstHistoryRender)
+        {
+            onMessageIDChange();
+            _firstHistoryRender = false;
+            Console.WriteLine("First History Render");
+        }
+        return true;
     }
 }
