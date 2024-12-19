@@ -9,6 +9,7 @@
     <MudCardContent>
         <MudItem xs="6">
             <MudNumericField @bind-Value="leakSensorDevice.LeakSensorSensitivity" Label="Leak Sensor Sensitivity" Variant="Variant.Outlined" Min="5" />
+            <MudProgressLinear @bind-Value="leakSensorDevice.LeakSensorSensitivity" Variant="Variant.Filled" />
         </MudItem>
         <MudGrid>
             <MudItem xs=6>
