@@ -6,6 +6,7 @@
         private bool _LeakDetected;
         private bool _HighWaterLevel;
         private bool _LowWaterLevel;
+        private int _LeakSensorSensitivity;
 
 
         public LeakSensorDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
@@ -13,6 +14,19 @@
             this.nodeID = nodeID;
         }
 
+        public int LeakSensorSensitivity
+        {
+            get 
+            {
+                _LeakSensorSensitivity = (int)(int?)getMessagePayload(nodeID, 2559).data;
+                return _LeakSensorSensitivity;
+            }
+            set
+            {
+                _LeakSensorSensitivity = value;
+                sendMessageData(nodeID, 2559, (ulong)_LeakSensorSensitivity);
+            }
+        }
 
         public bool Leak1Detected
         {
