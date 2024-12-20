@@ -6,7 +6,10 @@
         private bool _LeakDetected;
         private bool _HighWaterLevel;
         private bool _LowWaterLevel;
-        private int? _LeakSensorSensitivity;
+        private int? _LeakSensor1Sensitivity;
+        private int? _LeakSensor2Sensitivity;
+        private int? _LeakSensor3Sensitivity;
+        private int? _LeakSensor4Sensitivity;
 
 
         public LeakSensorDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
@@ -14,14 +17,14 @@
             this.nodeID = nodeID;
         }
 
-        public int LeakSensorSensitivity
+        public int LeakSensor1Sensitivity
         {
             get 
             {
-                _LeakSensorSensitivity = (int?)getMessagePayload(nodeID, 2559).data;
-                if (_LeakSensorSensitivity.HasValue)
+                _LeakSensor1Sensitivity = (int?)getMessagePayload(nodeID, 2556).data;
+                if (_LeakSensor1Sensitivity.HasValue)
                 {
-                    return _LeakSensorSensitivity.Value;
+                    return _LeakSensor1Sensitivity.Value;
                 }
                 else
                 {
@@ -30,8 +33,71 @@
             }
             set
             {
-                _LeakSensorSensitivity = value;
-                sendMessageData(nodeID, 2559, (ulong)_LeakSensorSensitivity);
+                _LeakSensor1Sensitivity = value;
+                sendMessageData(nodeID, 2556, (ulong)(_LeakSensor1Sensitivity));
+            }
+        }
+
+        public int LeakSensor2Sensitivity
+        {
+            get
+            {
+                _LeakSensor2Sensitivity = (int?)getMessagePayload(nodeID, 2557).data;
+                if (_LeakSensor2Sensitivity.HasValue)
+                {
+                    return _LeakSensor2Sensitivity.Value;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            set
+            {
+                _LeakSensor2Sensitivity = value;
+                sendMessageData(nodeID, 2557, (ulong)_LeakSensor2Sensitivity);
+            }
+        }
+
+        public int LeakSensor3Sensitivity
+        {
+            get
+            {
+                _LeakSensor3Sensitivity = (int?)getMessagePayload(nodeID, 2558).data;
+                if (_LeakSensor3Sensitivity.HasValue)
+                {
+                    return _LeakSensor3Sensitivity.Value;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            set
+            {
+                _LeakSensor3Sensitivity = value;
+                sendMessageData(nodeID, 2558, (ulong)_LeakSensor3Sensitivity);
+            }
+        }
+
+        public int LeakSensor4Sensitivity
+        {
+            get
+            {
+                _LeakSensor4Sensitivity = (int?)getMessagePayload(nodeID, 2559).data;
+                if (_LeakSensor4Sensitivity.HasValue)
+                {
+                    return _LeakSensor4Sensitivity.Value;
+                }
+                else
+                {
+                    return 1;
+                }
+            }
+            set
+            {
+                _LeakSensor4Sensitivity = value;
+                sendMessageData(nodeID, 2559, (ulong)_LeakSensor4Sensitivity);
             }
         }
 
