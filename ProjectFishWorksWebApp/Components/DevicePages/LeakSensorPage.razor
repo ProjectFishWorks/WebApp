@@ -40,6 +40,7 @@
             <MudItem xs=6>
                 <MudText Typo="Typo.h6">Leak #2</MudText>
                 <MudNumericField 
+                    @bind-Value="leakSensorDevice.LeakSensor2Sensitivity"
                     Label="Sensor 2 Sensitivity"
                     Variant="Variant.Outlined"
                     Min="0" Max="100" 
