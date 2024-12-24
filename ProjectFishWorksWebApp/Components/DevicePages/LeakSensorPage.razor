@@ -10,6 +10,18 @@
         <MudGrid>
             <MudItem xs=6>
                 <MudText Typo="Typo.h6">Leak #1</MudText>
+                    <MudNumericField 
+                        @bind-Value="leakSensorDevice.LeakSensor1Sensitivity" 
+                        Label="Sensor 1 Sensitivity" 
+                        Variant="Variant.Outlined" 
+                        Min="0" Max="100" 
+                        />
+                    <MudProgressLinear 
+                        @bind-Value="leakSensorDevice.LeakSensor1Sensitivity" 
+                        Color="MudBlazor.Color.Warning"
+                        Rounded="true" MudBlazor.Size="Size.large"
+                        Style="height:10px;" 
+                        />
                 @if (leakSensorDevice.Leak1Detected == true)
                 {
                     <MudChip T="string"
@@ -27,6 +39,18 @@
             </MudItem>
             <MudItem xs=6>
                 <MudText Typo="Typo.h6">Leak #2</MudText>
+                <MudNumericField 
+                    @bind-Value="leakSensorDevice.LeakSensor2Sensitivity"
+                    Label="Sensor 2 Sensitivity"
+                    Variant="Variant.Outlined"
+                    Min="0" Max="100" 
+                    />
+                <MudProgressLinear 
+                    @bind-Value="leakSensorDevice.LeakSensor2Sensitivity"
+                    Color="MudBlazor.Color.Warning"
+                    Rounded="true" MudBlazor.Size="Size.large"
+                    Style="height:10px;"
+                    />
                 @if (leakSensorDevice.Leak2Detected == true)
                 {
                     <MudChip T="string"
@@ -44,6 +68,18 @@
             </MudItem>
             <MudItem xs=6>
                 <MudText Typo="Typo.h6">Leak #3</MudText>
+                <MudNumericField 
+                    @bind-Value="leakSensorDevice.LeakSensor3Sensitivity" 
+                    Label="Sensor 3 Sensitivity" 
+                    Variant="Variant.Outlined" 
+                    Min="5" Max="100"
+                    />
+                <MudProgressLinear 
+                    @bind-Value="leakSensorDevice.LeakSensor3Sensitivity"
+                    Color="MudBlazor.Color.Warning"
+                    Rounded="true" MudBlazor.Size="Size.large"
+                    Style="height:10px;"  
+                    />
                 @if (leakSensorDevice.Leak3Detected == true)
                 {
                     <MudChip T="string"
@@ -61,6 +97,18 @@
             </MudItem>
             <MudItem xs=6>
                 <MudText Typo="Typo.h6">Leak #4</MudText>
+                <MudNumericField 
+                    @bind-Value="leakSensorDevice.LeakSensor4Sensitivity" 
+                    Label="Sensor 4 Sensitivity" 
+                    Variant="Variant.Outlined" 
+                    Min="5" Max="100"
+                    />
+                <MudProgressLinear 
+                    @bind-Value="leakSensorDevice.LeakSensor4Sensitivity"
+                    Color="MudBlazor.Color.Warning"
+                    Rounded="true" MudBlazor.Size="Size.large"
+                    Style="height:10px;"  
+                    />
                 @if (leakSensorDevice.Leak4Detected == true)
                 {
                     <MudChip T="string"
