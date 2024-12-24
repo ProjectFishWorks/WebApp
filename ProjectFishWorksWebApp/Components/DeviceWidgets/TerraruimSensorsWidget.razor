@@ -1,0 +1,105 @@
+﻿@using MQTTnet
+@using ProjectFishWorksWebApp.Models
+@using ProjectFishWorksWebApp.Models.DeviceModels
+@inject MQTTnet.ClientLib.MqttService MqttService
+
+<MudGrid>
+    <MudItem xs="6">
+        <MudStack Spacing="3">
+            <MudText Typo="Typo.h6">Air Temp</MudText>
+            <MudProgressLinear Value="(double)terraruimSensors.Temp"
+                               Min="18"
+                               Max="28"
+                               Style="height:40px"
+                               Color="@(getBarColor(20, 25, terraruimSensors.Temp))">
+                <MudText Typo="Typo.h4"><b>@terraruimSensors.Temp °C</b></MudText>
+            </MudProgressLinear>
+
+            <MudText Typo="Typo.h6">Air Hum</MudText>
+            <MudProgressLinear Value="(double)terraruimSensors.Humidity"
+                               Min="0"
+                               Max="100"
+                               Style="height:40px"
+                               Color="@(getBarColor(70, 101, terraruimSensors.Humidity))">
+                <MudText Typo="Typo.h4"><b>@terraruimSensors.Humidity %</b></MudText>
+            </MudProgressLinear>
+        </MudStack>
+    </MudItem>
+    <MudItem xs="6">
+        <MudStack Spacing="3">
+            <MudText Typo="Typo.h6">Soil Temp</MudText>
+            <MudProgressLinear Value="(double)terraruimSensors.SoilTemp"
+                               Min="18"
+                               Max="28"
+                               Style="height:40px"
+                               Color="@(getBarColor(20, 25, terraruimSensors.SoilTemp))">
+                <MudText Typo="Typo.h4"><b>@terraruimSensors.SoilTemp °C</b></MudText>
+            </MudProgressLinear>
+
+            <MudText Typo="Typo.h6">Soil Moisture</MudText>
+            <MudProgressLinear Value="(double)terraruimSensors.SoilMoisture"
+                               Min="0"
+                               Max="3300"
+                               Style="height:40px"
+                               Color="@(getBarColor(1000, 2500, terraruimSensors.SoilMoisture))">
+                <MudText Typo="Typo.h4"><b>@terraruimSensors.SoilMoisture mV</b></MudText>
+            </MudProgressLinear>
+        </MudStack>
+    </MudItem>
+</MudGrid>
+
+
+
+@code {
+
+    [Parameter]
+    public int SystemID { get; set; }
+
+    [Parameter]
+    public int BaseStationID { get; set; }
+
+    [Parameter]
+    public int NodeID { get; set; }
+
+    
+
+    TerraruimSensorsDevice terraruimSensors;
+
+    protected override async Task OnInitializedAsync()
+    {
+        terraruimSensors = new TerraruimSensorsDevice(MqttService, this.SystemID, this.BaseStationID, this.NodeID);
+
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+    }
+
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        base.StateHasChanged();
+    }
+
+    private MudBlazor.Color getBarColor(float? min, float? max, float? value)
+    {
+        if (min == null || max == null || value == null)
+        {
+            return MudBlazor.Color.Success;
+        }
+        if (value < min)
+        {
+            return MudBlazor.Color.Info;
+        }
+        else if (value > max)
+        {
+            return MudBlazor.Color.Error;
+        }
+        else
+        {
+            return MudBlazor.Color.Success;
+        }
+    }
+
+    
+
+}
