@@ -5,6 +5,7 @@
         private int nodeID;
         private int? _LEDBrightness;
         private bool _ErrorStatus;
+        private bool _ResetErrors;
 
         public BaseStationDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
         {
@@ -43,6 +44,18 @@
             {
                 _ErrorStatus = value;
                 sendMessageData(nodeID, 2561, (ulong)(_ErrorStatus ? 1 : 0));
+            }
+        }
+
+        public bool ResetErrors
+        {
+            get
+            {
+                return getMessagePayload(nodeID, 2562).data == 1;
+            }
+            set
+            {
+                sendMessageData(nodeID, 2562, (ulong)(value ? 1 : 0));
             }
         }
     }
