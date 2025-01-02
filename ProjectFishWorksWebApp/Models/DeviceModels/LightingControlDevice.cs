@@ -174,7 +174,6 @@
             {
                 _BlueOnlyMaxIntensity = value;
                 sendMessageData(nodeID, 2568, (ulong)_BlueOnlyMaxIntensity);
-                Console.WriteLine("BlueOnlyMaxIntensity: " + _BlueOnlyMaxIntensity.Value);
             }
         }
 

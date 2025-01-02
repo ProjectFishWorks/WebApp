@@ -1,5 +1,84 @@
-﻿<h3>BaseStationWidget</h3>
+﻿@using MQTTnet
+@using ProjectFishWorksWebApp.Models.DeviceModels
+@inject MQTTnet.ClientLib.MqttService MqttService
 
-@code {
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h4">
+            Base Station
+        </MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudGrid>
+            <MudItem xs=6>
+                <MudText Typo="Typo.h6">
+                    LED Brightness
+                </MudText>
+                <MudNumericField @bind-Value="baseStationDevice.LEDBrightness"
+                                 Label="LED Brightness"
+                                 Variant="Variant.Outlined"
+                                 Min="0"
+                                 Max="100" />
+                <MudProgressLinear @bind-Value="baseStationDevice.LEDBrightness"
+                                   Color="MudBlazor.Color.Warning"
+                                   Rounded="true" MudBlazor.Size="Size.large"
+                                   Style="height:10px;" />
+                @if (baseStationDevice.ErrorStatus == true)
+                {
+                    <MudChip T="string"
+                             Color="MudBlazor.Color.Error">
+                        Error Detected
+                    </MudChip>
+                }
+                else
+                {
+                    <MudChip T="string"
+                             Color="MudBlazor.Color.Success">
+                        No Error Detected
+                    </MudChip>
+                }
+                <MudButton Variant="Variant.Filled"
+                           Color="MudBlazor.Color.Primary"
+                           OnClick="resetError"
+                           FullWidth="true">
+                    Remove Error
+                </MudButton>
+            </MudItem>
+        </MudGrid>
+    </MudCardContent>
+</MudCard>
+
+@code
+{
+    void resetError()
+    {
+        baseStationDevice.ResetErrors = true;
+    }
+
+    [Parameter]
+    public int SystemID { get; set; }
+
+    [Parameter]
+    public int BaseStationID { get; set; }
+
+    [Parameter]
+    public int NodeID { get; set; }
+
+
+    BaseStationDevice baseStationDevice;
+
+    protected override async Task OnInitializedAsync()
+    {
+        this.baseStationDevice = new BaseStationDevice(MqttService, this.SystemID, BaseStationID, this.NodeID);
+        if (MqttService.IsConnected())
+        {
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+        }
+    }
+
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    {
+        base.StateHasChanged();
+    }
 
 }
