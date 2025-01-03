@@ -52,7 +52,7 @@
 {
     void resetError()
     {
-        baseStationDevice.ResetErrors = true;
+        baseStationDevice.ResetErrors = !baseStationDevice.ResetErrors;
     }
 
     [Parameter]
