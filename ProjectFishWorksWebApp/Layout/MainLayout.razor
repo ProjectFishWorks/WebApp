@@ -6,6 +6,11 @@
 
 @inject IDialogService DialogService
 
+@using ProjectFishWorksWebApp.Components
+
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@inject IAccessTokenProvider TokenProvider
+
 @* Required *@
 <MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="FishSenseWebApp" />
 <MudPopoverProvider />
@@ -22,6 +27,7 @@
         <MudText Typo="Typo.h5" Class="ml-3">Fish Sense Web App</MudText>
 
         <MudSpacer />
+        <AccessControl/>
         <MudMenu Label="Open Menu" Icon="@Icons.Material.Filled.MoreVert" Color="MudBlazor.Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="Settings">Settings</MudMenuItem>
             <MudMenuItem Icon="@(_isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" OnClick="OnDarkModeSwitchClick">@(_isDarkMode ? "Light Mode" : "Dark Mode") </MudMenuItem>
@@ -64,6 +70,14 @@
 
     private MudThemeProvider _mudThemeProvider;
 
+    private string MqttClientConnection { get; set; }
+
+    private string mqttWebSocket { get; set; } = "emqx.projectfishworks.ca:8084/mqtt";
+    //private string mqttUsername { get; set; } = "fishworks-dev";
+    //private string mqttPassword { get; set; } = "F1shworks!";
+
+    private string topic { get; set; } = "+/0/#";
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -88,7 +102,7 @@
     {
         if (!MqttService.IsConnected() )
         {
-            OpenDialogAsync();
+            //OpenDialogAsync();
         }
         return base.ShouldRender();
     }
@@ -119,6 +133,32 @@
     protected override async Task OnInitializedAsync()
     {
         MqttService.Disconnected += MqttService_Disconnected;
+        Console.WriteLine("Getting Token");
+        var tokenResult = await TokenProvider.RequestAccessToken();
+
+        if (tokenResult.TryGetToken(out var token))
+        {
+            Console.WriteLine("Bearer Got Token");
+
+            var mqttClientOptions = new MQTTnet.Client.Options.MqttClientOptionsBuilder()
+            .WithClientId(Guid.NewGuid().ToString())
+            .WithCredentials("", token.Value)
+            .WithWebSocketServer(mqttWebSocket)
+            .WithTls()
+            .WithCleanSession()
+            .Build();
+
+            MqttService.Init(Guid.NewGuid().ToString(), mqttClientOptions);
+
+            var result = await MqttService.Connect();
+            MqttClientConnection = result ? "Connected" : "Error logging in";
+
+            Console.WriteLine(result);
+
+            base.StateHasChanged();
+
+            await MqttService.Subscribe(topic);
+        }
     }
     
 
