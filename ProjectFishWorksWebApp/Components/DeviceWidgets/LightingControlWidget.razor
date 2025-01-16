@@ -2,7 +2,8 @@
 @using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
 
-<MudStack>
+
+<MudStack Spacing="3">
     @if (lightingControlDevice.ManualLEDControlOverrideSwitch)
     {
         <MudChip 
@@ -26,7 +27,6 @@
         Color="MudBlazor.Color.Info"
         Min=0 Max=255
         Style="height:20px;" />
-
 </MudStack>
 
 @code {

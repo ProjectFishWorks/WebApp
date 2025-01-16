@@ -7,6 +7,9 @@
 
 <MudCard>
     <MudCardContent>
+        <MudText Typo="Typo.h4">pH Value</MudText>
+        <MudText Typo="Typo.body1">The pH sensor reading in mV = </MudText>
+        <MudText Typo="Typo.body1">@PHsensor.voltagePH</MudText>
         <MudProgressLinear Value="(double)PHsensor.pHvalue"
                            Min="0"
                            Max="14"
@@ -17,7 +20,6 @@
             </MudText>
         </MudProgressLinear>
     </MudCardContent>
-
 </MudCard>
 
 <MudCard>
@@ -25,28 +27,26 @@
         <MudText Typo="Typo.h4">Alarms</MudText>
     </MudCardHeader>
     <MudCardContent>
-                <MudToggleIconButton @bind-Toggled="PHsensor.pHAlarmOnOff"
-                                     Icon="@Icons.Material.Filled.AlarmOff"
-                                     Color="MudBlazor.Color.Warning"
-                                     ToggledIcon="@Icons.Material.Filled.AlarmOn"
-                                     ToggledColor="MudBlazor.Color.Tertiary"
-                                     title="@(PHsensor.pHAlarmOnOff ? "On" : "Off")" />
-                pH Value
+        <MudToggleIconButton @bind-Toggled="PHsensor.pHAlarmOnOff"
+                             Icon="@Icons.Material.Filled.AlarmOff"
+                             Color="MudBlazor.Color.Warning"
+                             ToggledIcon="@Icons.Material.Filled.AlarmOn"
+                             ToggledColor="MudBlazor.Color.Tertiary"
+                             title="@(PHsensor.pHAlarmOnOff ? "On" : "Off")" />
+        pH Value
 
-                @if (PHsensor.pHAlarmOnOff)
-                {
-                    <MudNumericField @bind-Value="PHsensor.pHAlarmLow"
-                                     Label="Low"
-                                     Variant="Variant.Text"
-                                     Min="0" Max="14" />
+        @if (PHsensor.pHAlarmOnOff)
+        {
+            <MudNumericField @bind-Value="PHsensor.pHAlarmLow"
+                             Label="Low"
+                             Variant="Variant.Text"
+                             Min="0" Max="14" />
 
-                    <MudNumericField @bind-Value="PHsensor.pHAlarmHigh"
-                                     Label="High"
-                                     Variant="Variant.Text"
-                                     Min="0" Max="14" />
-                }
-
-
+            <MudNumericField @bind-Value="PHsensor.pHAlarmHigh"
+                             Label="High"
+                             Variant="Variant.Text"
+                             Min="0" Max="14" />
+        }
     </MudCardContent>
 </MudCard>
 
@@ -55,8 +55,8 @@
               MessageIDs="@historyMessageIDs"
               RequestData="PHsensorChartRequestData"
               UpdateData="PHsensorChartUpdateData"
-              isFloatData="true" 
-              HistoryReceivedHours="PHsensor.HistoryReceivedHours"/>
+              isFloatData="true"
+              HistoryReceivedHours="PHsensor.HistoryReceivedHours" />
 
 
 

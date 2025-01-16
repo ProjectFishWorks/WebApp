@@ -9,7 +9,7 @@
     <MudItem xs="6">
         <MudCard>
             <MudCardContent>
-                <MudStack>
+                <MudStack Spacing="3">
                     <MudText Typo="Typo.h4">Outlet #1</MudText>
                     <MudSwitch Size="MudBlazor.Size.Large"
                                @bind-Value="aCControlDevice.Relay1Control"
@@ -40,7 +40,7 @@
     <MudItem xs="6">
         <MudCard>
             <MudCardContent>
-                <MudStack>
+                <MudStack Spacing="3">
                     <MudText Typo="Typo.h4">Outlet #2</MudText>
                     <MudSwitch Size="MudBlazor.Size.Large"
                                @bind-Value="aCControlDevice.Relay2Control"
@@ -90,14 +90,14 @@
         {
             Dictionary<int, string> nodes = new();
 
-            if(baseStationManifests == null)
+            if (baseStationManifests == null)
             {
                 return nodes;
             }
 
             var devices = baseStationManifests.Manifests.Find(x => x.BaseStationID == basestationID).Devices;
 
-            foreach(var device in devices)
+            foreach (var device in devices)
             {
                 nodes.Add(device.NodeID, device.DeviceName);
             }
@@ -139,14 +139,18 @@
         base.StateHasChanged();
     }
 
-    private MudBlazor.Color getCurrentBarColor(float? current){
-        if(current == null)
+    private MudBlazor.Color getCurrentBarColor(float? current)
+    {
+        if (current == null)
         {
             return MudBlazor.Color.Success;
         }
-        if(current < 10){
+        if (current < 10)
+        {
             return MudBlazor.Color.Success;
-        }else{
+        }
+        else
+        {
             return MudBlazor.Color.Error;
         }
     }

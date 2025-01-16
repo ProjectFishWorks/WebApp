@@ -1,8 +1,14 @@
-﻿namespace ProjectFishWorksWebApp.Models.DeviceModels
+﻿using System;
+using System.Timers;
+
+namespace ProjectFishWorksWebApp.Models.DeviceModels
 {
     public class LightingControlDevice : Device
     {
         private int nodeID;
+        private double? _unixTimeStamp = 0;
+        private DateTime _dateTime;
+        private int? _timeZoneOffset = 0;
         private int? _DawnTime = 0;
         private int? _DuskTime = 0;
         private int? _SunriseTime = 0;
@@ -23,13 +29,49 @@
             this.nodeID = nodeID;
         }
 
+        public double UnixTimeStamp
+        {
+            get
+            {
+                _unixTimeStamp = ((double)getMessagePayload(nodeID, 2000).data);
+                if (_unixTimeStamp.HasValue)
+                {
+                    return _unixTimeStamp.Value;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            set
+            {
+                _unixTimeStamp = value;
+                sendMessageData(nodeID, 2000, (ulong)_unixTimeStamp);
+            }
+        }
+
+        public DateTime DateTime
+        {
+            get
+            {
+                _dateTime = UnixTimeStampToDateTime(UnixTimeStamp);
+                return _dateTime;
+            }
+        }
+        public static DateTime UnixTimeStampToDateTime(double UnixTimeStamp)
+        {
+            // Unix timestamp is seconds past epoch
+            DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+            dateTime = dateTime.AddSeconds(UnixTimeStamp).ToLocalTime();
+            return dateTime;
+        }
 
         public int DawnTime
         {
             get
             {
                 _DawnTime = ((int?)getMessagePayload(nodeID, 2562).data);
-                if( _DawnTime.HasValue)
+                if (_DawnTime.HasValue)
                 {
 
                     return _DawnTime.Value / 1000;
@@ -119,12 +161,13 @@
             get
             {
                 _HighNoon = ((int?)getMessagePayload(nodeID, 2566).data);
-                if (_HighNoon.HasValue){
+                if (_HighNoon.HasValue)
+                {
                     return _HighNoon.Value / 1000;
                 }
                 else
                 {
-                    return -1; 
+                    return -1;
                 }
             }
             set
@@ -232,7 +275,7 @@
             get
             {
                 _OverrideWhiteIntensity = ((int?)getMessagePayload(nodeID, 2572).data);
-                if( _OverrideWhiteIntensity != null)
+                if (_OverrideWhiteIntensity != null)
                 {
                     return _OverrideWhiteIntensity.Value;
                 }
@@ -255,8 +298,8 @@
             {
                 _OverrideBlueIntensity = ((int?)getMessagePayload(nodeID, 2573).data);
                 if (_OverrideBlueIntensity != null)
-                { 
-                    return _OverrideBlueIntensity.Value; 
+                {
+                    return _OverrideBlueIntensity.Value;
                 }
                 else
                 {

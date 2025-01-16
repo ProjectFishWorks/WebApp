@@ -4,7 +4,7 @@
 @inject MQTTnet.ClientLib.MqttService MqttService
 
 
- 
+
 
 <!--  ......................................Manual adjusment LED override switch and sliders................................  -->
 
@@ -12,26 +12,26 @@
     <MudCardContent>
         <MudStack Row="true">
             <MudSwitch @bind-Value="lightingControlDevice.ManualLEDControlOverrideSwitch"
-                        Color="MudBlazor.Color.Error" />
+                       Color="MudBlazor.Color.Error" />
             <MudText Typo="Typo.h6">Override Lighting Intensity</MudText>
         </MudStack>
-        <MudDivider/>
+        <MudDivider />
         <MudCollapse Expanded="@lightingControlDevice.ManualLEDControlOverrideSwitch">
             <MudGrid>
                 <MudItem xs="12">
                     <MudSlider @bind-Value="lightingControlDevice.OverrideWhiteIntensity"
-                                Variant="Variant.Filled"
-                                Color="MudBlazor.Color.Warning"
-                                Min=0 Max=255
-                                Disabled="@(!lightingControlDevice.ManualLEDControlOverrideSwitch)">
+                               Variant="Variant.Filled"
+                               Color="MudBlazor.Color.Warning"
+                               Min=0 Max=255
+                               Disabled="@(!lightingControlDevice.ManualLEDControlOverrideSwitch)">
                         <MudText Typo="Typo.h6">White</MudText>
                     </MudSlider>
                 </MudItem>
                 <MudItem xs="12">
                     <MudSlider @bind-Value="lightingControlDevice.OverrideBlueIntensity"
-                                Variant="Variant.Filled"
-                                Min=0 Max=255
-                                Disabled="@(!lightingControlDevice.ManualLEDControlOverrideSwitch)">
+                               Variant="Variant.Filled"
+                               Min=0 Max=255
+                               Disabled="@(!lightingControlDevice.ManualLEDControlOverrideSwitch)">
                         <MudText Typo="Typo.h6">Blue</MudText>
                     </MudSlider>
                 </MudItem>
@@ -45,33 +45,36 @@
 
 <MudText Justify="Justify.Center" Typo="Typo.h6">White</MudText>
 <MudProgressLinear Vertical="false"
-                    Color="MudBlazor.Color.Warning"
-                    Rounded="true" MudBlazor.Size="Size.large"
-                    Style="height:40px;"
-                    Value="@(lightingControlDevice.CurrentWhiteIntensity / 255.0 * 100.0)"
-                    Min="0" Max="100">
+                   Color="MudBlazor.Color.Warning"
+                   Rounded="true" MudBlazor.Size="Size.large"
+                   Style="height:40px;"
+                   Value="@(lightingControlDevice.CurrentWhiteIntensity / 255.0 * 100.0)"
+                   Min="0" Max="100">
     <MudText Typo="Typo.subtitle1"
-                Color="MudBlazor.Color.Dark"
-                Min="0" Max="100">
+             Color="MudBlazor.Color.Dark"
+             Min="0" Max="100">
         <b>@(Math.Clamp(Math.Round((lightingControlDevice.CurrentWhiteIntensity / 255M * 100M), 0), 0, 100))%</b>
     </MudText>
 </MudProgressLinear>
 
 <MudText Justify="Justify.Center" Typo="Typo.h6">Blue</MudText>
 <MudProgressLinear Vertical="false"
-                    Color="MudBlazor.Color.Info"
-                    Rounded="true" MudBlazor.Size="Size.large"
-                    Style="height:40px;"
-                    Value="@(lightingControlDevice.CurrentBlueIntensity / 255.0 * 100.0)"
-                    Min="0" Max="100">
+                   Color="MudBlazor.Color.Info"
+                   Rounded="true" MudBlazor.Size="Size.large"
+                   Style="height:40px;"
+                   Value="@(lightingControlDevice.CurrentBlueIntensity / 255.0 * 100.0)"
+                   Min="0" Max="100">
     <MudText Typo="Typo.subtitle1"
-                Color="MudBlazor.Color.Dark">
+             Color="MudBlazor.Color.Dark">
         <b>@(Math.Clamp(Math.Round((lightingControlDevice.CurrentBlueIntensity / 255M * 100M), 0), 0, 100))%</b>
     </MudText>
 </MudProgressLinear>
 
 
 <MudGrid Spacing="10">
+    <MudItem xs="12">
+        <MudText Typo="Typo.h6">@DateTime.Now.ToString("MMMM dd yyyy, HH:mm:ss")</MudText>
+    </MudItem>
     <MudItem xs="6">
         <MudText Typo="Typo.h6">Demo Loop Durations (Seconds)</MudText>
         <MudNumericField @bind-Value="lightingControlDevice.DawnTime" Label="Dawn" Variant="Variant.Outlined" Min="5" />
@@ -89,9 +92,7 @@
         <MudNumericField @bind-Value="lightingControlDevice.BlueOnlyMaxIntensity" Label="Blue Only" Variant="Variant.Outlined" Min="0" Max="100" />
     </MudItem>
 </MudGrid>
-        <!--  ......................................Current LED Status Progress bars.........................  -->
-
-
+<!--  ......................................Current LED Status Progress bars.........................  -->
 @code {
     [Parameter]
     public int SystemID { get; set; }
