@@ -22,11 +22,25 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         private int? _OverrideWhiteIntensity = 0;
         private int? _OverrideBlueIntensity = 0;
         private int? _MaxWhiteIntensity = 0;
-        private int? _MaxBlueIntensity = 0;
+        private int? _MaxBlueIntensity = 0; 
+        private int? _DawnSunriseDifference = 0;
 
         public LightingControlDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
         {
             this.nodeID = nodeID;
+        }
+
+        public int DawnSunriseDifference 
+        { 
+            get 
+            { 
+                return _DawnSunriseDifference.HasValue ? _DawnSunriseDifference.Value : -1; 
+            } 
+            set 
+            { 
+                _DawnSunriseDifference = value;
+                sendMessageData(nodeID, 2562, (ulong)value);
+            } 
         }
 
         public double UnixTimeStamp

@@ -7,10 +7,7 @@
         private bool _IsErrors;
         private bool _IsNoErrors;
         private bool _ResetErrors;
-        private int? _UNIX_Time;
-        private int? _UTC_Time;
-        private int? _TimeZoneOffset;
-        private int? _Local_Time;
+        private float? _TimeZoneOffset;
 
         public BaseStationDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
         {
@@ -70,57 +67,17 @@
         {
             get
             {
-                return getMessagePayload(nodeID, 2563).data == 1;
+                _ResetErrors = getMessagePayload(nodeID, 2563).data == 1;
+                return _ResetErrors;
             }
             set
             {
-                sendMessageData(nodeID, 2563, (ulong)(value ? 1 : 0));
+                _ResetErrors = value;
+                sendMessageData(nodeID, 2563, (ulong)(_ResetErrors ? 1 : 0));
             }
         }
 
-        public int UNIX_Time
-        {
-            get
-            {
-                _UNIX_Time = (int?)getMessagePayload(nodeID, 2000).data;
-                if (_UNIX_Time.HasValue)
-                {
-                    return _UNIX_Time.Value;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            set
-            {
-                _UNIX_Time = value;
-                sendMessageData(nodeID, 2002, (ulong)_UNIX_Time);
-            }
-        }
-
-        public int UTC_Time
-        {
-            get
-            {
-                _UTC_Time = (int?)getMessagePayload(nodeID, 2002).data;
-                if (_UTC_Time.HasValue)
-                {
-                    return _UTC_Time.Value;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            set
-            {
-                _UTC_Time = value;
-                sendMessageData(nodeID, 2001, (ulong)_UTC_Time);
-            }
-        }
-
-        public int TimeZoneOffset
+        public float TimeZoneOffset
         {
             get
             {
@@ -131,34 +88,13 @@
                 }
                 else
                 {
-                    return 0;
+                    return 1;
                 }
             }
             set
             {
                 _TimeZoneOffset = value;
-                sendMessageData(nodeID, 2002, (ulong)_TimeZoneOffset);
-            }
-        }
-
-        public int Local_Time
-        {
-            get
-            {
-                _Local_Time = (int?)getMessagePayload(nodeID, 2003).data;
-                if (_Local_Time.HasValue)
-                {
-                    return _Local_Time.Value;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
-            set
-            {
-                _Local_Time = value;
-                sendMessageData(nodeID, 2003, (ulong)_Local_Time);
+                sendMessageData(nodeID, 2001, (ulong)_TimeZoneOffset);
             }
         }
     }

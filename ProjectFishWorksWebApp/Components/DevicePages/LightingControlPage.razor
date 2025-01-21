@@ -76,7 +76,36 @@
         <MudText Typo="Typo.h6">@DateTime.Now.ToString("MMMM dd yyyy, HH:mm:ss")</MudText>
     </MudItem>
     <MudItem xs="6">
-        <MudText Typo="Typo.h6">Demo Loop Durations (Seconds)</MudText>
+        <MudText Typo="Typo.h6">Start Times Daylight Cycles</MudText>
+        <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="Dawn" Editable="true" @bind-Time="_dawntime" Variant="Variant.Outlined" />
+        <MudTimePicker Label="Sunrise" Editable="true" @bind-Time="_sunrisetime" Variant="Variant.Outlined" />
+        <MudText>Dawn to Sunrise Difference: @_lightingControlDevice.DawnSunriseDifference seconds</MudText>
+        
+        @code 
+{ 
+    private TimeSpan? _dawntime = new TimeSpan(); 
+    private TimeSpan? _sunrisetime = new TimeSpan(); 
+    private LightingControlDevice _lightingControlDevice; 
+
+    private void OnDawnTimeChanged(TimeSpan newTime) 
+    { 
+        _lightingControlDevice.DawnTime = (int)newTime.TotalSeconds; 
+        UpdateDifference(); 
+    } 
+    
+    private void OnSunriseTimeChanged(TimeSpan newTime) 
+    { 
+        _lightingControlDevice.SunriseTime = (int)newTime.TotalSeconds; 
+        UpdateDifference(); 
+    } 
+    
+    private void UpdateDifference() 
+    { 
+        // Log the difference for debugging purposes 
+        Console.WriteLine($"Difference in seconds: {_lightingControlDevice.DawnSunriseDifference}"); 
+    } 
+}
+
         <MudNumericField @bind-Value="lightingControlDevice.DawnTime" Label="Dawn" Variant="Variant.Outlined" Min="5" />
         <MudNumericField @bind-Value="lightingControlDevice.SunriseTime" Label="Sunrise" Variant="Variant.Outlined" Min="2" />
         <MudNumericField @bind-Value="lightingControlDevice.HighNoon" Label="Noon" Variant="Variant.Outlined" Min="2" />
