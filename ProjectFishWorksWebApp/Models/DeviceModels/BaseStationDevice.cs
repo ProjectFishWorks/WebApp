@@ -7,7 +7,7 @@
         private bool _IsErrors;
         private bool _IsNoErrors;
         private bool _ResetErrors;
-        private float? _TimeZoneOffset;
+        private int? _TimeZoneOffset;
 
         public BaseStationDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
         {
@@ -77,7 +77,7 @@
             }
         }
 
-        public float TimeZoneOffset
+        public int TimeZoneOffset
         {
             get
             {
@@ -88,7 +88,7 @@
                 }
                 else
                 {
-                    return 1;
+                    return 0;
                 }
             }
             set

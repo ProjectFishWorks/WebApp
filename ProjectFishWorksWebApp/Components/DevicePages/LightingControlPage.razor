@@ -1,7 +1,8 @@
 ﻿@using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
 @using ProjectFishWorksWebApp.Models.DeviceModels
-@inject MQTTnet.ClientLib.MqttService MqttService
+@using static MudBlazor.FilterOperator
+@using static System.DateTime
 
 
 
@@ -11,28 +12,45 @@
 <MudCard Outlined=true>
     <MudCardContent>
         <MudStack Row="true">
-            <MudSwitch @bind-Value="lightingControlDevice.ManualLEDControlOverrideSwitch"
+            <MudSwitch @bind-Value="lightingControlDevice.ManualOverrideSwitch"
                        Color="MudBlazor.Color.Error" />
             <MudText Typo="Typo.h6">Override Lighting Intensity</MudText>
         </MudStack>
         <MudDivider />
-        <MudCollapse Expanded="@lightingControlDevice.ManualLEDControlOverrideSwitch">
+        <MudCollapse Expanded="@lightingControlDevice.ManualOverrideSwitch">
             <MudGrid>
                 <MudItem xs="12">
-                    <MudSlider @bind-Value="lightingControlDevice.OverrideWhiteIntensity"
+                    <MudSlider @bind-Value="lightingControlDevice.OverrideWhite_1_Intensity"
                                Variant="Variant.Filled"
                                Color="MudBlazor.Color.Warning"
-                               Min=0 Max=255
-                               Disabled="@(!lightingControlDevice.ManualLEDControlOverrideSwitch)">
-                        <MudText Typo="Typo.h6">White</MudText>
+                               Min=0 Max=100
+                               Disabled="@(!lightingControlDevice.ManualOverrideSwitch)">
+                        <MudText Typo="Typo.h6">White 1</MudText>
                     </MudSlider>
                 </MudItem>
                 <MudItem xs="12">
-                    <MudSlider @bind-Value="lightingControlDevice.OverrideBlueIntensity"
+                    <MudSlider @bind-Value="lightingControlDevice.OverrideWhite_2_Intensity"
                                Variant="Variant.Filled"
+                               Color="MudBlazor.Color.Warning"
                                Min=0 Max=255
-                               Disabled="@(!lightingControlDevice.ManualLEDControlOverrideSwitch)">
-                        <MudText Typo="Typo.h6">Blue</MudText>
+                               Disabled="@(!lightingControlDevice.ManualOverrideSwitch)">
+                        <MudText Typo="Typo.h6">White 2</MudText>
+                    </MudSlider>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudSlider @bind-Value="lightingControlDevice.OverrideBlue_1_Intensity"
+                               Variant="Variant.Filled"
+                               Min=0 Max=100
+                               Disabled="@(!lightingControlDevice.ManualOverrideSwitch)">
+                        <MudText Typo="Typo.h6">Blue 1</MudText>
+                    </MudSlider>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudSlider @bind-Value="lightingControlDevice.OverrideBlue_2_Intensity"
+                               Variant="Variant.Filled"
+                               Min=0 Max=100
+                               Disabled="@(!lightingControlDevice.ManualOverrideSwitch)">
+                        <MudText Typo="Typo.h6">Blue 2</MudText>
                     </MudSlider>
                 </MudItem>
             </MudGrid>
@@ -40,85 +58,211 @@
     </MudCardContent>
 </MudCard>
 
-
-<!--  ......................................Adjust Demo Loop Durations seconds................................  -->
-
-<MudText Justify="Justify.Center" Typo="Typo.h6">White</MudText>
+<MudText Justify="Justify.Center" Typo="Typo.h6">White 1 </MudText>
 <MudProgressLinear Vertical="false"
                    Color="MudBlazor.Color.Warning"
                    Rounded="true" MudBlazor.Size="Size.large"
                    Style="height:40px;"
-                   Value="@(lightingControlDevice.CurrentWhiteIntensity / 255.0 * 100.0)"
+                   Value="@lightingControlDevice.CurrentWhite_1_Intensity"
                    Min="0" Max="100">
     <MudText Typo="Typo.subtitle1"
              Color="MudBlazor.Color.Dark"
              Min="0" Max="100">
-        <b>@(Math.Clamp(Math.Round((lightingControlDevice.CurrentWhiteIntensity / 255M * 100M), 0), 0, 100))%</b>
+        <b>@lightingControlDevice.CurrentWhite_1_Intensity</b>
     </MudText>
 </MudProgressLinear>
 
-<MudText Justify="Justify.Center" Typo="Typo.h6">Blue</MudText>
+<MudText Justify="Justify.Center" Typo="Typo.h6">White 2</MudText>
 <MudProgressLinear Vertical="false"
-                   Color="MudBlazor.Color.Info"
+                   Color="MudBlazor.Color.Warning"
                    Rounded="true" MudBlazor.Size="Size.large"
                    Style="height:40px;"
-                   Value="@(lightingControlDevice.CurrentBlueIntensity / 255.0 * 100.0)"
+                   Value="@lightingControlDevice.CurrentWhite_2_Intensity"
                    Min="0" Max="100">
     <MudText Typo="Typo.subtitle1"
-             Color="MudBlazor.Color.Dark">
-        <b>@(Math.Clamp(Math.Round((lightingControlDevice.CurrentBlueIntensity / 255M * 100M), 0), 0, 100))%</b>
+             Color="MudBlazor.Color.Dark"
+             Min="0" Max="100">
+        <b>@lightingControlDevice.CurrentWhite_2_Intensity</b>
     </MudText>
 </MudProgressLinear>
 
+<MudText Justify="Justify.Center" Typo="Typo.h6">Blue 1</MudText>
+<MudProgressLinear Vertical="false"
+                   Color="MudBlazor.Color.Warning"
+                   Rounded="true" MudBlazor.Size="Size.large"
+                   Style="height:40px;"
+                   Value="@lightingControlDevice.CurrentBlue_1_Intensity"
+                   Min="0" Max="100">
+    <MudText Typo="Typo.subtitle1"
+             Color="MudBlazor.Color.Dark"
+             Min="0" Max="100">
+        <b>@lightingControlDevice.CurrentBlue_2_Intensity</b>
+    </MudText>
+</MudProgressLinear>
 
-<MudGrid Spacing="10">
-    <MudItem xs="12">
-        <MudText Typo="Typo.h6">@DateTime.Now.ToString("MMMM dd yyyy, HH:mm:ss")</MudText>
-    </MudItem>
+<MudText Justify="Justify.Center" Typo="Typo.h6">Blue 2</MudText>
+<MudProgressLinear Vertical="false"
+                   Color="MudBlazor.Color.Warning"
+                   Rounded="true" MudBlazor.Size="Size.large"
+                   Style="height:40px;"
+                   Value="@lightingControlDevice.CurrentBlue_2_Intensity"
+                   Min="0" Max="100">
+    <MudText Typo="Typo.subtitle1"
+             Color="MudBlazor.Color.Dark"
+             Min="0" Max="100">
+        <b>@lightingControlDevice.CurrentBlue_2_Intensity</b>
+    </MudText>
+</MudProgressLinear>
+
+<!--  ......................................Daylight Cycle Time Pickers and Intensity Fields.........................  -->
+
+<MudGrid Spacing="1">
     <MudItem xs="6">
-        <MudText Typo="Typo.h6">Start Times Daylight Cycles</MudText>
-        <MudTimePicker PickerVariant="PickerVariant.Dialog" Label="Dawn" Editable="true" @bind-Time="_dawntime" Variant="Variant.Outlined" />
-        <MudTimePicker Label="Sunrise" Editable="true" @bind-Time="_sunrisetime" Variant="Variant.Outlined" />
-        <MudText>Dawn to Sunrise Difference: @_lightingControlDevice.DawnSunriseDifference seconds</MudText>
-        
-        @code 
-{ 
-    private TimeSpan? _dawntime = new TimeSpan(); 
-    private TimeSpan? _sunrisetime = new TimeSpan(); 
-    private LightingControlDevice _lightingControlDevice; 
-
-    private void OnDawnTimeChanged(TimeSpan newTime) 
-    { 
-        _lightingControlDevice.DawnTime = (int)newTime.TotalSeconds; 
-        UpdateDifference(); 
-    } 
-    
-    private void OnSunriseTimeChanged(TimeSpan newTime) 
-    { 
-        _lightingControlDevice.SunriseTime = (int)newTime.TotalSeconds; 
-        UpdateDifference(); 
-    } 
-    
-    private void UpdateDifference() 
-    { 
-        // Log the difference for debugging purposes 
-        Console.WriteLine($"Difference in seconds: {_lightingControlDevice.DawnSunriseDifference}"); 
-    } 
-}
-
-        <MudNumericField @bind-Value="lightingControlDevice.DawnTime" Label="Dawn" Variant="Variant.Outlined" Min="5" />
-        <MudNumericField @bind-Value="lightingControlDevice.SunriseTime" Label="Sunrise" Variant="Variant.Outlined" Min="2" />
-        <MudNumericField @bind-Value="lightingControlDevice.HighNoon" Label="Noon" Variant="Variant.Outlined" Min="2" />
-        <MudNumericField @bind-Value="lightingControlDevice.SunsetTime" Label="Sunset" Variant="Variant.Outlined" Min="2" />
-        <MudNumericField @bind-Value="lightingControlDevice.DuskTime" Label="Dusk" Variant="Variant.Outlined" Min="5" />
-        <MudNumericField @bind-Value="lightingControlDevice.NightTime" Label="Night" Variant="Variant.Outlined" />
+        <MudText Typo="Typo.h6">@System.DateTime.Now.ToString("MMMM dd yyyy")</MudText>
+        <MudText Typo="Typo.h6">@System.DateTime.Now.ToString("HH:mm:ss")</MudText>
+        <MudCard Outlined=true>
+            <MudCardContent>
+                <MudText Typo="Typo.h6">Light Cycle Start Times</MudText>
+                <MudText> 24hr format</MudText>
+                <MudGrid Spacing="2">
+                    <MudItem xs="6">
+                        <MudText>Hours</MudText>
+                    </MudItem>
+                    <MudItem xs="6">
+                        <MudText>Minutes</MudText>
+                    </MudItem>
+                    <MudCard Outlined=true>
+                        <MudCardContent>
+                            <MudGrid Spacing="1">
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-bind-Value="lightingControlDevice.DawnTimeHours" Label="Dawn" Min="0" Max="24" />
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-Value="lightingControlDevice.DawnTimeMins" Label=" " Min="0" Max="59" />
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                    <MudCard Outlined=true>
+                        <MudCardContent>
+                            <MudGrid Spacing="2">
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-bind-Value="lightingControlDevice.SunriseTimeHours" Label="SunRise" Min="0" Max="24" />
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-Value="lightingControlDevice.SunriseTimeMins" Label=" " Min="0" Max="59" />
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                    <MudCard Outlined=true>
+                        <MudCardContent>
+                            <MudGrid Spacing="2">
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-bind-Value="lightingControlDevice.HighNoonHours" Label="High Noon" Min="0" Max="24" />
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-Value="lightingControlDevice.HighNoonMins" Label=" " Min="0" Max="59" />
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                    <MudCard Outlined=true>
+                        <MudCardContent>
+                            <MudGrid Spacing="2">
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-bind-Value="lightingControlDevice.SunsetTimeHours" Label="Sunset" Min="0" Max="24" />
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-Value="lightingControlDevice.SunsetTimeMins" Label=" " Min="0" Max="59" />
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                    <MudCard Outlined=true>
+                        <MudCardContent>
+                            <MudGrid Spacing="2">
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-bind-Value="lightingControlDevice.DuskTimeHours" Label="Dusk" Min="0" Max="24" />
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-Value="lightingControlDevice.DuskTimeMins" Label=" " Min="0" Max="59" />
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                    <MudCard Outlined=true>
+                        <MudCardContent>
+                            <MudGrid Spacing="2">
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-bind-Value="lightingControlDevice.NightTimeHours" Label="Night" Min="0" Max="24" />
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <MudNumericField @bind-Value="lightingControlDevice.NightTimeMins" Label=" " Min="0" Max="59" />
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                </MudGrid>
+            </MudCardContent>
+        </MudCard>
     </MudItem>
+
     <MudItem xs="6">
-        <MudText Typo="Typo.h6">LED Maximum Intensities (%)</MudText>
-        <MudNumericField @bind-Value="lightingControlDevice.MaxWhiteIntensity" Label="White" Variant="Variant.Outlined" Min="0" Max="100" />
-        <MudNumericField @bind-Value="lightingControlDevice.MaxBlueIntensity" Label="Blue" Variant="Variant.Outlined" Min="0" Max="100" />
-        <MudText Typo="Typo.h6">Dawn/Dusk Intensity(%)</MudText>
-        <MudNumericField @bind-Value="lightingControlDevice.BlueOnlyMaxIntensity" Label="Blue Only" Variant="Variant.Outlined" Min="0" Max="100" />
+        <MudText Typo="Typo.h6">Maximum</MudText>
+            <MudText Typo="Typo.h6">Intensities</MudText>
+            <MudCard Outlined=true>
+                <MudCardContent>
+                    <MudItem>
+                        <MudSlider @bind-Value="lightingControlDevice.White_1_MaxIntensity"
+                                   Variant="Variant.Filled"
+                                   Min=0 Max=100>
+                            <MudText>White Ch1 = @lightingControlDevice.White_1_MaxIntensity</MudText>
+                        </MudSlider>
+                    </MudItem>
+                    <MudItem>
+                        <MudSlider @bind-Value="lightingControlDevice.White_2_MaxIntensity"
+                                   Variant="Variant.Filled"
+                                   Min=0 Max=100>
+                            <MudText>White Ch2 = @lightingControlDevice.White_2_MaxIntensity</MudText>
+                        </MudSlider>
+                    </MudItem>
+                    <MudItem>
+                        <MudSlider @bind-Value="lightingControlDevice.Blue_1_MaxIntensity"
+                                   Variant="Variant.Filled"
+                                   Min=0 Max=100>
+                            <MudText>Blue   Ch1 = @lightingControlDevice.Blue_1_MaxIntensity</MudText>
+                        </MudSlider>
+                    </MudItem>
+                    <MudItem>
+                        <MudSlider @bind-Value="lightingControlDevice.Blue_2_MaxIntensity"
+                                   Variant="Variant.Filled"
+                                   Min=0 Max=100>
+                            <MudText>Blue   Ch2 = @lightingControlDevice.Blue_2_MaxIntensity</MudText>
+                        </MudSlider>
+                </MudItem>
+            </MudCardContent>
+        </MudCard>
+        <MudText Typo="Typo.h6">Minimum</MudText> 
+        <MudText Typo="Typo.h6">Intensities</MudText>
+        <MudCard Outlined=true>
+            <MudCardContent>
+                    <MudItem>
+                        <MudSlider @bind-Value="lightingControlDevice.MinWhiteValue"
+                                   Variant="Variant.Filled"
+                                   Min=0 Max=100>
+                            <MudText>White = @lightingControlDevice.MinWhiteValue</MudText>
+                        </MudSlider>
+                    </MudItem>
+                    <MudItem>
+                        <MudSlider @bind-Value="lightingControlDevice.MinBlueValue"
+                                   Variant="Variant.Filled"
+                                   Min=0 Max=100>
+                            <MudText>Blue  = @lightingControlDevice.MinWhiteValue</MudText>
+                        </MudSlider>
+                    </MudItem>
+                </MudCardContent>
+            </MudCard>
     </MudItem>
 </MudGrid>
 <!--  ......................................Current LED Status Progress bars.........................  -->
