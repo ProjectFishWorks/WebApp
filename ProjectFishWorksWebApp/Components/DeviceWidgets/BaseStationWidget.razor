@@ -12,18 +12,20 @@
                              Variant="Variant.Outlined"
                              Min="0"
                              Max="100" />
-            <MudProgressLinear @bind-Value="baseStationDevice.LEDBrightness"
+            <MudProgressLinear Value="(float)baseStationDevice.LEDBrightness"
+                               Min="0"
+                               Max="100"
                                Color="MudBlazor.Color.Warning"
-                               Rounded="true" MudBlazor.Size="Size.large"
+                               Rounded="true" 
                                Style="height:10px;" />
-            @if(baseStationDevice.IsErrors == true)
+            @if (baseStationDevice.IsErrors == true)
             {
                 <MudChip T="string"
                          Color="MudBlazor.Color.Error">
                     Error Detected
                 </MudChip>
             }
-            else 
+            else
             {
                 <MudChip T="string"
                          Color="MudBlazor.Color.Success">
