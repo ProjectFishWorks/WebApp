@@ -13,6 +13,7 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         private int? _HighNoonMins;
         private int? _HighNoonHours;
         private int? _SunsetTimeMins;
+        private int? _SunsetTimeHours;
         private int? _DuskTimeMins;
         private int? _DuskTimeHours;
         private int? _NightTimeMins;
@@ -31,7 +32,7 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         private int? _OverrideBlue_1_Intensity;
         private int? _OverrideBlue_2_Intensity;
         private int? _MinWhiteValue;
-        private int? _inBlueValue;
+        private int? _MinBlueValue;
         //private TimeSpan? _DawnTime = new TimeSpan();
         //private TimeSpan? _SunriseTime = new TimeSpan();
         //private TimeSpan? _DawnSunriseDifference = new TimeSpan();
@@ -221,10 +222,10 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _SunsetTimeMins = ((int?)getMessagePayload(nodeID, 2567).data);
-                if (_SunsetTimeMins.HasValue)
+                _SunsetTimeHours = ((int?)getMessagePayload(nodeID, 2567).data);
+                if (_SunsetTimeHours.HasValue)
                 {
-                    return _SunsetTimeMins.Value;
+                    return _SunsetTimeHours.Value;
                 }
                 else
                 {
@@ -233,8 +234,8 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
             }
             set
             {
-                _SunsetTimeMins = value;
-                sendMessageData(nodeID, 2567, (ulong)_SunsetTimeMins);
+                _SunsetTimeHours = value;
+                sendMessageData(nodeID, 2567, (ulong)_SunsetTimeHours);
             }
         }
 
@@ -363,10 +364,7 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
                 sendMessageData(nodeID, 2573, (ulong)_Blue_2_MaxIntensity);
             }
         }
-
-        
-
-
+            
         public int White_1_MaxIntensity
         {
             get
@@ -623,10 +621,10 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _inBlueValue = ((int?)getMessagePayload(nodeID, 2586).data);
-                if (_inBlueValue.HasValue)
+                _MinBlueValue = ((int?)getMessagePayload(nodeID, 2586).data);
+                if (_MinBlueValue.HasValue)
                 {
-                    return _inBlueValue.Value;
+                    return _MinBlueValue.Value;
                 }
                 else
                 {
@@ -635,8 +633,8 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
             }
             set
             {
-                _inBlueValue = value;
-                sendMessageData(nodeID, 2586, (ulong)_inBlueValue);
+                _MinBlueValue = value;
+                sendMessageData(nodeID, 2586, (ulong)_MinBlueValue);
             }
         }
     }

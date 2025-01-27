@@ -3,35 +3,31 @@
     public class BaseStationDevice : Device
     {
         private int nodeID;
-        private int? _LEDBrightness;
+        private float? _LEDBrightness;
         private bool _IsErrors;
         private bool _IsNoErrors;
         private bool _ResetErrors;
-        private int? _TimeZoneOffset;
+        private int _TimeZoneOffset;
 
         public BaseStationDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
         {
             this.nodeID = nodeID;
         }
 
-        public int LEDBrightness
+        public float? LEDBrightness
         {
             get
             {
-                _LEDBrightness = (int?)getMessagePayload(nodeID, 2560).data;
-                if (_LEDBrightness.HasValue)
+                var _LEDBrightness = getMessagePayload(nodeID, 2560).dataFloat;
+                if (_LEDBrightness == null)
                 {
-                    return _LEDBrightness.Value;
+                    return -1;
                 }
-                else
-                {
-                    return 1;
-                }
+                return _LEDBrightness;
             }
             set
             {
-                _LEDBrightness = value;
-                sendMessageData(nodeID, 2560, (ulong)_LEDBrightness);
+                sendMessageData(nodeID, 2560, (float)value);
             }
         }
 
@@ -81,15 +77,12 @@
         {
             get
             {
-                _TimeZoneOffset = (int?)getMessagePayload(nodeID, 2001).data;
-                if (_TimeZoneOffset.HasValue)
+                _TimeZoneOffset = (int)getMessagePayload(nodeID, 2001).data;
+                if (_TimeZoneOffset == null)
                 {
-                    return _TimeZoneOffset.Value;
+                    return 8;
                 }
-                else
-                {
-                    return 0;
-                }
+                    return _TimeZoneOffset;
             }
             set
             {
