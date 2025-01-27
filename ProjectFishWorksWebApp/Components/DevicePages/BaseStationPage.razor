@@ -1,41 +1,49 @@
-﻿@using MQTTnet
+﻿@using static System.DateTime
+@using MQTTnet
 @using ProjectFishWorksWebApp.Models.DeviceModels
 @inject MQTTnet.ClientLib.MqttService MqttService
 
 <MudGrid>
     <MudItem xs=6>
-        <MudText Typo="Typo.h6">
-            LED Brightness
-        </MudText>
-        <MudNumericField @bind-Value="baseStationDevice.LEDBrightness"
-                         Label="LED Brightness"
-                         Variant="Variant.Outlined"
-                         Min="0"
-                         Max="100" />
-        <MudProgressLinear @bind-Value="baseStationDevice.LEDBrightness"
-                           Color="MudBlazor.Color.Warning"
-                           Rounded="true" MudBlazor.Size="Size.large"
-                           Style="height:10px;" />
-        @if (baseStationDevice.ErrorStatus == true)
-        {
-            <MudChip T="string"
-                     Color="MudBlazor.Color.Error">
-                Error Detected
-            </MudChip>
-        }
-        else
-        {
-            <MudChip T="string"
-                     Color="MudBlazor.Color.Success">
-                No Error Detected
-            </MudChip>
-        }
-        <MudButton Variant="Variant.Filled"
-                   Color="MudBlazor.Color.Primary"
-                   OnClick="resetError"
-                   FullWidth="true">
-            Remove Error
-        </MudButton>
+        <MudStack Spacing="3">
+            <MudText>UTC Time @DateTime.UtcNow.ToString("MMMM dd yyyy, HH:mm:ss")</MudText>
+            <MudText Typo="Typo.h6">Local Time @DateTime.Now.ToString("MMMM dd yyyy, HH:mm:ss")</MudText>
+            <MudText>UTC Offset @DateTime.Now.ToString(" zzz")</MudText>
+            <MudNumericField @bind-Value="baseStationDevice.TimeZoneOffset"
+                             Label="Time Zone Offset 8 For PST"
+                             Variant="Variant.Outlined"
+                             Min="-12"
+                             Max="12" />
+            <MudNumericField @bind-Value="baseStationDevice.LEDBrightness"
+                             Label="LED Brightness"
+                             Variant="Variant.Outlined"
+                             Min="0"
+                             Max="100" />
+            <MudProgressLinear @bind-Value="baseStationDevice.LEDBrightness"
+                               Color="MudBlazor.Color.Warning"
+                               Rounded="true" MudBlazor.Size="Size.large"
+                               Style="height:10px;" />
+            @if (baseStationDevice.IsErrors == true)
+            {
+                <MudChip T="string"
+                         Color="MudBlazor.Color.Error">
+                    Error Detected
+                </MudChip>
+            }
+            else
+            {
+                <MudChip T="string"
+                         Color="MudBlazor.Color.Success">
+                    No Errors Detected
+                </MudChip>
+            }
+            <MudButton Variant="Variant.Filled"
+                       Color="MudBlazor.Color.Primary"
+                       OnClick="resetError"
+                       FullWidth="true">
+                Remove Error
+            </MudButton>
+        </MudStack>
     </MudItem>
 </MudGrid>
 
@@ -57,6 +65,7 @@
 
 
     BaseStationDevice baseStationDevice;
+
 
     protected override async Task OnInitializedAsync()
     {
