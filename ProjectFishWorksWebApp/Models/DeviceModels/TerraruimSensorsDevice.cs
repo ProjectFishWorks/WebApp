@@ -4,7 +4,7 @@
     {
         private int nodeID;
 
-        public TerraruimSensorsDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
+        public TerraruimSensorsDevice(MQTTnet.ClientLib.MqttService mqttService, string userID, int systemID, int basestationID, int nodeID) : base(mqttService, userID, systemID, basestationID)
         {
             this.nodeID = nodeID;
         }

@@ -17,10 +17,13 @@ namespace ProjectFishWorksWebApp.Models
         //Basestation ID of the device
         private int basestationID;
 
+        private string clientID;
+
         private int _historyReceivedHours = 0;
-        public Device(MQTTnet.ClientLib.MqttService mqttService,int systemID, int basestationID)
+        public Device(MQTTnet.ClientLib.MqttService mqttService, string clientID, int systemID, int basestationID)
         {
             this.mqttService = mqttService;
+            this.clientID = clientID;
             this.systemID = systemID;
             this.basestationID = basestationID;
         }
@@ -45,7 +48,7 @@ namespace ProjectFishWorksWebApp.Models
             string json = JsonSerializer.Serialize(mQTTDataOut);
 
             //The topic to send the request on
-            string requestTopic = $"historyIn/{systemID}/{basestationID}/{nodeID}/{messageID}";
+            string requestTopic = $"{clientID}/historyIn/{systemID}/{basestationID}/{nodeID}/{messageID}";
 
             //Send the request to the basestation
             MqttApplicationMessage message = new MqttApplicationMessageBuilder()
@@ -55,19 +58,21 @@ namespace ProjectFishWorksWebApp.Models
             mqttService.Publish(message);
 
             //Subscribe to the response topic
-            mqttService.Subscribe($"historyOut/{systemID}/{basestationID}/{nodeID}/{messageID}/#");
+            mqttService.Subscribe($"{clientID}/historyOut/{systemID}/{basestationID}/{nodeID}/{messageID}/#");
         }
 
         //Update the historical data (called after requestHistoricalData) returns a list of time and data pairs
         public List<HistoryDataRow>? updateHistoricalData(int nodeID, int messageID, int hours)
         {
-
+            Console.WriteLine("Found History Messages");
             //The topic to look for the response on
-            string responseTopic = $"historyOut/{systemID}/{basestationID}/{nodeID}/{messageID}";
+            string responseTopic = $"{clientID}/historyOut/{systemID}/{basestationID}/{nodeID}/{messageID}";
 
             //Do we have any history data responses?
             if(mqttService.AllMessages.Keys.Where(k => k.StartsWith(responseTopic)).Count() > 0)
             {
+
+
                 Dictionary<DateTime, ulong> data = new Dictionary<DateTime, ulong>();
 
                 //Get all the history responses
@@ -141,9 +146,9 @@ namespace ProjectFishWorksWebApp.Models
             {
                 //   out/0/0/170/45056
                 string[] parts = kvp.Key.Split('/');
-                if (parts.Length == 5)
+                if (parts.Length == 6)
                 {
-                    if ((parts[0] == "out" || (parts[0] == "in")) && parts[1] == systemID.ToString() && parts[2] == basestationID.ToString() && parts[3] == nodeID.ToString() && parts[4] == messageID.ToString())
+                    if ((parts[1] == "out" || (parts[1] == "in")) && parts[2] == systemID.ToString() && parts[3] == basestationID.ToString() && parts[4] == nodeID.ToString() && parts[5] == messageID.ToString())
                     {
                         //Deserialize the JSON payload
                         MQTTData? mQTTData = JsonSerializer.Deserialize<MQTTData>(kvp.Value);
@@ -154,6 +159,7 @@ namespace ProjectFishWorksWebApp.Models
                         return mQTTData;
                     }
                 }
+                
             }
             //No message found
             return new MQTTData();
@@ -168,7 +174,7 @@ namespace ProjectFishWorksWebApp.Models
             DateTime currentTime = System.DateTime.UtcNow;
             mQTTData.time = (ulong)((DateTimeOffset)currentTime).ToUnixTimeSeconds();
             string json = JsonSerializer.Serialize(mQTTData);
-            string topic = $"in/{systemID}/{basestationID}/{nodeID}/{messageID}";
+            string topic = $"{clientID}/in/{systemID}/{basestationID}/{nodeID}/{messageID}";
 
             //Send the message
             MqttApplicationMessage message = new MqttApplicationMessageBuilder()

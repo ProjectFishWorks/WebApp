@@ -232,12 +232,19 @@
     [Parameter]
     public int NodeID { get; set; }
 
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
 
     LeakSensorDevice leakSensorDevice;
 
     protected override async Task OnInitializedAsync()
     {
-        this.leakSensorDevice = new LeakSensorDevice(MqttService, this.SystemID, BaseStationID, this.NodeID);
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            this.leakSensorDevice = new LeakSensorDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.SystemID, BaseStationID, this.NodeID);
+        }
         if (MqttService.IsConnected())
         {
             MqttService.MessageReceived += MqttClient_MessageReceived;

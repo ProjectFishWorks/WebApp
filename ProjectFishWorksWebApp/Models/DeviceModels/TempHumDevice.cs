@@ -22,7 +22,7 @@
         private int decimalCount = 1;
 
 
-        public TempHumDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID,int basestationID,int nodeID) : base(mqttService, systemID, basestationID)
+        public TempHumDevice(MQTTnet.ClientLib.MqttService mqttService, string userID,int systemID,int basestationID,int nodeID) : base(mqttService, userID, systemID, basestationID)
         {
             this.nodeID = nodeID;
             Console.Write("Node ID");

@@ -3,6 +3,9 @@ using System.Text.Json;
 
 using MQTTnet;
 
+using Microsoft.AspNetCore.Components.Authorization;
+
+
 namespace ProjectFishWorksWebApp.Models
 {
     public class BaseStationManifests
@@ -11,13 +14,15 @@ namespace ProjectFishWorksWebApp.Models
 
         private int _systemID { get; set; }
 
+        private string _userID { get; set; }
+
         List<BaseStationManifestData> _manifests;
 
         public List<BaseStationManifestData> Manifests
         {
             get
             {
-                var messsages = _mqttService.AllMessages.Where(x => (x.Key.StartsWith($"manifestOut/{_systemID}")));
+                var messsages = _mqttService.AllMessages.Where(x => (x.Key.StartsWith($"{_userID}/manifestOut/{_systemID}")));
 
                 _manifests = new List<BaseStationManifestData>();
 
@@ -37,8 +42,9 @@ namespace ProjectFishWorksWebApp.Models
             }
 
         }
-        public BaseStationManifests(int systemID, MqttService mqttService)
+        public BaseStationManifests(string userID, int systemID, MqttService mqttService)
         {
+            this._userID = userID;
             this._mqttService = mqttService;
             this._systemID = systemID;
 
@@ -47,7 +53,7 @@ namespace ProjectFishWorksWebApp.Models
         {
             string payload = JsonSerializer.Serialize(manifest);
             MqttApplicationMessage message = new MqttApplicationMessageBuilder()
-                .WithTopic($"manifestIn/{manifest.SystemID}/{manifest.BaseStationID}")
+                .WithTopic($"{_userID}/manifestIn/{manifest.SystemID}/{manifest.BaseStationID}")
                 .WithPayload(payload)
                 .Build();
             _mqttService.Publish(message);

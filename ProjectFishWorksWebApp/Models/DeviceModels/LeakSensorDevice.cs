@@ -12,7 +12,7 @@
         private int? _LeakSensor4Sensitivity;
 
 
-        public LeakSensorDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
+        public LeakSensorDevice(MQTTnet.ClientLib.MqttService mqttService, string userID,int systemID, int basestationID, int nodeID) : base(mqttService,userID ,systemID, basestationID)
         {
             this.nodeID = nodeID;
         }
