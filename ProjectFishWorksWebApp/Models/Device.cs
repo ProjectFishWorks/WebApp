@@ -64,13 +64,15 @@ namespace ProjectFishWorksWebApp.Models
         //Update the historical data (called after requestHistoricalData) returns a list of time and data pairs
         public List<HistoryDataRow>? updateHistoricalData(int nodeID, int messageID, int hours)
         {
-
+            Console.WriteLine("Found History Messages");
             //The topic to look for the response on
             string responseTopic = $"{clientID}/historyOut/{systemID}/{basestationID}/{nodeID}/{messageID}";
 
             //Do we have any history data responses?
             if(mqttService.AllMessages.Keys.Where(k => k.StartsWith(responseTopic)).Count() > 0)
             {
+
+
                 Dictionary<DateTime, ulong> data = new Dictionary<DateTime, ulong>();
 
                 //Get all the history responses
@@ -144,7 +146,7 @@ namespace ProjectFishWorksWebApp.Models
             {
                 //   out/0/0/170/45056
                 string[] parts = kvp.Key.Split('/');
-                if (parts.Length == 5)
+                if (parts.Length == 6)
                 {
                     if ((parts[1] == "out" || (parts[1] == "in")) && parts[2] == systemID.ToString() && parts[3] == basestationID.ToString() && parts[4] == nodeID.ToString() && parts[5] == messageID.ToString())
                     {
@@ -157,6 +159,7 @@ namespace ProjectFishWorksWebApp.Models
                         return mQTTData;
                     }
                 }
+                
             }
             //No message found
             return new MQTTData();

@@ -3,7 +3,7 @@
     public class ACControlDevice : Device
     {
         private int nodeID;
-        public ACControlDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
+        public ACControlDevice(MQTTnet.ClientLib.MqttService mqttService, string userID, int systemID, int basestationID, int nodeID) : base(mqttService, userID,systemID, basestationID)
         {
             this.nodeID = nodeID;
         }

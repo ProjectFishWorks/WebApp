@@ -98,7 +98,7 @@
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
     {
         //Refresh the UI when a message is received
-        if (int.Parse(e.ApplicationMessage.Topic.Split("/")[3]) == NodeID || e.ApplicationMessage.Topic.Split("/")[0] == "historyOut")
+        if (int.Parse(e.ApplicationMessage.Topic.Split("/")[4]) == NodeID || e.ApplicationMessage.Topic.Split("/")[1] == "historyOut")
         {
             base.StateHasChanged();
         }

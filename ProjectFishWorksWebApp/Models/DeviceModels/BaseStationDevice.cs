@@ -6,7 +6,7 @@
         private int? _LEDBrightness;
         private bool _ErrorStatus;
 
-        public BaseStationDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
+        public BaseStationDevice(MQTTnet.ClientLib.MqttService mqttService, string userID,int systemID, int basestationID, int nodeID) : base(mqttService,userID, systemID, basestationID)
         {
             this.nodeID = nodeID;
         }

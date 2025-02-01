@@ -5,8 +5,6 @@
 @using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
 
-@inject AuthenticationState AuthenticationState
-
 <PageTitle>Device - @DeviceData.DeviceName</PageTitle>
 
 
@@ -39,6 +37,9 @@
 
     private BaseStationManifests _manifests;
 
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
     public BaseStationManifestData.DeviceData DeviceData
     {
         get
@@ -50,7 +51,12 @@
     protected override async Task OnInitializedAsync()
     {
         MqttService.MessageReceived += MqttClient_MessageReceived;
-        _manifests = new BaseStationManifests(AuthenticationState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", SystemID, MqttService);
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+
+            _manifests = new BaseStationManifests(authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", SystemID, MqttService);
+        }
     }
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)

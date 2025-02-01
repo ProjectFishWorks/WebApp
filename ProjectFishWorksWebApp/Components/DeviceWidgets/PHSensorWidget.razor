@@ -27,6 +27,9 @@
 
     PHSensorDevice PHsensor;
 
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
     private MudBlazor.Color getBarColor(float? min, float? max, float? value, bool alarm)
     {
         if (min == null || max == null || value == null)
@@ -50,7 +53,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        this.PHsensor = new PHSensorDevice(MqttService, this.SystemID, this.BaseStationID, this.NodeID);
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            this.PHsensor = new PHSensorDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.SystemID, this.BaseStationID, this.NodeID);
+        }
 
         if (MqttService.IsConnected())
         {

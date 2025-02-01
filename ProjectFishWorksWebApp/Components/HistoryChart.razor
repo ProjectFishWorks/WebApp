@@ -129,7 +129,7 @@
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
     {
-        if (e.ApplicationMessage.Topic.StartsWith("historyOut"))
+        if (e.ApplicationMessage.Topic.Split("/")[1] == "historyOut")
         {   
             //If we get incoming history data, update the history data
             if(UpdateData != null)

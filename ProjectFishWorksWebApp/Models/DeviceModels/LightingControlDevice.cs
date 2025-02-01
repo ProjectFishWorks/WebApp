@@ -18,7 +18,7 @@
         private int? _MaxWhiteIntensity = 0;
         private int? _MaxBlueIntensity = 0;
 
-        public LightingControlDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
+        public LightingControlDevice(MQTTnet.ClientLib.MqttService mqttService, string userID,int systemID, int basestationID, int nodeID) : base(mqttService, userID, systemID, basestationID)
         {
             this.nodeID = nodeID;
         }
