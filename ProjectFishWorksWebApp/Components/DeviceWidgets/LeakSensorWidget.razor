@@ -2,36 +2,36 @@
 @using ProjectFishWorksWebApp.Models.DeviceModels
 @inject MQTTnet.ClientLib.MqttService MqttService
 
-    <MudStack>
-        @if (leakSensorDevice.Leak1Detected || leakSensorDevice.Leak2Detected || leakSensorDevice.Leak3Detected || leakSensorDevice.Leak4Detected)
-        {
-            <MudChip T="string"
-                     Color="MudBlazor.Color.Error">
-                Leak Detected
-            </MudChip>
-        }
-        else
-        {
-            <MudChip T="string"
-                     Color="MudBlazor.Color.Success">
-                No Leak Detected
-            </MudChip>
-        }
+<MudStack Spacing="3">
+    @if (leakSensorDevice.Leak1Detected || leakSensorDevice.Leak2Detected || leakSensorDevice.Leak3Detected || leakSensorDevice.Leak4Detected)
+    {
+        <MudChip T="string"
+                 Color="MudBlazor.Color.Error">
+            Leak Detected
+        </MudChip>
+    }
+    else
+    {
+        <MudChip T="string"
+                 Color="MudBlazor.Color.Success">
+            No Leak Detected
+        </MudChip>
+    }
     @if (leakSensorDevice.HighWaterLevel1 || leakSensorDevice.HighWaterLevel2 || leakSensorDevice.HighWaterLevel3 || leakSensorDevice.HighWaterLevel4)
-        {
-            <MudChip T="string"
-                     Color="MudBlazor.Color.Error">
-                High Water Level
-            </MudChip>
-        }
-        else
-        {
-            <MudChip T=string
-                     Color="MudBlazor.Color.Success">
-                Normal Water Level
-            </MudChip>
-        }
-    </MudStack>
+    {
+        <MudChip T="string"
+                 Color="MudBlazor.Color.Error">
+            High Water Level
+        </MudChip>
+    }
+    else
+    {
+        <MudChip T=string
+                 Color="MudBlazor.Color.Success">
+            Normal Water Level
+        </MudChip>
+    }
+</MudStack>
 
 
 @code
