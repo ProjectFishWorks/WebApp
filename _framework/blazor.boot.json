@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "ProjectFishWorksWebApp",
   "resources": {
-    "hash": "sha256-xxjxElTfL04pqRKgG3pBw/Rze8NwkBKdUk5t30fly2k=",
+    "hash": "sha256-Yjz1eX+KcprSQEPxxTcIgCLyHaG5xPlme50cDfVCQtg=",
     "jsModuleNative": {
       "dotnet.native.8.0.12.5019ia6r61.js": "sha256-B6DNRvFeCUi3jbx9uKpuj+hV9cN0KG4RdZj1FgBZwj8="
     },
@@ -41,12 +41,12 @@
       "Microsoft.Extensions.Primitives.wasm": "sha256-Ms2HR5Gpug/0uRAzdk4SUNT76Ml3CjFv9Jo+dUIMGac=",
       "Microsoft.JSInterop.wasm": "sha256-iZ1+f0iAH9y2BSrX/f5OASyHAeGiuEL14DMw40nUx/Q=",
       "Microsoft.JSInterop.WebAssembly.wasm": "sha256-rhDkGvVEd5YGb2JsVk1xQC7gCF8TXNfpDfo9dGFhuyI=",
-      "MQTTnet.ClientLib.wasm": "sha256-Jignv0/PCPYHc9VhRZFfpM1Vb9wpi4JU7aTaeKa8Vq8=",
+      "MQTTnet.ClientLib.wasm": "sha256-X+G+TDRinLIKLFfxkizY0VigYiXK071eXGqFWYNdGYQ=",
       "MQTTnet.wasm": "sha256-PGK00q7Oe1M83gdVhtkC88AWaKBqQuOAq+p5uUm/CuM=",
       "MudBlazor.wasm": "sha256-f6QzpA9z5Gm8GZZOIeedr/5k0wt9LCYqU0gItvJYOYk=",
       "netstandard.wasm": "sha256-Tk89cdaQZZqWaGgjGxzmgUoah0+JvLb0fX1frh4qWao=",
       "Newtonsoft.Json.wasm": "sha256-GlXMWKvDs45M2pACoR3Y4Qh8mcrOZGljqmvJY+6JZ5s=",
-      "ProjectFishWorksWebApp.wasm": "sha256-Z0+mEWFNIT7RBAgdppUPv4oOE3UTCBW4L0fL8S3YHic=",
+      "ProjectFishWorksWebApp.wasm": "sha256-FqTCiEDQTZ/BnhlX5ZGxVkinNRB7kIGzbrfURI4TJbo=",
       "System.Collections.Concurrent.wasm": "sha256-RxKEdQa/EmqrTCUSYcnrX9ckNf4x6DfTySvnXgfwSqA=",
       "System.Collections.Immutable.wasm": "sha256-vjnQem8EhN7sFBx228majWOnzHYoDszycPssEMMNZrA=",
       "System.Collections.NonGeneric.wasm": "sha256-cST0j+py3teoHHVMnxxyxrFQx8YRkxfBDgZ/zQQ3P1k=",

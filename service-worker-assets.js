@@ -69,7 +69,7 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-lwXyi\/iyOswVaszMylwyZOMVnOfUPdQO\/NSOmWLco\/s=",
+      "hash": "sha256-irv5Ftk5bqUxJ\/x4obsk0s\/fzsbzpsQVK9E+C4KcQQg=",
       "url": "_framework\/blazor.boot.json"
     },
     {
@@ -169,7 +169,7 @@
       "url": "_framework\/Microsoft.JSInterop.WebAssembly.wasm"
     },
     {
-      "hash": "sha256-Jignv0\/PCPYHc9VhRZFfpM1Vb9wpi4JU7aTaeKa8Vq8=",
+      "hash": "sha256-X+G+TDRinLIKLFfxkizY0VigYiXK071eXGqFWYNdGYQ=",
       "url": "_framework\/MQTTnet.ClientLib.wasm"
     },
     {
@@ -189,7 +189,7 @@
       "url": "_framework\/Newtonsoft.Json.wasm"
     },
     {
-      "hash": "sha256-Z0+mEWFNIT7RBAgdppUPv4oOE3UTCBW4L0fL8S3YHic=",
+      "hash": "sha256-FqTCiEDQTZ\/BnhlX5ZGxVkinNRB7kIGzbrfURI4TJbo=",
       "url": "_framework\/ProjectFishWorksWebApp.wasm"
     },
     {
@@ -449,5 +449,5 @@
       "url": "_content\/MudBlazor\/MudBlazor.min.js"
     }
   ],
-  "version": "KOv+MFow"
+  "version": "iwcJLHOD"
 };
