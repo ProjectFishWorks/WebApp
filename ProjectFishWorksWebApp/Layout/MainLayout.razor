@@ -76,7 +76,7 @@
     //private string mqttUsername { get; set; } = "fishworks-dev";
     //private string mqttPassword { get; set; } = "F1shworks!";
 
-    private string topic { get; set; } = "+/0/#";
+    private string topic { get; set; } = "auth0|6780a2d9d25eaaea97f7fe1b/#";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -134,11 +134,16 @@
     {
         MqttService.Disconnected += MqttService_Disconnected;
         Console.WriteLine("Getting Token");
-        var tokenResult = await TokenProvider.RequestAccessToken();
+        var tokenResult = await TokenProvider.RequestAccessToken(
+            new AccessTokenRequestOptions
+            {
+                    Scopes = new[] { "emqx.projectfishworks.ca" }
+            });
 
         if (tokenResult.TryGetToken(out var token))
         {
-            Console.WriteLine("Bearer Got Token");
+            Console.WriteLine("Bearer Got Token: " + token.Value);
+            Console.WriteLine("Connecting to MQTT...");
 
             var mqttClientOptions = new MQTTnet.Client.Options.MqttClientOptionsBuilder()
             .WithClientId(Guid.NewGuid().ToString())
@@ -153,7 +158,7 @@
             var result = await MqttService.Connect();
             MqttClientConnection = result ? "Connected" : "Error logging in";
 
-            Console.WriteLine(result);
+            Console.WriteLine(MqttClientConnection);
 
             base.StateHasChanged();
 

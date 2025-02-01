@@ -131,7 +131,7 @@
             MqttService.MessageReceived += MqttClient_MessageReceived;
         }
 
-        baseStationManifests = new BaseStationManifests(systemID, MqttService);
+        baseStationManifests = new BaseStationManifests(AuthenticationState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", systemID, MqttService);
     }
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)

@@ -24,4 +24,6 @@ builder.Services.AddOidcAuthentication(options =>
     options.ProviderOptions.AdditionalProviderParameters.Add("audience", builder.Configuration["Auth0:Audience"]);
 });
 
+builder.Services.AddCascadingAuthenticationState();
+
 await builder.Build().RunAsync();

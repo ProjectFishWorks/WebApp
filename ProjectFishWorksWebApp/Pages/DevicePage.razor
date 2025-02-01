@@ -5,6 +5,8 @@
 @using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
 
+@inject AuthenticationState AuthenticationState
+
 <PageTitle>Device - @DeviceData.DeviceName</PageTitle>
 
 
@@ -48,7 +50,7 @@
     protected override async Task OnInitializedAsync()
     {
         MqttService.MessageReceived += MqttClient_MessageReceived;
-        _manifests = new BaseStationManifests(SystemID, MqttService);
+        _manifests = new BaseStationManifests(AuthenticationState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", SystemID, MqttService);
     }
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
