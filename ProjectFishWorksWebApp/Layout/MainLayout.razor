@@ -70,13 +70,16 @@
 
     private MudThemeProvider _mudThemeProvider;
 
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
     private string MqttClientConnection { get; set; }
 
     private string mqttWebSocket { get; set; } = "emqx.projectfishworks.ca:8084/mqtt";
     //private string mqttUsername { get; set; } = "fishworks-dev";
     //private string mqttPassword { get; set; } = "F1shworks!";
 
-    private string topic { get; set; } = "auth0|6780a2d9d25eaaea97f7fe1b/#";
+    private string topic { get; set; } = "";
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -161,6 +164,12 @@
             Console.WriteLine(MqttClientConnection);
 
             base.StateHasChanged();
+
+            if (authenticationState is not null)
+            {
+                var authState = await authenticationState;
+                topic = $"{authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? ""}/#";
+            }
 
             await MqttService.Subscribe(topic);
         }
