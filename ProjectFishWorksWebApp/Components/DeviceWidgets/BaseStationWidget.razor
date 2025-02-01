@@ -58,12 +58,19 @@
     [Parameter]
     public int NodeID { get; set; }
 
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
 
     BaseStationDevice baseStationDevice;
 
     protected override async Task OnInitializedAsync()
     {
-        this.baseStationDevice = new BaseStationDevice(MqttService, this.SystemID, BaseStationID, this.NodeID);
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            this.baseStationDevice = new BaseStationDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.SystemID, BaseStationID, this.NodeID);
+        }
         if (MqttService.IsConnected())
         {
             MqttService.MessageReceived += MqttClient_MessageReceived;
