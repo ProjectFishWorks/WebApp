@@ -54,6 +54,9 @@
     [Parameter]
     public int nodeID { get; set; } = 0;
 
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
     ACControlDevice aCControlDevice;
 
 
@@ -61,7 +64,11 @@
     {
 
         //Create the TesterHatDevice data model
-        this.aCControlDevice = new ACControlDevice(MqttService, this.systemID, this.basestationID, this.nodeID);
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            this.aCControlDevice = new ACControlDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.systemID, this.basestationID, this.nodeID);
+        }
 
         if (MqttService.IsConnected())
         {

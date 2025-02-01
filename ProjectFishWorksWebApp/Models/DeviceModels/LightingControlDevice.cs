@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Timers;
 
 namespace ProjectFishWorksWebApp.Models.DeviceModels
@@ -33,61 +34,37 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         private int? _OverrideBlue_2_Intensity;
         private int? _MinWhiteValue;
         private int? _MinBlueValue;
-        //private TimeSpan? _DawnTime = new TimeSpan();
-        //private TimeSpan? _SunriseTime = new TimeSpan();
-        //private TimeSpan? _DawnSunriseDifference = new TimeSpan();
-        //public int? _DawnSunriseDifferenceSeconds = 0;
 
-        public LightingControlDevice(MQTTnet.ClientLib.MqttService mqttService, int systemID, int basestationID, int nodeID) : base(mqttService, systemID, basestationID)
+        public LightingControlDevice(MQTTnet.ClientLib.MqttService mqttService, string userID,int systemID, int basestationID, int nodeID) : base(mqttService, userID, systemID, basestationID)
         {
             this.nodeID = nodeID;
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        /*public TimeSpan? DawnSunriseDifference
+        protected virtual void OnPropertyChanged(string propertyName)
         {
-            get
-            {
-                if (_SunriseTime.HasValue && _DawnTime.HasValue)
-                {
-                    _DawnSunriseDifference = _SunriseTime - _DawnTime;
-                    _DawnSunriseDifferenceSeconds = (int)_DawnSunriseDifference.Value.TotalSeconds;
-
-                    return _DawnSunriseDifference;
-                }
-                else
-                {
-                    return TimeSpan.Zero;
-                }
-            }
-            set
-            {
-                _DawnSunriseDifference = _SunriseTime - _DawnTime;
-                _DawnSunriseDifferenceSeconds = (int)_DawnSunriseDifference.Value.TotalSeconds;
-                sendMessageData(nodeID, 2562, (ulong)_DawnSunriseDifferenceSeconds);
-                Console.WriteLine("Difference in seconds: " + _DawnSunriseDifferenceSeconds);
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        */
+
 
         public int DawnTimeMins
         {
             get
             {
-                _DawnTimeMins = ((int?)getMessagePayload(nodeID, 2560).data);
-                if (_DawnTimeMins.HasValue)
-                {
-                    return _DawnTimeMins.Value;
-                }
-                else
-                {
-                    return -1;
-                }
+                ulong? value = getMessagePayload(nodeID, 25060).data;
+                Console.WriteLine($"Get value DawnTimeMins : {value}");
+                return value.HasValue ? (int)value.Value : 1;
             }
             set
             {
-                _DawnTimeMins = value;
-                sendMessageData(nodeID, 2560, (ulong)_DawnTimeMins);
+                if (_DawnTimeMins != value)
+                {
+                    _DawnTimeMins = value;
+                    Console.WriteLine($"Set value _DawnTimeMins : {_DawnTimeMins}");
+                    sendMessageData(nodeID, 25060, (ulong)value);
+                    OnPropertyChanged(nameof(DawnTimeMins));
+                }
             }
         }
 
@@ -95,20 +72,19 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _DawnTimeHours = ((int?)getMessagePayload(nodeID, 2561).data);
-                if (_DawnTimeHours.HasValue)
-                {
-                    return _DawnTimeHours.Value;
-                }
-                else
-                {
-                    return -1;
-                }
+                ulong? value = getMessagePayload(nodeID, 25061).data;
+                Console.WriteLine($"Get value DawnTimeHours : {value}");
+                return value.HasValue ? (int)value.Value : 1;
             }
             set
             {
-                _DawnTimeHours = value;
-                sendMessageData(nodeID, 2561, (ulong)_DawnTimeHours);
+                if (_DawnTimeHours != value)
+                {
+                    _DawnTimeHours = value;
+                    Console.WriteLine($"Set value _DawnTimeHours : {_DawnTimeHours}");
+                    sendMessageData(nodeID, 25061, (ulong)value);
+                    OnPropertyChanged(nameof(DawnTimeHours));
+                }
             }
         }
 
@@ -116,20 +92,19 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _DuskTimeMins = ((int?)getMessagePayload(nodeID, 2562).data);
-                if (_DuskTimeMins.HasValue)
-                {
-                    return _DuskTimeMins.Value;
-                }
-                else
-                {
-                    return -1;
-                }
+                ulong? value = getMessagePayload(nodeID, 25062).data;
+                Console.WriteLine($"Get value DuskTimeMins : {value}");
+                return value.HasValue ? (int)value.Value : 1;
             }
             set
             {
-                _DuskTimeMins = value;
-                sendMessageData(nodeID, 2562, (ulong)_DuskTimeMins);
+                if (_DuskTimeMins != value)
+                {
+                    _DuskTimeMins = value;
+                    Console.WriteLine($"Set value _DuskTimeMins : {_DuskTimeMins}");
+                    sendMessageData(nodeID, 25062, (ulong)value);
+                    OnPropertyChanged(nameof(DuskTimeMins));
+                }
             }
         }
 
@@ -137,41 +112,39 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _DuskTimeHours = ((int?)getMessagePayload(nodeID, 2563).data);
-                if (_DuskTimeHours.HasValue)
-                {
-                    return _DuskTimeHours.Value;
-                }
-                else
-                {
-                    return -1;
-                }
+                ulong? value = getMessagePayload(nodeID, 25063).data;
+                Console.WriteLine($"Get value DuskTimeHours : {value}");
+                return value.HasValue ? (int)value.Value : 1;
             }
             set
             {
-                _DuskTimeHours = value;
-                sendMessageData(nodeID, 2563, (ulong)_DuskTimeHours);
+                if (_DuskTimeHours != value)
+                {
+                    _DuskTimeHours = value;
+                    Console.WriteLine($"Set value _DuskTimeHours : {_DuskTimeHours}");
+                    sendMessageData(nodeID, 25063, (ulong)value);
+                    OnPropertyChanged(nameof(DuskTimeHours));
+                }
             }
         }
- 
+
         public int SunriseTimeMins
         {
             get
             {
-                _SunriseTimeMins = ((int?)getMessagePayload(nodeID, 2564).data);
-                if (_SunriseTimeMins.HasValue)
-                {
-                    return _SunriseTimeMins.Value;
-                }
-                else
-                {
-                    return -1;
-                }
+                ulong? value = getMessagePayload(nodeID, 25064).data;
+                Console.WriteLine($"Get value SunriseTimeMins : {value}");
+                return value.HasValue ? (int)value.Value : 1;
             }
             set
             {
-                _SunriseTimeMins = value;
-                sendMessageData(nodeID, 2564, (ulong)_SunriseTimeMins);
+                if (_SunriseTimeMins != value)
+                {
+                    _SunriseTimeMins = value;
+                    Console.WriteLine($"Set value _SunriseTimeMins : {_SunriseTimeMins}");
+                    sendMessageData(nodeID, 25064, (ulong)value);
+                    OnPropertyChanged(nameof(SunriseTimeMins));
+                }
             }
         }
 
@@ -179,20 +152,19 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _SunriseTimeHours = ((int?)getMessagePayload(nodeID, 2565).data);
-                if (_SunriseTimeHours.HasValue)
-                {
-                    return _SunriseTimeHours.Value;
-                }
-                else
-                {
-                    return -1;
-                }
+                ulong? value = getMessagePayload(nodeID, 25065).data;
+                Console.WriteLine($"Get value SunriseTimeHours : {value}");
+                return value.HasValue ? (int)value.Value : 1;
             }
             set
             {
-                _SunriseTimeHours = value;
-                sendMessageData(nodeID, 2565, (ulong)_SunriseTimeHours);
+                if (_SunriseTimeHours != value)
+                {
+                    _SunriseTimeHours = value;
+                    Console.WriteLine($"Set value _SunriseTimeHours : {_SunriseTimeHours}");
+                    sendMessageData(nodeID, 25065, (ulong)value);
+                    OnPropertyChanged(nameof(SunriseTimeHours));
+                }
             }
         }
 
@@ -201,20 +173,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _SunsetTimeMins = ((int?)getMessagePayload(nodeID, 2566).data);
+                _SunsetTimeMins = ((int?)getMessagePayload(nodeID, 25066).data);
                 if (_SunsetTimeMins.HasValue)
                 {
                     return _SunsetTimeMins.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _SunsetTimeMins = value;
-                sendMessageData(nodeID, 2566, (ulong)_SunsetTimeMins);
+                sendMessageData(nodeID, 25066, (ulong)_SunsetTimeMins);
             }
         }
 
@@ -222,20 +194,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _SunsetTimeHours = ((int?)getMessagePayload(nodeID, 2567).data);
+                _SunsetTimeHours = ((int?)getMessagePayload(nodeID, 25067).data);
                 if (_SunsetTimeHours.HasValue)
                 {
                     return _SunsetTimeHours.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _SunsetTimeHours = value;
-                sendMessageData(nodeID, 2567, (ulong)_SunsetTimeHours);
+                sendMessageData(nodeID, 25067, (ulong)_SunsetTimeHours);
             }
         }
 
@@ -243,20 +215,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _HighNoonMins = ((int?)getMessagePayload(nodeID, 2568).data);
+                _HighNoonMins = ((int?)getMessagePayload(nodeID, 25068).data);
                 if (_HighNoonMins.HasValue)
                 {
                     return _HighNoonMins.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _HighNoonMins = value;
-                sendMessageData(nodeID, 2568, (ulong)_HighNoonMins);
+                sendMessageData(nodeID, 25068, (ulong)_HighNoonMins);
             }
         }
 
@@ -264,20 +236,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _HighNoonHours = ((int?)getMessagePayload(nodeID, 2569).data);
+                _HighNoonHours = ((int?)getMessagePayload(nodeID, 25069).data);
                 if (_HighNoonHours.HasValue)
                 {
                     return _HighNoonHours.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _HighNoonHours = value;
-                sendMessageData(nodeID, 2569, (ulong)_HighNoonHours);
+                sendMessageData(nodeID, 25069, (ulong)_HighNoonHours);
             }
         }
 
@@ -285,20 +257,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _NightTimeMins = ((int?)getMessagePayload(nodeID, 2570).data);
+                _NightTimeMins = ((int?)getMessagePayload(nodeID, 25070).data);
                 if (_NightTimeMins.HasValue)
                 {
                     return _NightTimeMins.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _NightTimeMins = value;
-                sendMessageData(nodeID, 2570, (ulong)_NightTimeMins);
+                sendMessageData(nodeID, 25070, (ulong)_NightTimeMins);
             }
         }
 
@@ -306,7 +278,7 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _NightTimeHours = ((int?)getMessagePayload(nodeID, 2571).data);
+                _NightTimeHours = ((int?)getMessagePayload(nodeID, 25071).data);
                 if (_NightTimeHours.HasValue)
                 {
                     return _NightTimeHours.Value;
@@ -319,7 +291,7 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
             set
             {
                 _NightTimeHours = value;
-                sendMessageData(nodeID, 2571, (ulong)_NightTimeHours);
+                sendMessageData(nodeID, 25071, (ulong)_NightTimeHours);
             }
         }
 
@@ -327,20 +299,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _Blue_1_MaxIntensity = ((int?)getMessagePayload(nodeID, 2572).data);
+                _Blue_1_MaxIntensity = ((int?)getMessagePayload(nodeID, 25072).data);
                 if (_Blue_1_MaxIntensity.HasValue)
                 {
                     return _Blue_1_MaxIntensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _Blue_1_MaxIntensity = value;
-                sendMessageData(nodeID, 2572, (ulong)_Blue_1_MaxIntensity);
+                sendMessageData(nodeID, 25072, (ulong)_Blue_1_MaxIntensity);
             }
         }
 
@@ -348,20 +320,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _Blue_2_MaxIntensity = ((int?)getMessagePayload(nodeID, 2573).data);
+                _Blue_2_MaxIntensity = ((int?)getMessagePayload(nodeID, 25073).data);
                 if (_Blue_2_MaxIntensity.HasValue)
                 {
                     return _Blue_2_MaxIntensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _Blue_2_MaxIntensity = value;
-                sendMessageData(nodeID, 2573, (ulong)_Blue_2_MaxIntensity);
+                sendMessageData(nodeID, 25073, (ulong)_Blue_2_MaxIntensity);
             }
         }
             
@@ -369,20 +341,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _White_1_MaxIntensity = ((int?)getMessagePayload(nodeID, 2574).data);
+                _White_1_MaxIntensity = ((int?)getMessagePayload(nodeID, 25074).data);
                 if (_White_1_MaxIntensity.HasValue)
                 {
                     return _White_1_MaxIntensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _White_1_MaxIntensity = value;
-                sendMessageData(nodeID, 2574, (ulong)_White_1_MaxIntensity);
+                sendMessageData(nodeID, 25074, (ulong)_White_1_MaxIntensity);
             }
         }
 
@@ -390,20 +362,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _White_2_MaxIntensity = ((int?)getMessagePayload(nodeID, 2575).data);
+                _White_2_MaxIntensity = ((int?)getMessagePayload(nodeID, 25075).data);
                 if (_White_2_MaxIntensity.HasValue)
                 {
                     return _White_2_MaxIntensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _White_2_MaxIntensity = value;
-                sendMessageData(nodeID, 2575, (ulong)_White_2_MaxIntensity);
+                sendMessageData(nodeID, 25075, (ulong)_White_2_MaxIntensity);
             }
         }
 
@@ -411,20 +383,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _CurrentWhite_1_Intensity = ((int?)getMessagePayload(nodeID, 2576).data);
+                _CurrentWhite_1_Intensity = ((int?)getMessagePayload(nodeID, 25076).data);
                 if (_CurrentWhite_1_Intensity.HasValue)
                 {
                     return _CurrentWhite_1_Intensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _CurrentWhite_1_Intensity = value;
-                sendMessageData(nodeID, 2576, (ulong)_CurrentWhite_1_Intensity);
+                sendMessageData(nodeID, 25076, (ulong)_CurrentWhite_1_Intensity);
             }
         }
 
@@ -432,20 +404,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _CurrentWhite_2_Intensity = ((int?)getMessagePayload(nodeID, 2577).data);
+                _CurrentWhite_2_Intensity = ((int?)getMessagePayload(nodeID, 25077).data);
                 if (_CurrentWhite_2_Intensity.HasValue)
                 {
                     return _CurrentWhite_2_Intensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _CurrentWhite_2_Intensity = value;
-                sendMessageData(nodeID, 2577, (ulong)_CurrentWhite_2_Intensity);
+                sendMessageData(nodeID, 25077, (ulong)_CurrentWhite_2_Intensity);
             }
         }
 
@@ -453,20 +425,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _CurrentBlue_1_Intensity = ((int?)getMessagePayload(nodeID, 2578).data);
+                _CurrentBlue_1_Intensity = ((int?)getMessagePayload(nodeID, 25078).data);
                 if (_CurrentBlue_1_Intensity.HasValue)
                 {
                     return _CurrentBlue_1_Intensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _CurrentBlue_1_Intensity = value;
-                sendMessageData(nodeID, 2578, (ulong)_CurrentBlue_1_Intensity);
+                sendMessageData(nodeID, 25078, (ulong)_CurrentBlue_1_Intensity);
             }
         }
 
@@ -474,20 +446,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _CurrentBlue_2_Intensity = ((int?)getMessagePayload(nodeID, 2579).data);
+                _CurrentBlue_2_Intensity = ((int?)getMessagePayload(nodeID, 25079).data);
                 if (_CurrentBlue_2_Intensity.HasValue)
                 {
                     return _CurrentBlue_2_Intensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _CurrentBlue_2_Intensity = value;
-                sendMessageData(nodeID, 2579, (ulong)_CurrentBlue_2_Intensity);
+                sendMessageData(nodeID, 25079, (ulong)_CurrentBlue_2_Intensity);
             }
         }
 
@@ -495,7 +467,7 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _ManualOverrideSwitch = ((int?)getMessagePayload(nodeID, 2580).data) == 1;
+                _ManualOverrideSwitch = ((int?)getMessagePayload(nodeID, 25080).data) == 1;
                 return _ManualOverrideSwitch;
             }
             set
@@ -503,11 +475,11 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
                 _ManualOverrideSwitch = value;
                 if (_ManualOverrideSwitch)
                 {
-                    sendMessageData(nodeID, 2580, 1);
+                    sendMessageData(nodeID, 25080, 1);
                 }
                 else
                 {
-                    sendMessageData(nodeID, 2580, 0);
+                    sendMessageData(nodeID, 25080, 0);
                 }
             }
         }
@@ -516,20 +488,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _OverrideWhite_1_Intensity = ((int?)getMessagePayload(nodeID, 2581).data);
+                _OverrideWhite_1_Intensity = ((int?)getMessagePayload(nodeID, 25081).data);
                 if (_OverrideWhite_1_Intensity.HasValue)
                 {
                     return _OverrideWhite_1_Intensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _OverrideWhite_1_Intensity = value;
-                sendMessageData(nodeID, 2581, (ulong)_OverrideWhite_1_Intensity);
+                sendMessageData(nodeID, 25081, (ulong)_OverrideWhite_1_Intensity);
             }
         }
 
@@ -537,20 +509,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _OverrideWhite_2_Intensity = ((int?)getMessagePayload(nodeID, 2582).data);
+                _OverrideWhite_2_Intensity = ((int?)getMessagePayload(nodeID, 25082).data);
                 if (_OverrideWhite_2_Intensity.HasValue)
                 {
                     return _OverrideWhite_2_Intensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _OverrideWhite_2_Intensity = value;
-                sendMessageData(nodeID, 2582, (ulong)_OverrideWhite_2_Intensity);
+                sendMessageData(nodeID, 25082, (ulong)_OverrideWhite_2_Intensity);
             }
         }
 
@@ -558,20 +530,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _OverrideBlue_1_Intensity = ((int?)getMessagePayload(nodeID, 2583).data);
+                _OverrideBlue_1_Intensity = ((int?)getMessagePayload(nodeID, 25083).data);
                 if (_OverrideBlue_1_Intensity.HasValue)
                 {
                     return _OverrideBlue_1_Intensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _OverrideBlue_1_Intensity = value;
-                sendMessageData(nodeID, 2583, (ulong)_OverrideBlue_1_Intensity);
+                sendMessageData(nodeID, 25083, (ulong)_OverrideBlue_1_Intensity);
             }
         }
 
@@ -579,20 +551,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _OverrideBlue_2_Intensity = ((int?)getMessagePayload(nodeID, 2584).data);
+                _OverrideBlue_2_Intensity = ((int?)getMessagePayload(nodeID, 25084).data);
                 if (_OverrideBlue_2_Intensity.HasValue)
                 {
                     return _OverrideBlue_2_Intensity.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _OverrideBlue_2_Intensity = value;
-                sendMessageData(nodeID, 2584, (ulong)_OverrideBlue_2_Intensity);
+                sendMessageData(nodeID, 25084, (ulong)_OverrideBlue_2_Intensity);
             }
         }
 
@@ -600,20 +572,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _MinWhiteValue = ((int?)getMessagePayload(nodeID, 2585).data);
+                _MinWhiteValue = ((int?)getMessagePayload(nodeID, 25085).data);
                 if (_MinWhiteValue.HasValue)
                 {
                     return _MinWhiteValue.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _MinWhiteValue = value;
-                sendMessageData(nodeID, 2585, (ulong)_MinWhiteValue);
+                sendMessageData(nodeID, 25085, (ulong)_MinWhiteValue);
             }
         }
 
@@ -621,20 +593,20 @@ namespace ProjectFishWorksWebApp.Models.DeviceModels
         {
             get
             {
-                _MinBlueValue = ((int?)getMessagePayload(nodeID, 2586).data);
+                _MinBlueValue = ((int?)getMessagePayload(nodeID, 25086).data);
                 if (_MinBlueValue.HasValue)
                 {
                     return _MinBlueValue.Value;
                 }
                 else
                 {
-                    return -1;
+                    return 0;
                 }
             }
             set
             {
                 _MinBlueValue = value;
-                sendMessageData(nodeID, 2586, (ulong)_MinBlueValue);
+                sendMessageData(nodeID, 25086, (ulong)_MinBlueValue);
             }
         }
     }

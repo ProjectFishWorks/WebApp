@@ -80,6 +80,9 @@
     [Parameter]
     public int nodeID { get; set; } = 0;
 
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
     ACControlDevice aCControlDevice;
 
     BaseStationManifests baseStationManifests;
@@ -124,14 +127,21 @@
     {
 
         //Create the TesterHatDevice data model
-        this.aCControlDevice = new ACControlDevice(MqttService, this.systemID, this.basestationID, this.nodeID);
 
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            this.aCControlDevice = new ACControlDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.systemID, this.basestationID, this.nodeID);
+
+            baseStationManifests = new BaseStationManifests(authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", systemID, MqttService);
+
+        }
         if (MqttService.IsConnected())
         {
             MqttService.MessageReceived += MqttClient_MessageReceived;
         }
 
-        baseStationManifests = new BaseStationManifests(systemID, MqttService);
+
     }
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)

@@ -70,6 +70,9 @@
     [Parameter]
     public int nodeID { get; set; } = 0;
 
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
     TesterHatDevice testerHat;
 
     //Event handlers for the HistoryChart component
@@ -91,7 +94,11 @@
     {
 
         //Create the TesterHatDevice data model
-        this.testerHat = new TesterHatDevice(MqttService, this.systemID, this.basestationID, this.nodeID);
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            this.testerHat = new TesterHatDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.systemID, this.basestationID, this.nodeID);
+        }
 
         if (MqttService.IsConnected())
         {

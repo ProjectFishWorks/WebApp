@@ -67,6 +67,9 @@
     [Parameter]
     public int NodeID { get; set; }
 
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
     TerraruimSensorsDevice terraruimSensors;
 
     private Dictionary<int, HistoryChartMessageIDData> historyMessageIDs = new Dictionary<int, HistoryChartMessageIDData>
@@ -79,7 +82,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        terraruimSensors = new TerraruimSensorsDevice(MqttService, this.SystemID, this.BaseStationID, this.NodeID);
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+
+            terraruimSensors = new TerraruimSensorsDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.SystemID, this.BaseStationID, this.NodeID);
+        }
 
         if (MqttService.IsConnected())
         {
@@ -90,7 +98,7 @@
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
     {
         //Refresh the UI when a message is received
-        if (int.Parse(e.ApplicationMessage.Topic.Split("/")[3]) == NodeID || e.ApplicationMessage.Topic.Split("/")[0] == "historyOut")
+        if (int.Parse(e.ApplicationMessage.Topic.Split("/")[4]) == NodeID || e.ApplicationMessage.Topic.Split("/")[1] == "historyOut")
         {
             base.StateHasChanged();
         }
