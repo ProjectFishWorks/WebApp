@@ -86,7 +86,7 @@
                 sendMessageData(nodeID, 2563, value ? (ulong)1 : (ulong)0);
             }
         }
-
+        /*
         public UInt64? voltagePH
         {
             get
@@ -100,5 +100,6 @@
                 return voltagePH;
             }
         }
+        */
     }
 }
