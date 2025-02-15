@@ -2,6 +2,8 @@
 
 @inject NavigationManager NavigationManager
 
+@inject SignOutSessionStateManager SignOutManager
+
 @inject MQTTnet.ClientLib.MqttService MqttService
 
 @inject IDialogService DialogService
@@ -27,11 +29,23 @@
         <MudText Typo="Typo.h5" Class="ml-3">Fish Sense Web App</MudText>
 
         <MudSpacer />
-        <AccessControl/>
+        <AuthorizeView>
+            <Authorized>
+                <MudText Typo="Typo.h6">@context.User.Identity.Name</MudText>
+            </Authorized>
+        </AuthorizeView>
         <MudMenu Label="Open Menu" Icon="@Icons.Material.Filled.MoreVert" Color="MudBlazor.Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="Settings">Settings</MudMenuItem>
             <MudMenuItem Icon="@(_isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" OnClick="OnDarkModeSwitchClick">@(_isDarkMode ? "Light Mode" : "Dark Mode") </MudMenuItem>
-            <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="LogoutOnClick">Logout</MudMenuItem>
+            <AuthorizeView>
+                <Authorized>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="BeginSignOut">Logout</MudMenuItem>
+                </Authorized>
+                <NotAuthorized>
+                    <MudMenuItem Icon="@Icons.Material.Filled.Login" Href="authentication/login">Login</MudMenuItem>
+                </NotAuthorized>
+            </AuthorizeView>
+
         </MudMenu>
     </MudAppBar>
     <MudMainContent>
@@ -86,10 +100,11 @@
         }
     }
 
-    private void LogoutOnClick()
+    private async Task BeginSignOut(MouseEventArgs args)
     {
-        MqttService.Disconnect();
-        base.StateHasChanged();
+        await SignOutManager.SetSignOutState();
+        NavigationManager.NavigateTo("authentication/logout");
+
     }
 
     private void OnDarkModeSwitchClick()
