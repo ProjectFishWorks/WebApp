@@ -1,73 +1,62 @@
 ﻿@using MQTTnet
 @using ProjectFishWorksWebApp.Models.DeviceModels
+@using ProjectFishWorksWebApp.Components.DeviceWidgets
+@using ProjectFishWorksWebApp.Services   <!-- bring in DeviceInit -->
 @inject MQTTnet.ClientLib.MqttService MqttService
 
 <MudStack Spacing="3">
     @if (leakSensorDevice.Leak1Detected || leakSensorDevice.Leak2Detected || leakSensorDevice.Leak3Detected || leakSensorDevice.Leak4Detected)
     {
-        <MudChip T="string"
-                 Color="MudBlazor.Color.Error">
+        <MudChip T="string" Color="MudBlazor.Color.Error">
             Leak Detected
         </MudChip>
     }
     else
     {
-        <MudChip T="string"
-                 Color="MudBlazor.Color.Success">
+        <MudChip T="string" Color="MudBlazor.Color.Success">
             No Leak Detected
         </MudChip>
     }
+
     @if (leakSensorDevice.HighWaterLevel1 || leakSensorDevice.HighWaterLevel2 || leakSensorDevice.HighWaterLevel3 || leakSensorDevice.HighWaterLevel4)
     {
-        <MudChip T="string"
-                 Color="MudBlazor.Color.Error">
+        <MudChip T="string" Color="MudBlazor.Color.Error">
             High Water Level
         </MudChip>
     }
     else
     {
-        <MudChip T=string
-                 Color="MudBlazor.Color.Success">
+        <MudChip T="string" Color="MudBlazor.Color.Success">
             Normal Water Level
         </MudChip>
     }
 </MudStack>
 
+@code {
+    [Parameter] public int SystemID { get; set; }
+    [Parameter] public int BaseStationID { get; set; }
+    [Parameter] public int NodeID { get; set; }
 
-@code
-{
-    [Parameter]
-    public int SystemID { get; set; }
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
-    [Parameter]
-    public int BaseStationID { get; set; }
+    private LeakSensorDevice leakSensorDevice;
 
-    [Parameter]
-    public int NodeID { get; set; }
-
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
-
-
-    LeakSensorDevice leakSensorDevice;
-
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
+        // Centralized client ID resolution
+        var userId = DeviceInit.ResolveClientId(authenticationState);
+        leakSensorDevice = new LeakSensorDevice(MqttService, userId, SystemID, BaseStationID, NodeID);
 
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            this.leakSensorDevice = new LeakSensorDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.SystemID, BaseStationID, this.NodeID);
-        }
         if (MqttService.IsConnected())
-        {
             MqttService.MessageReceived += MqttClient_MessageReceived;
-        }
+
+        return Task.CompletedTask;
     }
 
-    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs _)
     {
-        base.StateHasChanged();
+        StateHasChanged();
     }
-
 }
+
+Bottom of Page

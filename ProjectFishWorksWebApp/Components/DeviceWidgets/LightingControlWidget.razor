@@ -1,70 +1,67 @@
 ﻿@using ProjectFishWorksWebApp.Models.DeviceModels
+@using ProjectFishWorksWebApp.Components.DeviceWidgets
+@using ProjectFishWorksWebApp.Services   <!-- bring in DeviceInit -->
 @using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
-
 
 <MudStack Spacing="1">
     @if (lightingControlDevice.ManualOverrideSwitch)
     {
-        <MudChip T="string"
-                 Color="MudBlazor.Color.Error">
-            Intensity Overriden
+        <MudChip T="string" Color="MudBlazor.Color.Error">
+            Intensity Overridden
         </MudChip>
     }
+
     <MudText Typo="Typo.h6">White 1 Brightness</MudText>
     <MudProgressLinear Value="@lightingControlDevice.CurrentWhite_1_Intensity"
                        Color="MudBlazor.Color.Warning"
-                       Min=0 Max=100
+                       Min="0" Max="100"
                        Style="height:20px;" />
+
     <MudText Typo="Typo.h6">White 2 Brightness</MudText>
     <MudProgressLinear Value="@lightingControlDevice.CurrentWhite_2_Intensity"
                        Color="MudBlazor.Color.Warning"
-                       Min=0 Max=100
+                       Min="0" Max="100"
                        Style="height:20px;" />
+
     <MudText Typo="Typo.h6">Blue 1 Brightness</MudText>
     <MudProgressLinear Value="@lightingControlDevice.CurrentBlue_1_Intensity"
                        Color="MudBlazor.Color.Info"
-                       Min=0 Max=100
+                       Min="0" Max="100"
                        Style="height:20px;" />
+
     <MudText Typo="Typo.h6">Blue 2 Brightness</MudText>
     <MudProgressLinear Value="@lightingControlDevice.CurrentBlue_2_Intensity"
                        Color="MudBlazor.Color.Info"
-                       Min=0 Max=100
+                       Min="0" Max="100"
                        Style="height:20px;" />
 </MudStack>
 
 @code {
-    [Parameter]
-    public int SystemID { get; set; }
+    [Parameter] public int SystemID { get; set; }
+    [Parameter] public int BaseStationID { get; set; }
+    [Parameter] public int NodeID { get; set; }
 
-    [Parameter]
-    public int BaseStationID { get; set; }
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
-    [Parameter]
-    public int NodeID { get; set; }
+    private LightingControlDevice lightingControlDevice;
 
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
-
-
-    LightingControlDevice lightingControlDevice;
-
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            lightingControlDevice = new LightingControlDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.SystemID, BaseStationID, this.NodeID);
-        }
-      
+        // Centralized client ID resolution
+        var userId = DeviceInit.ResolveClientId(authenticationState);
+        lightingControlDevice = new LightingControlDevice(MqttService, userId, SystemID, BaseStationID, NodeID);
+
         if (MqttService.IsConnected())
-        {
             MqttService.MessageReceived += MqttClient_MessageReceived;
-        }
+
+        return Task.CompletedTask;
     }
 
-    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs _)
     {
-        base.StateHasChanged();
+        StateHasChanged();
     }
 }
+
+Bottom of Page

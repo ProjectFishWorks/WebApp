@@ -1,67 +1,57 @@
 ﻿@page "/device"
 
 @using ProjectFishWorksWebApp.Models
-
 @using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
+@using ProjectFishWorksWebApp.Services   <!-- bring in DeviceInit -->
 
 <PageTitle>Device - @DeviceData.DeviceName</PageTitle>
 
-
 <MudStack>
     <MudText Typo="Typo.h4">@DeviceData.DeviceName</MudText>
-    <MudText Typo="Typo.subtitle1">@(_manifests.Manifests.First(m => (m.SystemID == SystemID && m.BaseStationID == BaseStationID)).BaseStationName) - ID: @(DeviceData.NodeID)</MudText>
+    <MudText Typo="Typo.subtitle1">
+        @(_manifests.Manifests.First(m => m.SystemID == SystemID && m.BaseStationID == BaseStationID).BaseStationName)
+        - ID: @(DeviceData.NodeID)
+    </MudText>
     @{
-    IDictionary<string, object> perameters = new Dictionary<string, object>();
-    perameters.Add("SystemID", SystemID);
-    perameters.Add("BaseStationID", BaseStationID);
-    perameters.Add("NodeID", NodeID);
+        var parameters = new Dictionary<string, object>
+        {
+            { "SystemID", SystemID },
+            { "BaseStationID", BaseStationID },
+            { "NodeID", NodeID }
+        };
 
-        <DynamicComponent Type="@_manifests.stringToPageType(DeviceData.DeviceType)" Parameters="@perameters" />
-
-
-
+        <DynamicComponent Type="@_manifests.stringToPageType(DeviceData.DeviceType)" Parameters="@parameters" />
     }
 </MudStack>
 
 @code {
-
-    [SupplyParameterFromQuery]
-    public int SystemID { get; set; }
-
-    [SupplyParameterFromQuery]
-    public int BaseStationID { get; set; }
-
-    [SupplyParameterFromQuery]
-    public int NodeID { get; set; }
+    [SupplyParameterFromQuery] public int SystemID { get; set; }
+    [SupplyParameterFromQuery] public int BaseStationID { get; set; }
+    [SupplyParameterFromQuery] public int NodeID { get; set; }
 
     private BaseStationManifests _manifests;
 
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
-    public BaseStationManifestData.DeviceData DeviceData
-    {
-        get
-        {
-            return _manifests.Manifests.First(m => (m.SystemID == SystemID && m.BaseStationID == BaseStationID)).Devices.First(d => d.NodeID == NodeID);
-        }
-    }
+    public BaseStationManifestData.DeviceData DeviceData =>
+        _manifests.Manifests
+            .First(m => m.SystemID == SystemID && m.BaseStationID == BaseStationID)
+            .Devices.First(d => d.NodeID == NodeID);
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
         MqttService.MessageReceived += MqttClient_MessageReceived;
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
 
-            _manifests = new BaseStationManifests(authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", SystemID, MqttService);
-        }
+        // Centralized client ID resolution
+        var clientId = DeviceInit.ResolveClientId(authenticationState);
+        _manifests = new BaseStationManifests(clientId, SystemID, MqttService);
+
+        return Task.CompletedTask;
     }
 
-    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs _)
     {
-        base.StateHasChanged();
+        StateHasChanged();
     }
-
 }

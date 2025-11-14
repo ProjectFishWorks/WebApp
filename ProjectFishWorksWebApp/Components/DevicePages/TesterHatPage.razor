@@ -1,6 +1,7 @@
 ﻿@using MQTTnet
 @using ProjectFishWorksWebApp.Models
 @using ProjectFishWorksWebApp.Models.DeviceModels
+@using ProjectFishWorksWebApp.Services   <!-- bring in DeviceInit -->
 @using ApexCharts
 
 @inject MQTTnet.ClientLib.MqttService MqttService
@@ -19,7 +20,7 @@
             <MudItem xs="2">
                 @if (testerHat.PotentiometerValue == null)
                 {
-                    <MudProgressCircular Size="MudBlazor.Size.Medium" Color=" MudBlazor.Color.Primary" Indeterminate="true" />
+                    <MudProgressCircular Size="MudBlazor.Size.Medium" Color="MudBlazor.Color.Primary" Indeterminate="true" />
                 }
                 else
                 {
@@ -28,29 +29,29 @@
             </MudItem>
             <MudFlexBreak />
             <MudItem xs="3">
-                <MudSwitch @bind-Value="testerHat.ButtonValues[0]" Color="MudBlazor.Color.Secondary" ReadOnly=" true"></MudSwitch>
+                <MudSwitch @bind-Value="testerHat.ButtonValues[0]" Color="MudBlazor.Color.Secondary" ReadOnly="true" />
                 <MudText Typo="Typo.h6">Button 1</MudText>
-                <MudSlider @bind-Value="testerHat.LED1" Min=0 Max=255></MudSlider>
+                <MudSlider @bind-Value="testerHat.LED1" Min="0" Max="255" />
                 <MudText Typo="Typo.h6">LED 1</MudText>
             </MudItem>
             <MudItem xs="3">
-                <MudSwitch @bind-Value="testerHat.ButtonValues[1]" Color="MudBlazor.Color.Secondary" ReadOnly=" true"></MudSwitch>
+                <MudSwitch @bind-Value="testerHat.ButtonValues[1]" Color="MudBlazor.Color.Secondary" ReadOnly="true" />
                 <MudText Typo="Typo.h6">Button 2</MudText>
-                <MudSlider @bind-Value="testerHat.LED2" Min=0 Max=255></MudSlider>
+                <MudSlider @bind-Value="testerHat.LED2" Min="0" Max="255" />
                 <MudText Typo="Typo.h6">LED 2</MudText>
-                </MudItem>
+            </MudItem>
             <MudItem xs="3">
-                <MudSwitch @bind-Value="testerHat.ButtonValues[2]" Color="MudBlazor.Color.Secondary" ReadOnly=" true"></MudSwitch>
+                <MudSwitch @bind-Value="testerHat.ButtonValues[2]" Color="MudBlazor.Color.Secondary" ReadOnly="true" />
                 <MudText Typo="Typo.h6">Button 3</MudText>
-                <MudSlider @bind-Value="testerHat.LED3" Min=0 Max=255></MudSlider>
+                <MudSlider @bind-Value="testerHat.LED3" Min="0" Max="255" />
                 <MudText Typo="Typo.h6">LED 3</MudText>
-             </MudItem>
-             <MudItem xs="3">
-                <MudSwitch @bind-Value="testerHat.ButtonValues[3]" Color="MudBlazor.Color.Secondary" ReadOnly=" true"></MudSwitch>
+            </MudItem>
+            <MudItem xs="3">
+                <MudSwitch @bind-Value="testerHat.ButtonValues[3]" Color="MudBlazor.Color.Secondary" ReadOnly="true" />
                 <MudText Typo="Typo.h6">Button 4</MudText>
-                <MudSlider @bind-Value="testerHat.LED4" Min=0 Max=255></MudSlider>
+                <MudSlider @bind-Value="testerHat.LED4" Min="0" Max="255" />
                 <MudText Typo="Typo.h6">LED 4</MudText>
-             </MudItem>
+            </MudItem>
         </MudGrid>
     </MudCardContent>
 </MudCard>
@@ -60,62 +61,47 @@
               MessageIDs="@(new Dictionary<int, HistoryChartMessageIDData>{{45056, new HistoryChartMessageIDData{PerameterName = "Potentiometer Value", XAxisName="Time" , YAxisName="Counts" }}})"
               RequestData="historyChartRequestData"
               UpdateData="historyChartUpdateData" 
-              isFloatData="false"/>
+              isFloatData="false" />
 
 @code {
-    [Parameter]
-    public int systemID { get; set; } = 0;
-    [Parameter]
-    public int basestationID { get; set; } = 0;
-    [Parameter]
-    public int nodeID { get; set; } = 0;
+    [Parameter] public int systemID { get; set; } = 0;
+    [Parameter] public int basestationID { get; set; } = 0;
+    [Parameter] public int nodeID { get; set; } = 0;
 
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
-    TesterHatDevice testerHat;
+    private TesterHatDevice testerHat;
 
-    //Event handlers for the HistoryChart component
-
-    //Request historical data
-    private void historyChartRequestData(object sender, HistoryChartDataEventArgs e)
+    protected override Task OnInitializedAsync()
     {
-        testerHat.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
-    }
-
-    //Update the historical data and chart
-    private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
-    {
-        testerHat.PotentiometerHistory = testerHat.updateHistoricalData(e.NodeID, e.MessageID,e.Hours);
-        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-
-        //Create the TesterHatDevice data model
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            this.testerHat = new TesterHatDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.systemID, this.basestationID, this.nodeID);
-        }
+        // Centralized client ID resolution
+        var userId = DeviceInit.ResolveClientId(authenticationState);
+        testerHat = new TesterHatDevice(MqttService, userId, systemID, basestationID, nodeID);
 
         if (MqttService.IsConnected())
-        {
             MqttService.MessageReceived += MqttClient_MessageReceived;
-        }
+
+        return Task.CompletedTask;
+    }
+
+    // Event handlers for the HistoryChart component
+    private void historyChartRequestData(object sender, HistoryChartDataEventArgs e) =>
+        testerHat.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+
+    private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
+    {
+        testerHat.PotentiometerHistory = testerHat.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        StateHasChanged(); // force a re-render
     }
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
     {
-        //Refresh the UI when a message is received
+        // Refresh the UI when a message is received
         if (int.Parse(e.ApplicationMessage.Topic.Split("/")[3]) == nodeID || e.ApplicationMessage.Topic.Split("/")[0] == "historyOut")
         {
-            base.StateHasChanged();
+            StateHasChanged();
         }
-
     }
-
-
-
 }
+
+Bottom of Page

@@ -2,6 +2,7 @@
 @using ProjectFishWorksWebApp.Models
 @using ProjectFishWorksWebApp.Models.DeviceModels
 @using ApexCharts
+@using ProjectFishWorksWebApp.Services   <!-- bring in DeviceInit -->
 
 @inject MQTTnet.ClientLib.MqttService MqttService
 
@@ -15,9 +16,7 @@
                                @bind-Value="aCControlDevice.Relay1Control"
                                Color="MudBlazor.Color.Success"
                                UncheckedColor="MudBlazor.Color.Error"
-                               Disabled="@aCControlDevice.RelayOneInAlert">
-                    </MudSwitch>
-
+                               Disabled="@aCControlDevice.RelayOneInAlert" />
                     <MudChip T="string" Color="@(aCControlDevice.RelayOneInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
                         @(aCControlDevice.RelayOneInAlert ? "Alert!" : "No Alert")
                     </MudChip>
@@ -37,6 +36,7 @@
             </MudCardContent>
         </MudCard>
     </MudItem>
+
     <MudItem xs="6">
         <MudCard>
             <MudCardContent>
@@ -46,8 +46,7 @@
                                @bind-Value="aCControlDevice.Relay2Control"
                                Color="MudBlazor.Color.Success"
                                UncheckedColor="MudBlazor.Color.Error"
-                               Disabled="@aCControlDevice.RelayTwoInAlert">
-                    </MudSwitch>
+                               Disabled="@aCControlDevice.RelayTwoInAlert" />
                     <MudChip T="string" Color="@(aCControlDevice.RelayTwoInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
                         @(aCControlDevice.RelayTwoInAlert ? "Alert!" : "No Alert")
                     </MudChip>
@@ -61,125 +60,63 @@
                     <MudSwitch @bind-Value="aCControlDevice.RelayTwoAlertInvert"
                                Color="MudBlazor.Color.Success"
                                UncheckedColor="MudBlazor.Color.Error">
-                        @(aCControlDevice.RelayTwoAlertInvert ? "Relay #1 will turn ON during alert" : "Relay #1 will turn OFF during alert")
+                        @(aCControlDevice.RelayTwoAlertInvert ? "Relay #2 will turn ON during alert" : "Relay #2 will turn OFF during alert")
                     </MudSwitch>
                 </MudStack>
             </MudCardContent>
         </MudCard>
-
     </MudItem>
 </MudGrid>
 
-
 @code {
+    [Parameter] public int systemID { get; set; } = 0;
+    [Parameter] public int basestationID { get; set; } = 0;
+    [Parameter] public int nodeID { get; set; } = 0;
 
-    [Parameter]
-    public int systemID { get; set; } = 0;
-    [Parameter]
-    public int basestationID { get; set; } = 0;
-    [Parameter]
-    public int nodeID { get; set; } = 0;
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
-
-    ACControlDevice aCControlDevice;
-
-    BaseStationManifests baseStationManifests;
+    private ACControlDevice aCControlDevice;
+    private BaseStationManifests baseStationManifests;
 
     private Dictionary<int, string> Nodes
     {
         get
         {
-            Dictionary<int, string> nodes = new();
+            var nodes = new Dictionary<int, string>();
+            if (baseStationManifests == null) return nodes;
 
-            if (baseStationManifests == null)
-            {
-                return nodes;
-            }
-
-            var devices = baseStationManifests.Manifests.Find(x => x.BaseStationID == basestationID).Devices;
-
+            var devices = baseStationManifests.Manifests.Find(x => x.BaseStationID == basestationID)?.Devices ?? new();
             foreach (var device in devices)
-            {
-                nodes.Add(device.NodeID, device.DeviceName);
-            }
+                nodes[device.NodeID] = device.DeviceName;
+
             return nodes;
-
         }
     }
 
-    //Request historical data
-    private void historyChartRequestData(object sender, HistoryChartDataEventArgs e)
+    protected override Task OnInitializedAsync()
     {
-        aCControlDevice.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
-    }
+        // Centralized client ID resolution
+        var clientId = DeviceInit.ResolveClientId(authenticationState);
 
-    //Update the historical data and chart
-    private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
-    {
-        aCControlDevice.CurrentHistory = aCControlDevice.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
-        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
-    }
+        aCControlDevice = new ACControlDevice(MqttService, clientId, systemID, basestationID, nodeID);
+        baseStationManifests = new BaseStationManifests(clientId, systemID, MqttService);
 
-
-    protected override async Task OnInitializedAsync()
-    {
-
-        //Create the TesterHatDevice data model
-
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            this.aCControlDevice = new ACControlDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.systemID, this.basestationID, this.nodeID);
-
-            baseStationManifests = new BaseStationManifests(authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", systemID, MqttService);
-
-        }
         if (MqttService.IsConnected())
-        {
             MqttService.MessageReceived += MqttClient_MessageReceived;
-        }
 
-
+        return Task.CompletedTask;
     }
 
-    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs _)
     {
-        base.StateHasChanged();
+        StateHasChanged();
     }
 
-    private MudBlazor.Color getCurrentBarColor(float? current)
-    {
-        if (current == null)
-        {
-            return MudBlazor.Color.Success;
-        }
-        if (current < 10)
-        {
-            return MudBlazor.Color.Success;
-        }
-        else
-        {
-            return MudBlazor.Color.Error;
-        }
-    }
+    private MudBlazor.Color getCurrentBarColor(float? current) =>
+        current == null || current < 10 ? MudBlazor.Color.Success : MudBlazor.Color.Error;
 
-    private MudBlazor.Color getWattageBarColor(float? wattage)
-    {
-        if (wattage == null)
-        {
-            return MudBlazor.Color.Success;
-        }
-        if (wattage < 1200)
-        {
-            return MudBlazor.Color.Success;
-        }
-        else
-        {
-            return MudBlazor.Color.Error;
-        }
-    }
-
+    private MudBlazor.Color getWattageBarColor(float? wattage) =>
+        wattage == null || wattage < 1200 ? MudBlazor.Color.Success : MudBlazor.Color.Error;
 }
 
+Bottom of page

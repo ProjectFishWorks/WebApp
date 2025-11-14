@@ -1,22 +1,29 @@
-﻿@* Client/Pages/Authentication.razor *@
+﻿@page "/authentication/{action}"
 
-@page "/authentication/{action}"
+#if !DEBUG
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using Microsoft.Extensions.Configuration
 
 @inject NavigationManager Navigation
-@inject IConfiguration Configuration
 
 <RemoteAuthenticatorView Action="@Action">
     <LogOut>
         @{
-            var authority = (string)Configuration["Auth0:Authority"];
-            var clientId = (string)Configuration["Auth0:ClientId"];
-
-            Navigation.NavigateTo($"{authority}/v2/logout?client_id={clientId}");
+            // Use the new NavigateToLogout extension method
+            Navigation.NavigateToLogout("authentication/logout");
         }
     </LogOut>
 </RemoteAuthenticatorView>
+#else
+<MudCard>
+    <MudCardHeader>
+        <MudText Typo="Typo.h5">Authentication (Debug Mode)</MudText>
+    </MudCardHeader>
+    <MudCardContent>
+        <MudText>You are running in Debug mode. No Auth0 login is required.</MudText>
+        <MudText Typo="Typo.subtitle1">Fake user: debug-user</MudText>
+    </MudCardContent>
+</MudCard>
+#endif
 
 @code {
     [Parameter] public string Action { get; set; }

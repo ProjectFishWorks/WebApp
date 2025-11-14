@@ -1,6 +1,7 @@
 ﻿
 @using ProjectFishWorksWebApp.Models
 @using ProjectFishWorksWebApp.Models.DeviceModels
+@using ProjectFishWorksWebApp.Services   <!-- bring in DeviceInit -->
 @using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
 
@@ -173,18 +174,13 @@
                 HistoryReceivedHours="tempHum.HistoryReceivedHours"/>
 
 @code {
+    [Parameter] public int SystemID { get; set; } = 0;
+    [Parameter] public int BasestationID { get; set; } = 0;
+    [Parameter] public int NodeID { get; set; } = 0;
 
-    [Parameter]
-    public int SystemID { get; set; } = 0;
-    [Parameter]
-    public int BasestationID { get; set; } = 0;
-    [Parameter]
-    public int NodeID { get; set; } = 0;
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
-
-    private Dictionary<int, HistoryChartMessageIDData> historyMessageIDs = new Dictionary<int, HistoryChartMessageIDData>
+    private Dictionary<int, HistoryChartMessageIDData> historyMessageIDs = new()
     {
         {2560, new HistoryChartMessageIDData{PerameterName = "Ambient Temperature", XAxisName = "Time", YAxisName = "Temperature °C"}},
         {2564, new HistoryChartMessageIDData{PerameterName = "Ambient Humidity", XAxisName = "Time", YAxisName = "Humidity %"}},
@@ -192,81 +188,49 @@
         {2568, new HistoryChartMessageIDData{PerameterName = "Sump Temperature", XAxisName = "Time", YAxisName = "Temperature °C"}}
     };
 
-    TempHumDevice tempHum;
+    private TempHumDevice tempHum;
 
-    //Event handlers for the HistoryChart component
-
-    //Request historical data
-    private void tempHumChartRequestData(object sender, HistoryChartDataEventArgs e)
+    protected override Task OnInitializedAsync()
     {
-        tempHum.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        // Centralized client ID resolution
+        var userId = DeviceInit.ResolveClientId(authenticationState);
+        tempHum = new TempHumDevice(MqttService, userId, SystemID, BasestationID, NodeID);
+
+        if (MqttService.IsConnected())
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+
+        return Task.CompletedTask;
     }
 
-    //Update the historical data and chart
+    // Request historical data
+    private void tempHumChartRequestData(object sender, HistoryChartDataEventArgs e) =>
+        tempHum.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+
+    // Update the historical data and chart
     private void tempHumChartUpdateData(object sender, HistoryChartDataEventArgs e)
     {
         tempHum.TempHumHistory = tempHum.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
-        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            this.tempHum = new TempHumDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.SystemID, this.BasestationID, this.NodeID);
-        }
-
-        if (MqttService.IsConnected())
-        {
-            MqttService.MessageReceived += MqttClient_MessageReceived;
-        }
-    }
-
-    //Request historical data
-    private void historyChartRequestData(object sender, HistoryChartDataEventArgs e)
-    {
-        tempHum.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
-    }
-
-    //Update the historical data and chart
-    private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
-    {
-        tempHum.TempHumHistory = tempHum.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
-        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
+        StateHasChanged(); // force a re-render
     }
 
     private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
     {
-        //Refresh the UI when a message is received
+        // Refresh the UI when a message is received
         if (int.Parse(e.ApplicationMessage.Topic.Split("/")[3]) == NodeID || e.ApplicationMessage.Topic.Split("/")[0] == "historyOut")
         {
-            base.StateHasChanged();
+            StateHasChanged();
         }
     }
 
     private MudBlazor.Color getBarColor(float? min, float? max, float? value, bool alarm)
     {
-        if (min == null || max == null || value == null)
-        {
-            return MudBlazor.Color.Success;
-        }
-        if (!alarm)
-        {
-            return MudBlazor.Color.Success;
-        }
-        if (value < min)
-        {
-            return MudBlazor.Color.Info;
-        }
-        else if (value > max)
-        {
-            return MudBlazor.Color.Error;
-        }
-        else
-        {
-            return MudBlazor.Color.Success;
-        }
+        if (min == null || max == null || value == null) return MudBlazor.Color.Success;
+        if (!alarm) return MudBlazor.Color.Success;
+        if (value < min) return MudBlazor.Color.Info;
+        if (value > max) return MudBlazor.Color.Error;
+        return MudBlazor.Color.Success;
     }
 }
+
+Bottom of page
 

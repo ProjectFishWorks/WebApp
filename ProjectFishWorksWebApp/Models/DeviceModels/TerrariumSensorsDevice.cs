@@ -1,15 +1,15 @@
 ﻿namespace ProjectFishWorksWebApp.Models.DeviceModels
 {
-    public class TerraruimSensorsDevice : Device
+    public class TerrariumSensorsDevice : Device
     {
         private int nodeID;
 
-        public TerraruimSensorsDevice(MQTTnet.ClientLib.MqttService mqttService, string userID, int systemID, int basestationID, int nodeID) : base(mqttService, userID, systemID, basestationID)
+        public TerrariumSensorsDevice(MQTTnet.ClientLib.MqttService mqttService, string userID, int systemID, int basestationID, int nodeID) : base(mqttService, userID, systemID, basestationID)
         {
             this.nodeID = nodeID;
         }
 
-        public List<HistoryDataRow>? TerraruimSensorsHistory { get; set; }
+        public List<HistoryDataRow>? TerrariumSensorsHistory { get; set; }
 
         public float? Temp
         {

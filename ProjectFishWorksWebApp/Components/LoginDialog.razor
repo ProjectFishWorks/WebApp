@@ -9,7 +9,7 @@
             <MudCardContent>
                 <MudStack>
                     <MudTextField Label="Username" @bind-Value="mqttUsername" Variant="Variant.Outlined" />
-                    <MudTextField Label=" Password" @bind-Value="mqttPassword" InputType="InputType.Password" Variant="Variant.Outlined" />
+                    <MudTextField Label="Password" @bind-Value="mqttPassword" InputType="InputType.Password" Variant="Variant.Outlined" />
                 </MudStack>
                 <MudExpansionPanels Outlined="true" Elevation="0">
                     <MudExpansionPanel Text="Advanced Settings">
@@ -23,40 +23,35 @@
         </MudCard>
     </DialogContent>
     <DialogActions>
-        <MudText Typo="Typo.body1" Color="@(MqttService.IsConnected()? MudBlazor.Color.Success : MudBlazor.Color.Error)">@MqttClientConnection</MudText>
+        <MudText Typo="Typo.body1" Color="@(MqttService.IsConnected() ? MudBlazor.Color.Success : MudBlazor.Color.Error)">
+            @MqttClientConnection
+        </MudText>
         <MudButton Color="MudBlazor.Color.Primary" Variant="Variant.Filled" OnClick="ConnectBtn_Clicked">Connect</MudButton>
     </DialogActions>
 </MudDialog>
 
 @code {
-    [CascadingParameter]
-    private MudDialogInstance MudDialog { get; set; }
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
 
-    private string MqttClientConnection { get; set; }
+    private string MqttClientConnection { get; set; } = string.Empty;
 
     private string mqttWebSocket { get; set; } = "projectfishworks.ca:8884/mqtt";
     private string mqttUsername { get; set; } = "fishworks-dev";
     private string mqttPassword { get; set; } = "F1shworks!";
-
     private string topic { get; set; } = "#";
 
-    private async void ConnectBtn_Clicked()
+    private async Task ConnectBtn_Clicked()
     {
-        var mqttClientTlsParameters = new MQTTnet.Client.Options.MqttClientOptionsBuilderTlsParameters();
-        mqttClientTlsParameters.CertificateValidationHandler = _ => true;
-        //mqttClientTlsParameters.AllowUntrustedCertificates = false;
-
-        //mqttClientTlsParameters.SslProtocol = System.Security.Authentication.SslProtocols.Tls12;
-
-        //var certificate = new System.Security.Cryptography.X509Certificates.X509Certificate("/ca.crt", "");
-
-        //mqttClientTlsParameters.Certificates = new List<System.Security.Cryptography.X509Certificates.X509Certificate> { certificate };
+        var tlsParams = new MQTTnet.Client.Options.MqttClientOptionsBuilderTlsParameters
+        {
+            CertificateValidationHandler = _ => true
+        };
 
         var mqttClientOptions = new MQTTnet.Client.Options.MqttClientOptionsBuilder()
             .WithClientId(Guid.NewGuid().ToString())
             .WithCredentials(mqttUsername, mqttPassword)
             .WithWebSocketServer(mqttWebSocket)
-            .WithTls()
+            .WithTls(tlsParams)
             .WithCleanSession()
             .Build();
 
@@ -65,16 +60,12 @@
         var result = await MqttService.Connect();
         MqttClientConnection = result ? "Connected" : "Error logging in";
 
-        base.StateHasChanged();
+        StateHasChanged();
 
-        await MqttService.Subscribe(topic);
-
-        if(result)
+        if (result)
         {
+            await MqttService.Subscribe(topic);
             MudDialog.Close(DialogResult.Ok(true));
         }
-
-        base.StateHasChanged();
     }
-
 }

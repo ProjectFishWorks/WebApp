@@ -1,8 +1,8 @@
 ﻿@using ProjectFishWorksWebApp.Models
 @using ProjectFishWorksWebApp.Models.DeviceModels
+@using ProjectFishWorksWebApp.Services   <!-- bring in DeviceInit -->
 @using MQTTnet
 @inject MQTTnet.ClientLib.MqttService MqttService
-
 
 
 <MudCard>
@@ -59,95 +59,53 @@
 
 
 @code {
+    [Parameter] public int SystemID { get; set; } = 0;
+    [Parameter] public int BasestationID { get; set; } = 0;
+    [Parameter] public int NodeID { get; set; } = 0;
 
-    [Parameter]
-    public int SystemID { get; set; } = 0;
-    [Parameter]
-    public int BasestationID { get; set; } = 0;
-    [Parameter]
-    public int NodeID { get; set; } = 0;
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
+    private PHSensorDevice PHsensor;
 
-    PHSensorDevice PHsensor;
-
-    private Dictionary<int, HistoryChartMessageIDData> historyMessageIDs = new Dictionary<int, HistoryChartMessageIDData>
+    private Dictionary<int, HistoryChartMessageIDData> historyMessageIDs = new()
     {
         {2560, new HistoryChartMessageIDData{PerameterName = "pH", XAxisName = "Time", YAxisName = "pH"}}
     };
 
-
-    //Event handlers for the HistoryChart component
-
-    //Request historical data
-    private void PHsensorChartRequestData(object sender, HistoryChartDataEventArgs e)
+    protected override Task OnInitializedAsync()
     {
-        PHsensor.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+        // Centralized client ID resolution
+        var userId = DeviceInit.ResolveClientId(authenticationState);
+        PHsensor = new PHSensorDevice(MqttService, userId, SystemID, BasestationID, NodeID);
+
+        if (MqttService.IsConnected())
+            MqttService.MessageReceived += MqttClient_MessageReceived;
+
+        return Task.CompletedTask;
     }
 
-    //Update the historical data and chart
+    private void PHsensorChartRequestData(object sender, HistoryChartDataEventArgs e) =>
+        PHsensor.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
+
     private void PHsensorChartUpdateData(object sender, HistoryChartDataEventArgs e)
     {
         PHsensor.pHHistory = PHsensor.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
-        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
+        StateHasChanged();
     }
 
-    protected override async Task OnInitializedAsync()
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs _)
     {
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            this.PHsensor = new PHSensorDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.SystemID, this.BasestationID, this.NodeID);
-        }
-
-        if (MqttService.IsConnected())
-        {
-            MqttService.MessageReceived += MqttClient_MessageReceived;
-        }
-    }
-
-    //Request historical data
-    private void historyChartRequestData(object sender, HistoryChartDataEventArgs e)
-    {
-        PHsensor.requestHistoricalData(e.NodeID, e.MessageID, e.Hours);
-    }
-
-    //Update the historical data and chart
-    private void historyChartUpdateData(object sender, HistoryChartDataEventArgs e)
-    {
-        PHsensor.pHHistory = PHsensor.updateHistoricalData(e.NodeID, e.MessageID, e.Hours);
-        base.StateHasChanged();//force a re-render - !!MUST BE CALLED OR EVERYTHING BREAKS!!
-    }
-
-    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
-    {
-        //Refresh the UI when a message is received
-        if (int.Parse(e.ApplicationMessage.Topic.Split("/")[3]) == NodeID || e.ApplicationMessage.Topic.Split("/")[0] == "historyOut")
-        {
-            base.StateHasChanged();
-        }
+        // Refresh the UI when a message is received
+        StateHasChanged();
     }
 
     private MudBlazor.Color getBarColor(float? min, float? max, float? value, bool alarm)
     {
-        if (min == null || max == null || value == null)
-        {
-            return MudBlazor.Color.Success;
-        }
-        if (!alarm)
-        {
-            return MudBlazor.Color.Success;
-        }
-
-        if (value < min || value > max)
-        {
-            return MudBlazor.Color.Error;
-        }
-        else
-        {
-            return MudBlazor.Color.Success;
-        }
+        if (min == null || max == null || value == null) return MudBlazor.Color.Success;
+        if (!alarm) return MudBlazor.Color.Success;
+        return (value < min || value > max) ? MudBlazor.Color.Error : MudBlazor.Color.Success;
     }
 }
+
+Bottom of page
 

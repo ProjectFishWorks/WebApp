@@ -1,14 +1,15 @@
 ﻿@using MQTTnet
 @using ProjectFishWorksWebApp.Models.DeviceModels
+@using ProjectFishWorksWebApp.Components.DeviceWidgets
+@using ProjectFishWorksWebApp.Services   <!-- bring in DeviceInit -->
 @inject MQTTnet.ClientLib.MqttService MqttService
-
 
 <MudStack Spacing="3">
     <MudProgressLinear Value="(double)PHsensor.pHvalue"
                        Min="0"
                        Max="14"
                        Style="height:40px"
-                       Color="getBarColor(PHsensor.pHAlarmLow, PHsensor.pHAlarmHigh,PHsensor.pHvalue,PHsensor.pHAlarmOnOff)">
+                       Color="getBarColor(PHsensor.pHAlarmLow, PHsensor.pHAlarmHigh, PHsensor.pHvalue, PHsensor.pHAlarmOnOff)">
         <MudText Typo="Typo.h4">
             <b>@(Math.Round((decimal)PHsensor.pHvalue, 2))</b>
         </MudText>
@@ -16,58 +17,37 @@
 </MudStack>
 
 @code {
+    [Parameter] public int SystemID { get; set; }
+    [Parameter] public int BaseStationID { get; set; }
+    [Parameter] public int NodeID { get; set; }
 
-    [Parameter]
-    public int SystemID { get; set; }
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
-    [Parameter]
-    public int BaseStationID { get; set; }
-
-    [Parameter]
-    public int NodeID { get; set; }
-
-    PHSensorDevice PHsensor;
-
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
+    private PHSensorDevice PHsensor;
 
     private MudBlazor.Color getBarColor(float? min, float? max, float? value, bool alarm)
     {
-        if (min == null || max == null || value == null)
-        {
-            return MudBlazor.Color.Success;
-        }
-        if (!alarm)
-        {
-            return MudBlazor.Color.Success;
-        }
-
-        if (value < min || value > max)
-        {
-            return MudBlazor.Color.Error;
-        }
-        else
-        {
-            return MudBlazor.Color.Success;
-        }
+        if (min == null || max == null || value == null) return MudBlazor.Color.Success;
+        if (!alarm) return MudBlazor.Color.Success;
+        return (value < min || value > max) ? MudBlazor.Color.Error : MudBlazor.Color.Success;
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            this.PHsensor = new PHSensorDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.SystemID, this.BaseStationID, this.NodeID);
-        }
+        // Centralized client ID resolution
+        var userId = DeviceInit.ResolveClientId(authenticationState);
+        PHsensor = new PHSensorDevice(MqttService, userId, SystemID, BaseStationID, NodeID);
 
         if (MqttService.IsConnected())
-        {
             MqttService.MessageReceived += MqttClient_MessageReceived;
-        }
+
+        return Task.CompletedTask;
     }
 
-    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs _)
     {
-        base.StateHasChanged();
+        StateHasChanged();
     }
 }
+
+Bottom of Page

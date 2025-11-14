@@ -1,6 +1,8 @@
 ﻿@using MQTTnet
 @using ProjectFishWorksWebApp.Models
 @using ProjectFishWorksWebApp.Models.DeviceModels
+@using ProjectFishWorksWebApp.Components.DeviceWidgets
+@using ProjectFishWorksWebApp.Services   <!-- bring in DeviceInit -->
 @using ApexCharts
 
 @inject MQTTnet.ClientLib.MqttService MqttService
@@ -15,9 +17,7 @@
                                @bind-Value="aCControlDevice.Relay1Control"
                                Color="MudBlazor.Color.Success"
                                UncheckedColor="MudBlazor.Color.Error"
-                               Disabled="@aCControlDevice.RelayOneInAlert">
-                    </MudSwitch>
-
+                               Disabled="@aCControlDevice.RelayOneInAlert" />
                     <MudChip T="string" Color="@(aCControlDevice.RelayOneInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
                         @(aCControlDevice.RelayOneInAlert ? "Alert!" : "No Alert")
                     </MudChip>
@@ -34,8 +34,7 @@
                                @bind-Value="aCControlDevice.Relay2Control"
                                Color="MudBlazor.Color.Success"
                                UncheckedColor="MudBlazor.Color.Error"
-                               Disabled="@aCControlDevice.RelayTwoInAlert">
-                    </MudSwitch>
+                               Disabled="@aCControlDevice.RelayTwoInAlert" />
                     <MudChip T="string" Color="@(aCControlDevice.RelayTwoInAlert ? MudBlazor.Color.Error : MudBlazor.Color.Success)">
                         @(aCControlDevice.RelayTwoInAlert ? "Alert!" : "No Alert")
                     </MudChip>
@@ -45,42 +44,32 @@
     </MudItem>
 </MudGrid>
 
-
 @code {
-    [Parameter]
-    public int systemID { get; set; } = 0;
-    [Parameter]
-    public int basestationID { get; set; } = 0;
-    [Parameter]
-    public int nodeID { get; set; } = 0;
+    [Parameter] public int systemID { get; set; } = 0;
+    [Parameter] public int basestationID { get; set; } = 0;
+    [Parameter] public int nodeID { get; set; } = 0;
 
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
-    ACControlDevice aCControlDevice;
+    private ACControlDevice aCControlDevice;
 
-
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
-
-        //Create the TesterHatDevice data model
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            this.aCControlDevice = new ACControlDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.systemID, this.basestationID, this.nodeID);
-        }
+        // Centralized client ID resolution
+        var userId = DeviceInit.ResolveClientId(authenticationState);
+        aCControlDevice = new ACControlDevice(MqttService, userId, systemID, basestationID, nodeID);
 
         if (MqttService.IsConnected())
-        {
             MqttService.MessageReceived += MqttClient_MessageReceived;
-        }
+
+        return Task.CompletedTask;
     }
 
-    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs _)
     {
-        base.StateHasChanged();
+        StateHasChanged();
     }
-
-
-
 }
+
+
+Bottom of Page

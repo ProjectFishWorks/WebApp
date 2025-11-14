@@ -1,6 +1,7 @@
 ﻿@using MQTTnet
-@inject MQTTnet.ClientLib.MqttService MqttService
 @using ProjectFishWorksWebApp.Models.DeviceModels
+@using ProjectFishWorksWebApp.Services   <!-- bring in DeviceInit -->
+@inject MQTTnet.ClientLib.MqttService MqttService
 @using static MudBlazor.FilterOperator
 @using static System.DateTime
 
@@ -252,37 +253,29 @@
 </MudGrid>
 <!--  ......................................Current LED Status Progress bars.........................  -->
 @code {
-    [Parameter]
-    public int SystemID { get; set; }
+    [Parameter] public int SystemID { get; set; }
+    [Parameter] public int BaseStationID { get; set; }
+    [Parameter] public int NodeID { get; set; }
 
-    [Parameter]
-    public int BaseStationID { get; set; }
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
 
-    [Parameter]
-    public int NodeID { get; set; }
+    private LightingControlDevice lightingControlDevice;
 
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
-
-
-    LightingControlDevice lightingControlDevice;
-
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            this.lightingControlDevice = new LightingControlDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.SystemID, BaseStationID, this.NodeID);
-        }
+        // Centralized client ID resolution
+        var userId = DeviceInit.ResolveClientId(authenticationState);
+        lightingControlDevice = new LightingControlDevice(MqttService, userId, SystemID, BaseStationID, NodeID);
+
         if (MqttService.IsConnected())
-        {
             MqttService.MessageReceived += MqttClient_MessageReceived;
-        }
+
+        return Task.CompletedTask;
     }
 
-    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs _)
     {
-        base.StateHasChanged();
+        StateHasChanged();
     }
 }
 

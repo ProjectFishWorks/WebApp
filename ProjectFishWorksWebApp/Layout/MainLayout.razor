@@ -1,24 +1,12 @@
 ﻿@inherits LayoutComponentBase
-
 @inject NavigationManager NavigationManager
-
 @inject MQTTnet.ClientLib.MqttService MqttService
-
 @inject IDialogService DialogService
+@inject IServiceProvider Services   
 
-@using ProjectFishWorksWebApp.Components
-
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@inject IAccessTokenProvider TokenProvider
-
-@* Required *@
-<MudThemeProvider @ref="@_mudThemeProvider" @bind-IsDarkMode="@_isDarkMode" Theme="FishSenseWebApp" />
+<MudThemeProvider @ref="_mudThemeProvider" @bind-IsDarkMode="_isDarkMode" Theme="FishSenseWebApp" />
 <MudPopoverProvider />
-
-@* Needed for dialogs *@
 <MudDialogProvider />
-
-@* Needed for snackbars *@
 <MudSnackbarProvider />
 
 <MudLayout>
@@ -30,7 +18,7 @@
         <AccessControl/>
         <MudMenu Label="Open Menu" Icon="@Icons.Material.Filled.MoreVert" Color="MudBlazor.Color.Inherit" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
             <MudMenuItem Icon="@Icons.Material.Filled.Settings" Href="Settings">Settings</MudMenuItem>
-            <MudMenuItem Icon="@(_isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" OnClick="OnDarkModeSwitchClick">@(_isDarkMode ? "Light Mode" : "Dark Mode") </MudMenuItem>
+            <MudMenuItem Icon="@(_isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)" OnClick="OnDarkModeSwitchClick">@(_isDarkMode ? "Light Mode" : "Dark Mode")</MudMenuItem>
             <MudMenuItem Icon="@Icons.Material.Filled.Logout" OnClick="LogoutOnClick">Logout</MudMenuItem>
         </MudMenu>
     </MudAppBar>
@@ -50,74 +38,94 @@
 @code {
     private MudTheme FishSenseWebApp = new MudTheme
     {
-        PaletteLight = new PaletteLight()
-        {
-                Primary = "#1C4CB6",
-                Secondary = "#C211D5"
-        },
-        PaletteDark = new PaletteDark()
-        {
-        },
-
+        PaletteLight = new PaletteLight { Primary = "#1C4CB6", Secondary = "#C211D5" },
+        PaletteDark = new PaletteDark(),
         LayoutProperties = new LayoutProperties()
-        {
-        }
     };
 
-    private bool _isDarkMode = false;
-
-    private bool _dialogOpen = false;
-
+    private bool _isDarkMode;
+    private bool _dialogOpen;
     private MudThemeProvider _mudThemeProvider;
 
     private string MqttClientConnection { get; set; }
-
-    private string mqttWebSocket { get; set; } = "emqx.projectfishworks.ca:8084/mqtt";
-    //private string mqttUsername { get; set; } = "fishworks-dev";
-    //private string mqttPassword { get; set; } = "F1shworks!";
+    private string mqttWebSocket = "wss://emqx.projectfishworks.ca:8084/mqtt";
 
     private string topic { get; set; } = "auth0|6780a2d9d25eaaea97f7fe1b/#";
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        if (firstRender)
+        MqttService.Disconnected += MqttService_Disconnected;
+
+        // Try to resolve IAccessTokenProvider only if registered (Release builds)
+        var tokenProvider = Services.GetService(typeof(IAccessTokenProvider)) as IAccessTokenProvider;
+        if (tokenProvider is null)
+{
+    // Debug mode: connect without token
+    var mqttClientOptions = new MQTTnet.Client.Options.MqttClientOptionsBuilder()
+        .WithClientId(Guid.NewGuid().ToString())
+        .WithWebSocketServer(mqttWebSocket)
+        .WithTls()
+        .WithCleanSession()
+        .Build();
+
+    MqttService.Init(Guid.NewGuid().ToString(), mqttClientOptions);
+
+    var result = await MqttService.Connect();
+    MqttClientConnection = result ? "Connected (Debug)" : "Error logging in";
+
+    StateHasChanged();
+
+    if (result)
+        await MqttService.Subscribe(topic);
+    else
+        await OpenDialogAsync();
+
+    return;
+}
+
+
+        var tokenResult = await tokenProvider.RequestAccessToken(new AccessTokenRequestOptions
         {
+            Scopes = new[] { "emqx.projectfishworks.ca" }
+        });
+
+        if (tokenResult.TryGetToken(out var token))
+        {
+            var mqttClientOptions = new MQTTnet.Client.Options.MqttClientOptionsBuilder()
+                .WithClientId(Guid.NewGuid().ToString())
+                .WithCredentials("", token.Value)
+                .WithWebSocketServer(mqttWebSocket)
+                .WithTls()
+                .WithCleanSession()
+                .Build();
+
+            MqttService.Init(Guid.NewGuid().ToString(), mqttClientOptions);
+
+            var result = await MqttService.Connect();
+            MqttClientConnection = result ? "Connected" : "Error logging in";
+
             StateHasChanged();
+
+            if (result)
+                await MqttService.Subscribe(topic);
+            else
+                await OpenDialogAsync();
         }
     }
 
     private void LogoutOnClick()
     {
         MqttService.Disconnect();
-        base.StateHasChanged();
-    }
-
-    private void OnDarkModeSwitchClick()
-    {
-        _isDarkMode = !_isDarkMode;
         StateHasChanged();
     }
 
-    protected override bool ShouldRender()
-    {
-        if (!MqttService.IsConnected() )
-        {
-            //OpenDialogAsync();
-        }
-        return base.ShouldRender();
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
-    }
+    private void OnDarkModeSwitchClick() => _isDarkMode = !_isDarkMode;
 
     private async Task OpenDialogAsync()
     {
         _dialogOpen = true;
-        Console.WriteLine("Opening dialog");
-        var options = new DialogOptions 
-        { 
+        var options = new DialogOptions
+        {
             BackgroundClass = "dialog-background",
             FullWidth = true,
             BackdropClick = false,
@@ -130,53 +138,6 @@
         _dialogOpen = false;
     }
 
-    protected override async Task OnInitializedAsync()
-    {
-        MqttService.Disconnected += MqttService_Disconnected;
-        Console.WriteLine("Getting Token");
-        var tokenResult = await TokenProvider.RequestAccessToken(
-            new AccessTokenRequestOptions
-            {
-                    Scopes = new[] { "emqx.projectfishworks.ca" }
-            });
-
-        if (tokenResult.TryGetToken(out var token))
-        {
-            Console.WriteLine("Bearer Got Token: " + token.Value);
-            Console.WriteLine("Connecting to MQTT...");
-
-            var mqttClientOptions = new MQTTnet.Client.Options.MqttClientOptionsBuilder()
-            .WithClientId(Guid.NewGuid().ToString())
-            .WithCredentials("", token.Value)
-            .WithWebSocketServer(mqttWebSocket)
-            .WithTls()
-            .WithCleanSession()
-            .Build();
-
-            MqttService.Init(Guid.NewGuid().ToString(), mqttClientOptions);
-
-            var result = await MqttService.Connect();
-            MqttClientConnection = result ? "Connected" : "Error logging in";
-
-            Console.WriteLine(MqttClientConnection);
-
-            base.StateHasChanged();
-
-            await MqttService.Subscribe(topic);
-        }
-    }
-    
-
-    private void MqttService_Disconnected(object sender, EventArgs e)
-    {
-        base.StateHasChanged();
-
-    }
-
-    private void MqttService_Connected(object sender, EventArgs e)
-    {
-        base.StateHasChanged();
-    }
-
+    private void MqttService_Disconnected(object sender, EventArgs e) => StateHasChanged();
+    private void MqttService_Connected(object sender, EventArgs e) => StateHasChanged();
 }
-

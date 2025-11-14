@@ -1,18 +1,16 @@
 ﻿@inject NavigationManager NavigationManager
 
 <MudCard Elevation="2">
-    <MudCardHeader >
-            @if (_TitleEdit)
-            {
-                <MudTextField @bind-Value="@Title" Label="Outlined" Variant="Variant.Outlined" Typo="Typo.h5"></MudTextField>
-                <MudIconButton Icon="@Icons.Material.Filled.Done" Color="MudBlazor.Color.Primary" OnClick="EditTitleOnClick" />
-            }
-            @if (!_TitleEdit)
-            {
-                <MudText Typo="Typo.h5">
-                    @Title
-                </MudText>
-            }
+    <MudCardHeader>
+        @if (_TitleEdit)
+        {
+            <MudTextField @bind-Value="_Title" Label="Title" Variant="Variant.Outlined" Typo="Typo.h5" />
+            <MudIconButton Icon="@Icons.Material.Filled.Done" Color="MudBlazor.Color.Primary" OnClick="EditTitleOnClick" />
+        }
+        else
+        {
+            <MudText Typo="Typo.h5">@Title</MudText>
+        }
     </MudCardHeader>
     <MudCardContent>
         @ChildContent
@@ -24,31 +22,19 @@
 </MudCard>
 
 @code {
-
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
-
-    [Parameter]
-    public int SystemID { get; set; }
-
-    [Parameter]
-    public int BaseStationID { get; set; }
-
-    [Parameter]
-    public int NodeID { get; set; }
-
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public int SystemID { get; set; }
+    [Parameter] public int BaseStationID { get; set; }
+    [Parameter] public int NodeID { get; set; }
+    [Parameter] public string Title { get; set; }
+    [Parameter] public EventCallback<string> TitleChanged { get; set; }
 
     private string _Title;
-
     private bool _TitleEdit = false;
-
-    [Parameter]
-    public EventCallback<string> TitleChanged { get; set; }
 
     protected override void OnInitialized()
     {
+        _Title = Title; // initialize edit buffer
     }
 
     private async Task UpdateTitle(string value)
@@ -57,18 +43,18 @@
         await TitleChanged.InvokeAsync(value);
     }
 
-    void MoreInfoOnClick()
+    private void MoreInfoOnClick()
     {
         NavigationManager.NavigateTo($"Device?SystemID={SystemID}&BaseStationID={BaseStationID}&NodeID={NodeID}");
     }
 
-    async void EditTitleOnClick()
+    private async Task EditTitleOnClick()
     {
-        _TitleEdit = !_TitleEdit;
-        if(!_TitleEdit)
+        if (_TitleEdit)
         {
-            await UpdateTitle(Title);
+            // Save changes
+            await UpdateTitle(_Title);
         }
+        _TitleEdit = !_TitleEdit;
     }
-
 }

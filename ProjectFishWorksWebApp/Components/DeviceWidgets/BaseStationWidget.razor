@@ -1,37 +1,37 @@
 ﻿@using static System.DateTime
 @using MQTTnet
 @using ProjectFishWorksWebApp.Models.DeviceModels
+@using ProjectFishWorksWebApp.Components.DeviceWidgets
+@using ProjectFishWorksWebApp.Services   <!-- bring in DeviceInit -->
 @inject MQTTnet.ClientLib.MqttService MqttService
 
 <MudGrid>
-    <MudItem xs=6>
+    <MudItem xs="6">
         <MudStack Spacing="3">
             <MudText Typo="Typo.h6">@DateTime.Now.ToString("MMMM dd yyyy, HH:mm:ss")</MudText>
+
             <MudNumericField @bind-Value="baseStationDevice.LEDBrightness"
                              Label="LED Brightness"
                              Variant="Variant.Outlined"
                              Min="0"
                              Max="100" />
+
             <MudProgressLinear Value="baseStationDevice.LEDBrightness"
                                Min="0"
                                Max="100"
                                Color="MudBlazor.Color.Warning"
                                Rounded="true" 
                                Style="height:10px;" />
-            @if (baseStationDevice.IsErrors == true)
+
+            @if (baseStationDevice.IsErrors)
             {
-                <MudChip T="string"
-                         Color="MudBlazor.Color.Error">
-                    Error Detected
-                </MudChip>
+                <MudChip T="string" Color="MudBlazor.Color.Error">Error Detected</MudChip>
             }
             else
             {
-                <MudChip T="string"
-                         Color="MudBlazor.Color.Success">
-                    No Errors Detected
-                </MudChip>
+                <MudChip T="string" Color="MudBlazor.Color.Success">No Errors Detected</MudChip>
             }
+
             <MudButton Variant="Variant.Filled"
                        Color="MudBlazor.Color.Primary"
                        OnClick="resetError"
@@ -42,44 +42,33 @@
     </MudItem>
 </MudGrid>
 
-@code
-{
-    void resetError()
+@code {
+    void resetError() => baseStationDevice.ResetErrors = !baseStationDevice.ResetErrors;
+
+    [Parameter] public int SystemID { get; set; }
+    [Parameter] public int BaseStationID { get; set; }
+    [Parameter] public int NodeID { get; set; }
+
+    [CascadingParameter] private Task<AuthenticationState>? authenticationState { get; set; }
+
+    private BaseStationDevice baseStationDevice;
+
+    protected override Task OnInitializedAsync()
     {
-        baseStationDevice.ResetErrors = !baseStationDevice.ResetErrors;
-    }
+        // Centralized client ID resolution
+        var userId = DeviceInit.ResolveClientId(authenticationState);
+        baseStationDevice = new BaseStationDevice(MqttService, userId, SystemID, BaseStationID, NodeID);
 
-    [Parameter]
-    public int SystemID { get; set; }
-
-    [Parameter]
-    public int BaseStationID { get; set; }
-
-    [Parameter]
-    public int NodeID { get; set; }
-
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
-
-
-    BaseStationDevice baseStationDevice;
-
-    protected override async Task OnInitializedAsync()
-    {
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            this.baseStationDevice = new BaseStationDevice(MqttService, authState.User.Claims.FirstOrDefault(k => k.Type == "sub").Value ?? "", this.SystemID, BaseStationID, this.NodeID);
-        }
         if (MqttService.IsConnected())
-        {
             MqttService.MessageReceived += MqttClient_MessageReceived;
-        }
+
+        return Task.CompletedTask;
     }
 
-    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
+    private void MqttClient_MessageReceived(object sender, MqttApplicationMessageReceivedEventArgs _)
     {
-        base.StateHasChanged();
+        StateHasChanged();
     }
-
 }
+
+Bottom of Page
