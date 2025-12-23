@@ -90,8 +90,6 @@
     //private string mqttUsername { get; set; } = "fishworks-dev";
     //private string mqttPassword { get; set; } = "F1shworks!";
 
-    private string topic { get; set; } = "auth0|6780a2d9d25eaaea97f7fe1b/#";
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
@@ -177,7 +175,13 @@
 
             base.StateHasChanged();
 
-            await MqttService.Subscribe(topic);
+            JsonWebToken jwtToken = new JsonWebToken(token.Value);
+
+            var acl = JsonNode.Parse(jwtToken.GetClaim("acl").Value);
+
+            Console.WriteLine("Subscribing to topic: " + acl["topic"]);
+
+            await MqttService.Subscribe((string)acl["topic"]);
         }
     }
     
