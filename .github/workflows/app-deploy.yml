@@ -36,6 +36,6 @@ jobs:
         username: ${{ secrets.GC_USERNAME }}
         key: ${{ secrets.GC_KEY }}
         source: "./release/"
-        target: "/var/www/"
+        target: "/var/www/app/"
         debug: true
       
