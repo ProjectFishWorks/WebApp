@@ -1,0 +1,30 @@
+name: Deploy to Google Cloud
+
+# Run workflow on every push to the master branch
+on:
+  push:
+    branches: [ AppProduction ]
+
+jobs:
+  deploy-to-google-cloud:
+    # use ubuntu-latest image to run steps on
+    runs-on: ubuntu-latest
+    steps:
+    # uses GitHub's checkout action to checkout code form the master branch
+    - uses: actions/checkout@v4
+      with:
+        ref: AppProduction
+    
+    # sets up .NET Core SDK 8.x
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 8.x
+
+    # publishes Blazor project to the release-folder
+    - name: Publish .NET Core Project
+      run: dotnet publish ProjectFishWorksWebApp/ProjectFishWorksWebApp.csproj -c Release -o release --nologo
+
+    # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+    - name: Add .nojekyll file
+      run: touch release/wwwroot/.nojekyll
