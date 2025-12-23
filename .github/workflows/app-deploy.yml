@@ -28,3 +28,14 @@ jobs:
     # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
     - name: Add .nojekyll file
       run: touch release/wwwroot/.nojekyll
+
+    - name: Copy files to server
+      uses: appleboy/scp-action@v1
+      with:
+        host: ${{ secrets.GC_HOST }}
+        username: ${{ secrets.GC_USERNAME }}
+        key: ${{ secrets.GC_KEY }}
+        source: "./release"
+        target: "~/app/"
+        debug: true
+      
