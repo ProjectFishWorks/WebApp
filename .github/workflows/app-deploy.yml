@@ -35,7 +35,7 @@ jobs:
         host: ${{ secrets.GC_HOST }}
         username: ${{ secrets.GC_USERNAME }}
         key: ${{ secrets.GC_KEY }}
-        source: "./release"
-        target: "~/app/"
+        source: "./release/"
+        target: "/var/www/"
         debug: true
       
